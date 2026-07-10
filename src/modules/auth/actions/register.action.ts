@@ -1,7 +1,7 @@
 'use server';
 
 import { authService } from '../services/auth.service';
-import { registerSchema, loginSchema, type RegisterInput, type LoginInput } from '../validations';
+import { registerSchema, loginSchema, type RegisterInput, type LoginInput } from '../validations/auth.schema';
 import type { AuthResponse } from '../types';
 
 export async function registerAction(input: unknown): Promise<AuthResponse> {

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema, type RegisterInput } from '../validations';
+import { registerSchema, type RegisterInput } from '../validations/auth.schema';
 import { registerAction } from '../actions/register.action';
 import { toast } from 'sonner';
 
