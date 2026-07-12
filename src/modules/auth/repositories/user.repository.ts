@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 import { RegisterUserDto } from "../types/auth.types";
 
 export class UserRepository {

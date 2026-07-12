@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { registerSchema } from "@/modules/auth/validations/auth.schema";
-import { AuthService } from "@/modules/auth/services/auth.service";
-
+import { registerSchema } from "../../../modules/auth/validations/auth.schema";
+import { AuthService } from "../../../modules/auth/services/auth.service";
 const authService = new AuthService();
 
 export async function POST(req: NextRequest) {
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
         message: "User registered successfully",
         user,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return NextResponse.json(
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest) {
         message:
           error instanceof Error ? error.message : "Something went wrong",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

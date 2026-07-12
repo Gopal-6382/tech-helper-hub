@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type LoginInput } from '../validations/auth.schema';
-import { loginAction } from '../actions/register.action';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginInput } from "../validations/auth.schema";
+import { loginAction } from "../actions/register.action";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,15 +28,15 @@ export function LoginForm() {
         reset();
         // Store token in localStorage or session
         if (result.token) {
-          localStorage.setItem('authToken', result.token);
+          localStorage.setItem("authToken", result.token);
         }
         // Redirect to dashboard
-        window.location.href = '/dashboard';
+        window.location.href = "/dashboard";
       } else {
         toast.error(result.error || result.message);
       }
     } catch (error) {
-      toast.error('An error occurred during login');
+      toast.error("An error occurred during login");
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +49,7 @@ export function LoginForm() {
           Email
         </label>
         <input
-          {...register('email')}
+          {...register("email")}
           type="email"
           id="email"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -66,7 +66,7 @@ export function LoginForm() {
           Password
         </label>
         <input
-          {...register('password')}
+          {...register("password")}
           type="password"
           id="password"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -83,7 +83,7 @@ export function LoginForm() {
         disabled={isLoading}
         className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 transition"
       >
-        {isLoading ? 'Logging in...' : 'Login'}
+        {isLoading ? "Logging in..." : "Login"}
       </button>
     </form>
   );
