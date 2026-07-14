@@ -41,6 +41,8 @@ export class AuthService {
     };
   }
 
+  
+
   async login(data: LoginUserDto) {
     const user = await this.userRepository.findByEmail(data.email);
 
@@ -110,4 +112,18 @@ export class AuthService {
       }
     );
   }
+
+async getCurrentUser(userId: string) {
+  const user = await this.userRepository.findById(userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return {
+    success: true,
+    message: "Current user fetched successfully",
+    user,
+  };
+}
 }
