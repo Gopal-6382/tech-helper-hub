@@ -10,9 +10,31 @@ export class UserRepository {
     });
   }
 
+  async findById(id: string) {
+    return prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async create(data: RegisterUserDto) {
     return prisma.user.create({
       data,
+    });
+  }
+
+  async updateRefreshToken(
+    userId: string,
+    refreshToken: string | null,
+  ) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        refreshToken,
+      },
     });
   }
 }

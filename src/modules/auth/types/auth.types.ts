@@ -8,14 +8,19 @@ export interface LoginUserDto {
   email: string;
   password: string;
 }
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "USER" | "PROFESSIONAL" | "ADMIN";
+  avatar?: string | null;
+}
+
 export interface AuthResponse {
   success: boolean;
   message: string;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-  };
+  user?: AuthUser;
   accessToken?: string;
   refreshToken?: string;
   error?: string;
