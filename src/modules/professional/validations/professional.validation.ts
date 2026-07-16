@@ -24,7 +24,7 @@ export const becomeProfessionalSchema = z.object({
     .number()
     .positive(),
 
-  serviceMode: z.nativeEnum(ServiceMode),
+  serviceMode: z.enum(ServiceMode),
 
   workingRadiusKm: z
     .number()
