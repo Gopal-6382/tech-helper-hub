@@ -1,14 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
 import { authMiddleware } from "@/middleware/auth.middleware";
-import { AuthService } from "@/modules/auth/services/auth.service";
-import { JwtPayload } from "@/lib/auth";
 
-const authService = new AuthService();
+import { becomeProfessional } from "@/modules/professional/actions/become-professional.action";
+import { getProfessional } from "@/modules/professional/actions/get-professional.action";
+import { updateProfessional } from "@/modules/professional/actions/update-professional.action";
 
-async function me(req: NextRequest, user: JwtPayload) {
-  const result = await authService.getCurrentUser(user.userId);
+export const POST = authMiddleware(becomeProfessional);
 
-  return NextResponse.json(result);
-}
+export const GET = authMiddleware(getProfessional);
 
-export const GET = authMiddleware(me);
+export const PATCH = authMiddleware(updateProfessional);
