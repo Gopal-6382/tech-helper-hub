@@ -5,21 +5,12 @@ import { updateProfessionalCategoriesSchema } from "../validations/professional.
 
 const professionalService = new ProfessionalService();
 
-export async function updateCategories(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function updateCategories(req: NextRequest, user: JwtPayload) {
   const body = await req.json();
 
-  const data =
-    updateProfessionalCategoriesSchema.parse(body);
+  const data = updateProfessionalCategoriesSchema.parse(body);
 
-  const result =
-    await professionalService.updateCategories(
-      user.userId,
-      data,
-    );
+  const result = await professionalService.updateCategories(user.userId, data);
 
   return NextResponse.json(result);
-  
 }

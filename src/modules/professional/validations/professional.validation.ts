@@ -14,27 +14,18 @@ export const becomeProfessionalSchema = z.object({
     .min(20, "Description must be at least 20 characters")
     .max(1000, "Description cannot exceed 1000 characters"),
 
-  experienceYears: z
-    .number()
-    .int()
-    .min(0)
-    .max(50),
+  experienceYears: z.number().int().min(0).max(50),
 
-  hourlyRate: z
-    .number()
-    .positive(),
+  hourlyRate: z.number().positive(),
 
   serviceMode: z.enum(ServiceMode),
 
-  workingRadiusKm: z
-    .number()
-    .int()
-    .min(1)
-    .max(100),
+  workingRadiusKm: z.number().int().min(1).max(100),
 });
 
-export const updateProfessionalSchema =
-  becomeProfessionalSchema.partial().extend({
+export const updateProfessionalSchema = becomeProfessionalSchema
+  .partial()
+  .extend({
     isAvailable: z.boolean().optional(),
   });
 

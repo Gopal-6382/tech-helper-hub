@@ -4,14 +4,8 @@ import { ProfessionalService } from "../services/professional.service";
 
 const professionalService = new ProfessionalService();
 
-export async function getProfessional(
-  req: NextRequest,
-  user: JwtPayload,
-) {
-  const professional =
-    await professionalService.getProfessional(
-      user.userId,
-    );
+export async function getProfessional(req: NextRequest, user: JwtPayload) {
+  const professional = await professionalService.getProfessional(user.userId);
 
   return NextResponse.json({
     success: true,

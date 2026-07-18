@@ -4,18 +4,11 @@ import { ProfileService } from "../services/profile.service";
 
 const profileService = new ProfileService();
 
-export async function updateProfile(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function updateProfile(req: NextRequest, user: JwtPayload) {
   try {
     const body = await req.json();
 
-    const result =
-      await profileService.updateProfile(
-        user.userId,
-        body,
-      );
+    const result = await profileService.updateProfile(user.userId, body);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -23,13 +16,11 @@ export async function updateProfile(
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+          error instanceof Error ? error.message : "Something went wrong",
       },
       {
         status: 400,
-      }
+      },
     );
   }
 }

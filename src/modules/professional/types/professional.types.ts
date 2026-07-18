@@ -1,7 +1,7 @@
 import { ServiceMode } from "@prisma/client";
 
 export interface BecomeProfessionalDto {
-   headline: string;
+  headline: string;
   description: string;
   experienceYears: number;
   hourlyRate: number;
@@ -23,4 +23,5 @@ export interface UpdateProfessionalDto {
 
 export interface UpdateProfessionalCategoriesDto {
   categoryIds: string[];
-isAvailable?: boolean;}
+  isAvailable?: boolean;
+}

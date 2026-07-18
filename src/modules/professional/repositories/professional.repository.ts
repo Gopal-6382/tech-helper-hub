@@ -5,6 +5,7 @@ import {
 } from "../types/professional.types";
 
 export class ProfessionalRepository {
+  
   async findByUserId(userId: string) {
     return prisma.professionalProfile.findUnique({
       where: {
@@ -20,10 +21,7 @@ export class ProfessionalRepository {
     });
   }
 
-  async create(
-    userId: string,
-    data: BecomeProfessionalDto,
-  ) {
+  async create(userId: string, data: BecomeProfessionalDto) {
     return prisma.professionalProfile.create({
       data: {
         userId,
@@ -32,10 +30,7 @@ export class ProfessionalRepository {
     });
   }
 
-  async update(
-    userId: string,
-    data: UpdateProfessionalDto,
-  ) {
+  async update(userId: string, data: UpdateProfessionalDto) {
     return prisma.professionalProfile.update({
       where: {
         userId,
@@ -44,10 +39,7 @@ export class ProfessionalRepository {
     });
   }
 
-  async updateAvailability(
-    userId: string,
-    isAvailable: boolean,
-  ) {
+  async updateAvailability(userId: string, isAvailable: boolean) {
     return prisma.professionalProfile.update({
       where: {
         userId,
@@ -76,12 +68,10 @@ export class ProfessionalRepository {
     });
   }
   async getCategories() {
-    
-  return prisma.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
-}
-
+    return prisma.category.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+  }
 }

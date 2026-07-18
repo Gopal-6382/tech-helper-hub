@@ -5,19 +5,15 @@ import { JwtPayload } from "@/lib/auth";
 
 const professionalService = new ProfessionalService();
 
-export async function becomeProfessional(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function becomeProfessional(req: NextRequest, user: JwtPayload) {
   const body = await req.json();
 
   const data = becomeProfessionalSchema.parse(body);
 
-  const professional =
-    await professionalService.becomeProfessional(
-      user.userId,
-      data,
-    );
+  const professional = await professionalService.becomeProfessional(
+    user.userId,
+    data,
+  );
 
   return NextResponse.json(
     {

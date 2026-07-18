@@ -5,9 +5,7 @@ import { authService } from "../services/auth.service";
 import { registerSchema, loginSchema } from "../validations/auth.schema";
 import type { AuthResponse } from "../types/auth.types";
 
-export async function registerAction(
-  input: unknown
-): Promise<AuthResponse> {
+export async function registerAction(input: unknown): Promise<AuthResponse> {
   try {
     const validatedData = registerSchema.parse(input);
 
@@ -29,9 +27,7 @@ export async function registerAction(
   }
 }
 
-export async function loginAction(
-  input: unknown
-): Promise<AuthResponse> {
+export async function loginAction(input: unknown): Promise<AuthResponse> {
   try {
     const validatedData = loginSchema.parse(input);
 

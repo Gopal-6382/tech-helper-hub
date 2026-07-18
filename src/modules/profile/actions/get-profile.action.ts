@@ -4,13 +4,9 @@ import { ProfileService } from "../services/profile.service";
 
 const profileService = new ProfileService();
 
-export async function getProfile(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function getProfile(req: NextRequest, user: JwtPayload) {
   try {
-    const result =
-      await profileService.getProfile(user.userId);
+    const result = await profileService.getProfile(user.userId);
 
     return NextResponse.json(result);
   } catch (error) {
@@ -18,13 +14,11 @@ export async function getProfile(
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+          error instanceof Error ? error.message : "Something went wrong",
       },
       {
         status: 404,
-      }
+      },
     );
   }
 }

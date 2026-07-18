@@ -4,18 +4,11 @@ import { ProfileService } from "../services/profile.service";
 
 const profileService = new ProfileService();
 
-export async function createProfile(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function createProfile(req: NextRequest, user: JwtPayload) {
   try {
     const body = await req.json();
 
-    const result =
-      await profileService.createProfile(
-        user.userId,
-        body,
-      );
+    const result = await profileService.createProfile(user.userId, body);
 
     return NextResponse.json(result, {
       status: 201,
@@ -25,13 +18,11 @@ export async function createProfile(
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+          error instanceof Error ? error.message : "Something went wrong",
       },
       {
         status: 400,
-      }
+      },
     );
   }
 }

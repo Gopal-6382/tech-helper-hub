@@ -25,10 +25,7 @@ export class AuthService {
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
 
-    await this.userRepository.updateRefreshToken(
-      user.id,
-      hashedRefreshToken,
-    );
+    await this.userRepository.updateRefreshToken(user.id, hashedRefreshToken);
 
     const { password, refreshToken: _, ...safeUser } = user;
 
@@ -40,8 +37,6 @@ export class AuthService {
       refreshToken,
     };
   }
-
-  
 
   async login(data: LoginUserDto) {
     const user = await this.userRepository.findByEmail(data.email);
@@ -68,10 +63,7 @@ export class AuthService {
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
 
-    await this.userRepository.updateRefreshToken(
-      user.id,
-      hashedRefreshToken,
-    );
+    await this.userRepository.updateRefreshToken(user.id, hashedRefreshToken);
 
     const { password, refreshToken: _, ...safeUser } = user;
 
@@ -94,36 +86,28 @@ export class AuthService {
   }
 
   private generateAccessToken(userId: string, role: string) {
-    return jwt.sign(
-      { userId, role },
-      process.env.JWT_ACCESS_SECRET!,
-      {
-        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
-      }
-    );
+    return jwt.sign({ userId, role }, process.env.JWT_ACCESS_SECRET!, {
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
+    });
   }
 
   private generateRefreshToken(userId: string, role: string) {
-    return jwt.sign(
-      { userId, role },
-      process.env.JWT_REFRESH_SECRET!,
-      {
-        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
-      }
-    );
+    return jwt.sign({ userId, role }, process.env.JWT_REFRESH_SECRET!, {
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+    });
   }
 
-async getCurrentUser(userId: string) {
-  const user = await this.userRepository.findById(userId);
+  async getCurrentUser(userId: string) {
+    const user = await this.userRepository.findById(userId);
 
-  if (!user) {
-    throw new Error("User not found");
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      success: true,
+      message: "Current user fetched successfully",
+      user,
+    };
   }
-
-  return {
-    success: true,
-    message: "Current user fetched successfully",
-    user,
-  };
-}
 }

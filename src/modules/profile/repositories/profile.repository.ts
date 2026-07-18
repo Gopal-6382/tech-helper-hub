@@ -1,8 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import {
-  CreateProfileDto,
-  UpdateProfileDto,
-} from "../types/profile.types";
+import { CreateProfileDto, UpdateProfileDto } from "../types/profile.types";
 
 export class ProfileRepository {
   async create(userId: string, data: CreateProfileDto) {
