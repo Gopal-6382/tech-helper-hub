@@ -8,24 +8,14 @@ import {
 } from "../types/service-request.types";
 
 export class ServiceRequestService {
-  private serviceRequestRepository =
-    new ServiceRequestRepository();
+  private serviceRequestRepository = new ServiceRequestRepository();
 
-  async createRequest(
-    userId: string,
-    data: CreateServiceRequestDto,
-  ) {
-    return this.serviceRequestRepository.create(
-      userId,
-      data,
-    );
+  async createRequest(userId: string, data: CreateServiceRequestDto) {
+    return this.serviceRequestRepository.create(userId, data);
   }
 
   async getRequest(id: string) {
-    const request =
-      await this.serviceRequestRepository.findById(
-        id,
-      );
+    const request = await this.serviceRequestRepository.findById(id);
 
     if (!request) {
       throw new Error("Service request not found");
@@ -35,9 +25,7 @@ export class ServiceRequestService {
   }
 
   async getMyRequests(userId: string) {
-    return this.serviceRequestRepository.findByUserId(
-      userId,
-    );
+    return this.serviceRequestRepository.findByUserId(userId);
   }
 
   async updateRequest(
@@ -45,48 +33,30 @@ export class ServiceRequestService {
     requestId: string,
     data: UpdateServiceRequestDto,
   ) {
-    const request =
-      await this.getRequest(requestId);
+    const request = await this.getRequest(requestId);
 
     if (request.userId !== userId) {
       throw new Error("Unauthorized");
     }
 
-    if (
-      request.status === RequestStatus.CANCELLED
-    ) {
-      throw new Error(
-        "Cancelled request cannot be updated",
-      );
+    if (request.status === RequestStatus.CANCELLED) {
+      throw new Error("Cancelled request cannot be updated");
     }
 
-    return this.serviceRequestRepository.update(
-      requestId,
-      data,
-    );
+    return this.serviceRequestRepository.update(requestId, data);
   }
 
-  async cancelRequest(
-    userId: string,
-    requestId: string,
-  ) {
-    const request =
-      await this.getRequest(requestId);
+  async cancelRequest(userId: string, requestId: string) {
+    const request = await this.getRequest(requestId);
 
     if (request.userId !== userId) {
       throw new Error("Unauthorized");
     }
 
-    if (
-      request.status === RequestStatus.CANCELLED
-    ) {
-      throw new Error(
-        "Request already cancelled",
-      );
+    if (request.status === RequestStatus.CANCELLED) {
+      throw new Error("Request already cancelled");
     }
 
-    return this.serviceRequestRepository.cancel(
-      requestId,
-    );
+    return this.serviceRequestRepository.cancel(requestId);
   }
 }

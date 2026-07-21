@@ -6,20 +6,12 @@ import { createServiceRequestSchema } from "../validations/service-request.valid
 
 const serviceRequestService = new ServiceRequestService();
 
-export async function createRequest(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function createRequest(req: NextRequest, user: JwtPayload) {
   const body = await req.json();
 
-  const data =
-    createServiceRequestSchema.parse(body);
+  const data = createServiceRequestSchema.parse(body);
 
-  const result =
-    await serviceRequestService.createRequest(
-      user.userId,
-      data,
-    );
+  const result = await serviceRequestService.createRequest(user.userId, data);
 
   return NextResponse.json(result, {
     status: 201,

@@ -5,14 +5,8 @@ import { VerificationService } from "../services/verification.service";
 
 const verificationService = new VerificationService();
 
-export async function getVerification(
-  req: NextRequest,
-  user: JwtPayload,
-) {
-  const result =
-    await verificationService.getVerification(
-      user.userId,
-    );
+export async function getVerification(req: NextRequest, user: JwtPayload) {
+  const result = await verificationService.getVerification(user.userId);
 
   return NextResponse.json(result);
 }

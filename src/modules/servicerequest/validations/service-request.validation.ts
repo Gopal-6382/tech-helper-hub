@@ -1,45 +1,30 @@
-import {
-  RequestStatus,
-  ServiceMode,
-} from "@prisma/client";
+import { RequestStatus, ServiceMode } from "@prisma/client";
 import { z } from "zod";
 
-export const createServiceRequestSchema =
-  z.object({
-    categoryId: z.string().cuid(),
+export const createServiceRequestSchema = z.object({
+  categoryId: z.uuid(),
 
-    title: z
-      .string()
-      .trim()
-      .min(5)
-      .max(150),
+  title: z.string().trim().min(5).max(150),
 
-    description: z
-      .string()
-      .trim()
-      .min(20)
-      .max(2000),
+  description: z.string().trim().min(20).max(2000),
 
-    images: z.array(z.string().url()).default([]),
+  images: z.array(z.url()).default([]),
 
-    mode: z.nativeEnum(ServiceMode),
+  mode: z.enum(ServiceMode),
 
-    budget: z.number().positive().optional(),
+  budget: z.number().positive().optional(),
 
-    address: z.string().trim().optional(),
+  address: z.string().trim().optional(),
 
-    city: z.string().trim().optional(),
+  city: z.string().trim().optional(),
 
-    latitude: z.number().optional(),
+  latitude: z.number().optional(),
 
-    longitude: z.number().optional(),
+  longitude: z.number().optional(),
+});
+
+export const updateServiceRequestSchema = createServiceRequestSchema
+  .partial()
+  .extend({
+    status: z.enum(RequestStatus).optional(),
   });
-
-export const updateServiceRequestSchema =
-  createServiceRequestSchema
-    .partial()
-    .extend({
-      status: z
-        .nativeEnum(RequestStatus)
-        .optional(),
-    });

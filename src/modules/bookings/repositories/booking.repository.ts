@@ -1,12 +1,11 @@
 import { BookingStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreateBookingData,
-  UpdateBookingDto,
-} from "../types/booking.types";
+import { CreateBookingData, UpdateBookingDto } from "../types/booking.types";
 
 export class BookingRepository {
+
+  // Find one booking by booking ID with all related details
   async findById(id: string) {
     return prisma.booking.findUnique({
       where: {
@@ -28,6 +27,7 @@ export class BookingRepository {
     });
   }
 
+  // Find all bookings created by a user
   async findByUserId(userId: string) {
     return prisma.booking.findMany({
       where: {
@@ -47,9 +47,8 @@ export class BookingRepository {
     });
   }
 
-  async findByProfessionalId(
-    professionalId: string,
-  ) {
+  // Find all bookings assigned to a professional
+  async findByProfessionalId(professionalId: string) {
     return prisma.booking.findMany({
       where: {
         professionalId,
@@ -64,16 +63,15 @@ export class BookingRepository {
     });
   }
 
+  // Create a new booking
   async create(data: CreateBookingData) {
     return prisma.booking.create({
       data,
     });
   }
 
-  async update(
-    id: string,
-    data: UpdateBookingDto,
-  ) {
+  // Update booking details
+  async update(id: string, data: UpdateBookingDto) {
     return prisma.booking.update({
       where: {
         id,
@@ -82,10 +80,8 @@ export class BookingRepository {
     });
   }
 
-  async updateStatus(
-    id: string,
-    status: BookingStatus,
-  ) {
+  // Update only the booking status
+  async updateStatus(id: string, status: BookingStatus) {
     return prisma.booking.update({
       where: {
         id,

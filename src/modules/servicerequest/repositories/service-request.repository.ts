@@ -39,10 +39,7 @@ export class ServiceRequestRepository {
     });
   }
 
-  async create(
-    userId: string,
-    data: CreateServiceRequestDto,
-  ) {
+  async create(userId: string, data: CreateServiceRequestDto) {
     return prisma.serviceRequest.create({
       data: {
         userId,
@@ -51,10 +48,7 @@ export class ServiceRequestRepository {
     });
   }
 
-  async update(
-    id: string,
-    data: UpdateServiceRequestDto,
-  ) {
+  async update(id: string, data: UpdateServiceRequestDto) {
     return prisma.serviceRequest.update({
       where: {
         id,

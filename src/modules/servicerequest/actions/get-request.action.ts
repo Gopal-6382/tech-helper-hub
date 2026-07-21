@@ -10,10 +10,7 @@ export async function getRequest(
   user: JwtPayload,
   requestId: string,
 ) {
-  const result =
-    await serviceRequestService.getRequest(
-      requestId,
-    );
+  const result = await serviceRequestService.getRequest(requestId);
 
   return NextResponse.json(result);
 }

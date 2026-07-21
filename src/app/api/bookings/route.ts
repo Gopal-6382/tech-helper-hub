@@ -5,6 +5,4 @@ import { getMyBookings } from "@/modules/bookings/actions/get-my-bookings.action
 
 export const POST = authMiddleware(createBooking);
 
-export const GET = authMiddleware((req, user) =>
-  getMyBookings(user),
-);
+export const GET = authMiddleware((req, user) => getMyBookings(user));

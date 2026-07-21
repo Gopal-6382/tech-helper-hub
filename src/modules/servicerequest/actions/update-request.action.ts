@@ -13,15 +13,13 @@ export async function updateRequest(
 ) {
   const body = await req.json();
 
-  const data =
-    updateServiceRequestSchema.parse(body);
+  const data = updateServiceRequestSchema.parse(body);
 
-  const result =
-    await serviceRequestService.updateRequest(
-      user.userId,
-      requestId,
-      data,
-    );
+  const result = await serviceRequestService.updateRequest(
+    user.userId,
+    requestId,
+    data,
+  );
 
   return NextResponse.json(result);
 }

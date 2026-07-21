@@ -5,7 +5,6 @@ import {
 } from "../types/professional.types";
 
 export class ProfessionalRepository {
-  
   async findByUserId(userId: string) {
     return prisma.professionalProfile.findUnique({
       where: {

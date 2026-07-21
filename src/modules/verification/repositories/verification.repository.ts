@@ -15,10 +15,7 @@ export class VerificationRepository {
     });
   }
 
-  async create(
-    userId: string,
-    data: CreateVerificationDto,
-  ) {
+  async create(userId: string, data: CreateVerificationDto) {
     return prisma.verification.create({
       data: {
         userId,
@@ -31,10 +28,7 @@ export class VerificationRepository {
     });
   }
 
-  async update(
-    userId: string,
-    data: UpdateVerificationDto,
-  ) {
+  async update(userId: string, data: UpdateVerificationDto) {
     return prisma.verification.update({
       where: {
         userId,

@@ -10,11 +10,10 @@ export async function cancelRequest(
   user: JwtPayload,
   requestId: string,
 ) {
-  const result =
-    await serviceRequestService.cancelRequest(
-      user.userId,
-      requestId,
-    );
+  const result = await serviceRequestService.cancelRequest(
+    user.userId,
+    requestId,
+  );
 
   return NextResponse.json(result);
 }

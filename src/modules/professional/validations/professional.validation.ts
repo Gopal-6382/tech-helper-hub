@@ -30,7 +30,5 @@ export const updateProfessionalSchema = becomeProfessionalSchema
   });
 
 export const updateProfessionalCategoriesSchema = z.object({
-  categoryIds: z
-    .array(z.string().cuid())
-    .min(1, "Select at least one category"),
+  categoryIds: z.array(z.uuid()).min(1, "Select at least one category"),
 });

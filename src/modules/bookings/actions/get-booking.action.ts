@@ -9,4 +9,3 @@ export async function getBooking(id: string) {
 
   return NextResponse.json(result);
 }
-

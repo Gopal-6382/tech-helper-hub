@@ -71,7 +71,7 @@ enum ReportStatus {
 // USER (Auth + Profile)
 
 model User {
-  id           String   @id @default(cuid())
+  id           String   @id @default(uuid())
   name         String
   email        String   @unique
   phone        String?  @unique
@@ -114,7 +114,7 @@ model User {
 }
 
 model Profile {
-  id        String  @id @default(cuid())
+  id        String  @id @default(uuid())
   userId    String  @unique
   address   String?
   city      String?
@@ -131,7 +131,7 @@ model Profile {
 // VERIFICATION (shared by all users, only professionals fill certificate)
 
 model Verification {
-  id               String              @id @default(cuid())
+  id               String              @id @default(uuid())
   userId           String              @unique
   documentType     String? // aadhaar | passport | driving_license
   documentNumber   String?
@@ -155,7 +155,7 @@ model Verification {
 // PROFESSIONAL
 
 model ProfessionalProfile {
-  id              String      @id @default(cuid())
+  id              String      @id @default(uuid())
   userId          String      @unique
   headline        String?
   description     String?     @db.Text
@@ -181,7 +181,7 @@ model ProfessionalProfile {
 }
 
 model Category {
-  id   String  @id @default(cuid())
+  id   String  @id @default(uuid())
   name String  @unique
   slug String  @unique
   icon String?
@@ -194,7 +194,7 @@ model Category {
 }
 
 model ProfessionalCategory {
-  id                    String @id @default(cuid())
+  id                    String @id @default(uuid())
   professionalProfileId String
   categoryId            String
 
@@ -208,7 +208,7 @@ model ProfessionalCategory {
 // SERVICE REQUEST / BOOKING
 
 model ServiceRequest {
-  id          String        @id @default(cuid())
+  id          String        @id @default(uuid())
   requesterId String
   categoryId  String
   title       String
@@ -235,7 +235,7 @@ model ServiceRequest {
 }
 
 model Booking {
-  id               String        @id @default(cuid())
+  id               String        @id @default(uuid())
   serviceRequestId String
   userId           String
   professionalId   String
@@ -261,7 +261,7 @@ model Booking {
 }
 
 model Review {
-  id             String   @id @default(cuid())
+  id             String   @id @default(uuid())
   bookingId      String   @unique
   userId         String
   professionalId String
@@ -281,7 +281,7 @@ model Review {
 // COMMUNITY (Home feed / Posts)
 
 model ProblemPost {
-  id         String     @id @default(cuid())
+  id         String     @id @default(uuid())
   authorId   String
   categoryId String?
   title      String
@@ -312,7 +312,7 @@ model ProblemPost {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   postId    String
   authorId  String
   content   String   @db.Text
@@ -329,7 +329,7 @@ model Comment {
 }
 
 model CommentReply {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   commentId String
   authorId  String
   content   String   @db.Text
@@ -344,7 +344,7 @@ model CommentReply {
 }
 
 model PostLike {
-  id     String @id @default(cuid())
+  id     String @id @default(uuid())
   postId String
   userId String
 
@@ -356,7 +356,7 @@ model PostLike {
 }
 
 model SavedPost {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   userId    String
   postId    String
   createdAt DateTime @default(now())
@@ -369,7 +369,7 @@ model SavedPost {
 }
 
 model Report {
-  id         String       @id @default(cuid())
+  id         String       @id @default(uuid())
   reporterId String
   postId     String?
   commentId  String?
@@ -389,7 +389,7 @@ model Report {
 // DIRECT CHAT (1:1 — REST + polling)
 
 model DirectConversation {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   lastMessageAt DateTime?
   isActive      Boolean   @default(true)
   createdAt     DateTime  @default(now())
@@ -401,7 +401,7 @@ model DirectConversation {
 }
 
 model DirectParticipant {
-  id             String @id @default(cuid())
+  id             String @id @default(uuid())
   conversationId String
   userId         String
 
@@ -413,7 +413,7 @@ model DirectParticipant {
 }
 
 model DirectMessage {
-  id             String    @id @default(cuid())
+  id             String    @id @default(uuid())
   conversationId String
   senderId       String
   content        String?   @db.Text
@@ -430,7 +430,7 @@ model DirectMessage {
 // GROUP CHAT
 
 model Group {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   name          String
   description   String?
   image         String?
@@ -448,7 +448,7 @@ model Group {
 }
 
 model GroupMember {
-  id       String   @id @default(cuid())
+  id       String   @id @default(uuid())
   groupId  String
   userId   String
   isAdmin  Boolean  @default(false)
@@ -462,7 +462,7 @@ model GroupMember {
 }
 
 model GroupMessage {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   groupId   String
   senderId  String
   content   String?  @db.Text
@@ -478,7 +478,7 @@ model GroupMessage {
 // FOLLOW
 
 model Follow {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   followerId  String
   followingId String
   createdAt   DateTime @default(now())
@@ -493,7 +493,7 @@ model Follow {
 // NOTIFICATIONS
 
 model Notification {
-  id        String           @id @default(cuid())
+  id        String           @id @default(uuid())
   userId    String
   type      NotificationType
   title     String

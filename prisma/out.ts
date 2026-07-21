@@ -77,13 +77,12 @@ async function main() {
     },
   });
 
-  const professionalCategory =
-    await prisma.professionalCategory.create({
-      data: {
-        professionalProfileId: professional.id,
-        categoryId: category!.id,
-      },
-    });
+  const professionalCategory = await prisma.professionalCategory.create({
+    data: {
+      professionalProfileId: professional.id,
+      categoryId: category!.id,
+    },
+  });
 
   const request = await prisma.serviceRequest.create({
     data: {

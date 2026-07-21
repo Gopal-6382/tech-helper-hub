@@ -1,7 +1,4 @@
-import {
-  RequestStatus,
-  ServiceMode,
-} from "@prisma/client";
+import { RequestStatus, ServiceMode } from "@prisma/client";
 
 export interface CreateServiceRequestDto {
   categoryId: string;

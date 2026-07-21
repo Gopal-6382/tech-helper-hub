@@ -74,16 +74,15 @@ async function main() {
     },
   });
 
-  const professional =
-    await prisma.professionalProfile.create({
-      data: {
-        userId: professionalUser.id,
-        headline: "Electrician",
-        experienceYears: 5,
-        serviceMode: ServiceMode.BOTH,
-        isAvailable: true,
-      },
-    });
+  const professional = await prisma.professionalProfile.create({
+    data: {
+      userId: professionalUser.id,
+      headline: "Electrician",
+      experienceYears: 5,
+      serviceMode: ServiceMode.BOTH,
+      isAvailable: true,
+    },
+  });
 
   await prisma.professionalCategory.create({
     data: {
