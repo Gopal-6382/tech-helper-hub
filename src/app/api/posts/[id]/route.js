@@ -6,9 +6,7 @@ import { getPost } from "@/modules/posts/actions/get-post.action";
 import { updatePost } from "@/modules/posts/actions/update-post.action";
 import { deletePost } from "@/modules/posts/actions/delete-post.action";
 
-// --------------------------------------------------
 // GET /api/posts/:id
-// --------------------------------------------------
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -38,10 +36,8 @@ export async function GET(
   }
 }
 
-// --------------------------------------------------
 // PATCH /api/posts/:id
 // Login Required
-// --------------------------------------------------
 export const PATCH = authMiddleware(
   async (
     req,
