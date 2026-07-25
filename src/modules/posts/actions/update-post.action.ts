@@ -5,9 +5,7 @@ import { updatePostSchema } from "../validations/post.validation";
 
 const postService = new PostService();
 
-// --------------------------------------------------
 // Only author can update.
-// --------------------------------------------------
 export async function updatePost(
   req: NextRequest,
   id: string,

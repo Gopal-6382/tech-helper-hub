@@ -5,11 +5,7 @@ import { createPostSchema } from "../validations/post.validation";
 
 const postService = new PostService();
 
-// --------------------------------------------------
-// Business Rule:
-// User must be authenticated.
-// AuthorId comes from JWT.
-// --------------------------------------------------
+// Business Rule: User must be authenticated. AuthorId comes from JWT.
 export async function createPost(
   req: NextRequest,
   authorId: string,
