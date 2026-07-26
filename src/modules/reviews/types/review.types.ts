@@ -32,4 +32,3 @@ export interface UpdateReviewDto {
  * Review response type.
  */
 export type ReviewResponse = Review;
-

@@ -47,9 +47,9 @@ export class BookingService {
     await this.getBooking(id);
 
     return this.bookingRepository.update(id, {
-  status: BookingStatus.ACCEPTED,
-  acceptedAt: new Date(),
-});
+      status: BookingStatus.ACCEPTED,
+      acceptedAt: new Date(),
+    });
   }
 
   async rejectBooking(id: string) {

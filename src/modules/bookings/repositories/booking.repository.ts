@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { CreateBookingData, UpdateBookingDto } from "../types/booking.types";
 
 export class BookingRepository {
-
   // Find one booking by booking ID with all related details
   async findById(id: string) {
     return prisma.booking.findUnique({

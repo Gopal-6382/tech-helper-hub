@@ -40,19 +40,9 @@ export const createPostSchema = z.object({
 export const updatePostSchema = z.object({
   categoryId: z.string().uuid().optional(),
 
-  title: z
-    .string()
-    .trim()
-    .min(5)
-    .max(150)
-    .optional(),
+  title: z.string().trim().min(5).max(150).optional(),
 
-  content: z
-    .string()
-    .trim()
-    .min(10)
-    .max(5000)
-    .optional(),
+  content: z.string().trim().min(10).max(5000).optional(),
 
   images: z.array(z.string()).optional(),
 

@@ -5,7 +5,7 @@ const professionalService = new ProfessionalService();
 
 export async function updateAvailabilityAction(
   req: Request,
-  user: { userId: string }
+  user: { userId: string },
 ) {
   const body = await req.json();
 
@@ -15,7 +15,7 @@ export async function updateAvailabilityAction(
 
   const result = await professionalService.updateAvailability(
     user.userId,
-    body.isAvailable
+    body.isAvailable,
   );
 
   return NextResponse.json({

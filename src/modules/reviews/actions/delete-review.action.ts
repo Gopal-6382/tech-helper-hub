@@ -5,15 +5,9 @@ import { JwtPayload } from "@/lib/auth";
 
 const reviewService = new ReviewService();
 
-export async function deleteReview(
-  user: JwtPayload,
-  reviewId: string,
-) {
+export async function deleteReview(user: JwtPayload, reviewId: string) {
   // Delete review.
-  await reviewService.deleteReview(
-    reviewId,
-    user.userId,
-  );
+  await reviewService.deleteReview(reviewId, user.userId);
 
   return NextResponse.json({
     message: "Review deleted successfully",

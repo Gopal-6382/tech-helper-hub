@@ -3,10 +3,7 @@ import { BookingStatus } from "@prisma/client";
 import { BookingRepository } from "@/modules/bookings/repositories/booking.repository";
 
 import { ReviewRepository } from "../repositories/review.repository";
-import {
-  CreateReviewDto,
-  UpdateReviewDto,
-} from "../types/review.types";
+import { CreateReviewDto, UpdateReviewDto } from "../types/review.types";
 
 export class ReviewService {
   private reviewRepository = new ReviewRepository();
@@ -18,18 +15,12 @@ export class ReviewService {
   /**
    * Create Review
    */
-  async createReview(
-    userId: string,
-    data: CreateReviewDto,
-  ) {
+  async createReview(userId: string, data: CreateReviewDto) {
     // -------------------------------------------------
     // STEP 1
     // Check whether booking exists.
     // -------------------------------------------------
-    const booking =
-      await this.bookingRepository.findById(
-        data.bookingId,
-      );
+    const booking = await this.bookingRepository.findById(data.bookingId);
 
     if (!booking) {
       throw new Error("Booking not found");
@@ -40,22 +31,15 @@ export class ReviewService {
     // Only booking owner can review.
     // -------------------------------------------------
     if (booking.userId !== userId) {
-      throw new Error(
-        "You cannot review this booking",
-      );
+      throw new Error("You cannot review this booking");
     }
 
     // -------------------------------------------------
     // STEP 3
     // Booking must be completed.
     // -------------------------------------------------
-    if (
-      booking.status !==
-      BookingStatus.COMPLETED
-    ) {
-      throw new Error(
-        "Complete booking before review",
-      );
+    if (booking.status !== BookingStatus.COMPLETED) {
+      throw new Error("Complete booking before review");
     }
 
     // -------------------------------------------------
@@ -63,15 +47,12 @@ export class ReviewService {
     // Prevent duplicate review.
     // One Booking = One Review.
     // -------------------------------------------------
-    const existingReview =
-      await this.reviewRepository.findByBookingId(
-        data.bookingId,
-      );
+    const existingReview = await this.reviewRepository.findByBookingId(
+      data.bookingId,
+    );
 
     if (existingReview) {
-      throw new Error(
-        "Review already exists",
-      );
+      throw new Error("Review already exists");
     }
 
     // -------------------------------------------------
@@ -87,8 +68,7 @@ export class ReviewService {
 
       userId,
 
-      professionalId:
-        booking.professionalId,
+      professionalId: booking.professionalId,
     });
   }
 
@@ -96,8 +76,7 @@ export class ReviewService {
    * Get Single Review
    */
   async getReview(id: string) {
-    const review =
-      await this.reviewRepository.findById(id);
+    const review = await this.reviewRepository.findById(id);
 
     if (!review) {
       throw new Error("Review not found");
@@ -110,65 +89,41 @@ export class ReviewService {
    * Reviews written by current user.
    */
   async getUserReviews(userId: string) {
-    return this.reviewRepository.findByUserId(
-      userId,
-    );
+    return this.reviewRepository.findByUserId(userId);
   }
 
   /**
    * Reviews received by professional.
    */
-  async getProfessionalReviews(
-    professionalId: string,
-  ) {
-    return this.reviewRepository.findByProfessionalId(
-      professionalId,
-    );
+  async getProfessionalReviews(professionalId: string) {
+    return this.reviewRepository.findByProfessionalId(professionalId);
   }
 
   /**
    * Update Review
    */
-  async updateReview(
-    reviewId: string,
-    userId: string,
-    data: UpdateReviewDto,
-  ) {
-    const review =
-      await this.getReview(reviewId);
+  async updateReview(reviewId: string, userId: string, data: UpdateReviewDto) {
+    const review = await this.getReview(reviewId);
 
     // Only review owner can edit.
     if (review.userId !== userId) {
-      throw new Error(
-        "Unauthorized",
-      );
+      throw new Error("Unauthorized");
     }
 
-    return this.reviewRepository.update(
-      reviewId,
-      data,
-    );
+    return this.reviewRepository.update(reviewId, data);
   }
 
   /**
    * Delete Review
    */
-  async deleteReview(
-    reviewId: string,
-    userId: string,
-  ) {
-    const review =
-      await this.getReview(reviewId);
+  async deleteReview(reviewId: string, userId: string) {
+    const review = await this.getReview(reviewId);
 
     // Only review owner can delete.
     if (review.userId !== userId) {
-      throw new Error(
-        "Unauthorized",
-      );
+      throw new Error("Unauthorized");
     }
 
-    return this.reviewRepository.delete(
-      reviewId,
-    );
+    return this.reviewRepository.delete(reviewId);
   }
 }

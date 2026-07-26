@@ -18,12 +18,7 @@ export async function updateReview(
   const data = updateReviewSchema.parse(body);
 
   // Update review.
-  const review =
-    await reviewService.updateReview(
-      reviewId,
-      user.userId,
-      data,
-    );
+  const review = await reviewService.updateReview(reviewId, user.userId, data);
 
   return NextResponse.json(review);
 }

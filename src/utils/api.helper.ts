@@ -8,7 +8,6 @@ export async function handleRequest(fn: () => Promise<unknown>) {
       success: true,
       data,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -16,11 +15,9 @@ export async function handleRequest(fn: () => Promise<unknown>) {
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Internal Server Error",
+          error instanceof Error ? error.message : "Internal Server Error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

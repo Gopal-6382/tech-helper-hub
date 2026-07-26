@@ -5,14 +5,9 @@ import { JwtPayload } from "@/lib/auth";
 
 const reviewService = new ReviewService();
 
-export async function getUserReviews(
-  user: JwtPayload,
-) {
+export async function getUserReviews(user: JwtPayload) {
   // Current user's reviews.
-  const reviews =
-    await reviewService.getUserReviews(
-      user.userId,
-    );
+  const reviews = await reviewService.getUserReviews(user.userId);
 
   return NextResponse.json(reviews);
 }

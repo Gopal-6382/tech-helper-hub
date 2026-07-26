@@ -16,11 +16,7 @@ export const createReviewSchema = z.object({
     .max(5, "Maximum rating is 5"),
 
   // Optional review message.
-  comment: z
-    .string()
-    .trim()
-    .max(500, "Comment is too long")
-    .optional(),
+  comment: z.string().trim().max(500, "Comment is too long").optional(),
 });
 
 /**
@@ -28,16 +24,7 @@ export const createReviewSchema = z.object({
  * User can update only rating and comment.
  */
 export const updateReviewSchema = z.object({
-  rating: z
-    .number()
-    .int()
-    .min(1)
-    .max(5)
-    .optional(),
+  rating: z.number().int().min(1).max(5).optional(),
 
-  comment: z
-    .string()
-    .trim()
-    .max(500)
-    .optional(),
+  comment: z.string().trim().max(500).optional(),
 });

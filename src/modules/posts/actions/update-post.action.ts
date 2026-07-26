@@ -15,9 +15,5 @@ export async function updatePost(
 
   const data = updatePostSchema.parse(body);
 
-  return postService.updatePost(
-    id,
-    authorId,
-    data,
-  );
+  return postService.updatePost(id, authorId, data);
 }

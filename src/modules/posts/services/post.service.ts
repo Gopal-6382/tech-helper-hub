@@ -2,23 +2,15 @@ import { PostStatus } from "@prisma/client";
 
 import { PostRepository } from "../repositories/post.repository";
 
-import {
-  CreatePostDto,
-  UpdatePostDto,
-} from "../types/post.types";
+import { CreatePostDto, UpdatePostDto } from "../types/post.types";
 
 export class PostService {
   private postRepository = new PostRepository();
 
-  // --------------------------------------------------
   // Business Rule:
   // Logged-in user becomes the author.
   // Client cannot send authorId.
-  // --------------------------------------------------
-  async createPost(
-    authorId: string,
-    data: CreatePostDto,
-  ) {
+  async createPost(authorId: string, data: CreatePostDto) {
     return this.postRepository.create({
       ...data,
       authorId,
@@ -30,8 +22,7 @@ export class PostService {
   // Post must exist.
   // --------------------------------------------------
   async getPost(id: string) {
-    const post =
-      await this.postRepository.findById(id);
+    const post = await this.postRepository.findById(id);
 
     if (!post) {
       throw new Error("Post not found");
@@ -51,48 +42,32 @@ export class PostService {
   // Logged in user's posts.
   // --------------------------------------------------
   async getMyPosts(authorId: string) {
-    return this.postRepository.findByAuthorId(
-      authorId,
-    );
+    return this.postRepository.findByAuthorId(authorId);
   }
 
   // --------------------------------------------------
   // Business Rule:
   // Only author can edit.
   // --------------------------------------------------
-  async updatePost(
-    id: string,
-    authorId: string,
-    data: UpdatePostDto,
-  ) {
+  async updatePost(id: string, authorId: string, data: UpdatePostDto) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only update your own post",
-      );
+      throw new Error("You can only update your own post");
     }
 
-    return this.postRepository.update(
-      id,
-      data,
-    );
+    return this.postRepository.update(id, data);
   }
 
   // --------------------------------------------------
   // Business Rule:
   // Only author can delete.
   // --------------------------------------------------
-  async deletePost(
-    id: string,
-    authorId: string,
-  ) {
+  async deletePost(id: string, authorId: string) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only delete your own post",
-      );
+      throw new Error("You can only delete your own post");
     }
 
     return this.postRepository.delete(id);
@@ -102,23 +77,14 @@ export class PostService {
   // Business Rule:
   // Only author changes status.
   // --------------------------------------------------
-  async updateStatus(
-    id: string,
-    authorId: string,
-    status: PostStatus,
-  ) {
+  async updateStatus(id: string, authorId: string, status: PostStatus) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only update your own post",
-      );
+      throw new Error("You can only update your own post");
     }
 
-    return this.postRepository.updateStatus(
-      id,
-      status,
-    );
+    return this.postRepository.updateStatus(id, status);
   }
 
   // --------------------------------------------------
@@ -128,8 +94,6 @@ export class PostService {
   async increaseView(id: string) {
     await this.getPost(id);
 
-    return this.postRepository.incrementView(
-      id,
-    );
+    return this.postRepository.incrementView(id);
   }
 }

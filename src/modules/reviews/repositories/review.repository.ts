@@ -1,9 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreateReviewData,
-  UpdateReviewDto,
-} from "../types/review.types";
+import { CreateReviewData, UpdateReviewDto } from "../types/review.types";
 
 export class ReviewRepository {
   /**
@@ -90,9 +87,7 @@ export class ReviewRepository {
   /**
    * Get reviews received by one professional.
    */
-  async findByProfessionalId(
-    professionalId: string,
-  ) {
+  async findByProfessionalId(professionalId: string) {
     return prisma.review.findMany({
       where: {
         professionalId,
@@ -127,10 +122,7 @@ export class ReviewRepository {
   /**
    * Update review.
    */
-  async update(
-    id: string,
-    data: UpdateReviewDto,
-  ) {
+  async update(id: string, data: UpdateReviewDto) {
     return prisma.review.update({
       where: {
         id,

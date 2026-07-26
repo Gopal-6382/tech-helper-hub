@@ -1,21 +1,15 @@
 import { PostStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreatePostData,
-  UpdatePostDto,
-} from "../types/post.types";
+import { CreatePostData, UpdatePostDto } from "../types/post.types";
 
 export class PostRepository {
-  // --------------------------------------------------
   // Get one post by id.
-  //
   // Includes:
   // - Author
   // - Category
   // - Comment count
   // - Like count
-  // --------------------------------------------------
   async findById(id: string) {
     return prisma.problemPost.findUnique({
       where: {
@@ -100,10 +94,7 @@ export class PostRepository {
   // --------------------------------------------------
   // Update post.
   // --------------------------------------------------
-  async update(
-    id: string,
-    data: UpdatePostDto,
-  ) {
+  async update(id: string, data: UpdatePostDto) {
     return prisma.problemPost.update({
       where: {
         id,
@@ -116,10 +107,7 @@ export class PostRepository {
   // --------------------------------------------------
   // Change only status.
   // --------------------------------------------------
-  async updateStatus(
-    id: string,
-    status: PostStatus,
-  ) {
+  async updateStatus(id: string, status: PostStatus) {
     return prisma.problemPost.update({
       where: {
         id,

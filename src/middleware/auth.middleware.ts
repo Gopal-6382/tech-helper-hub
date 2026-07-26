@@ -5,12 +5,12 @@ export function authMiddleware(
   handler: (
     req: NextRequest,
     user: JwtPayload,
-    context: { params: Record<string, string> }
+    context: { params: Record<string, string> },
   ) => Promise<NextResponse>,
 ) {
   return async (
     req: NextRequest,
-    context: { params: Record<string, string> }
+    context: { params: Record<string, string> },
   ) => {
     try {
       const authHeader = req.headers.get("authorization");
@@ -21,7 +21,7 @@ export function authMiddleware(
             success: false,
             message: "Unauthorized",
           },
-          { status: 401 }
+          { status: 401 },
         );
       }
 
@@ -35,7 +35,7 @@ export function authMiddleware(
           success: false,
           message: error instanceof Error ? error.message : "Invalid token",
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
   };
