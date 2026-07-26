@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
-
+import {Role} from "@prisma/client";
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET!;
 
 export interface JwtPayload {
   userId: string;
-  role: "USER" | "PROFESSIONAL" | "ADMIN";
+  role:Role;
 }
 
 export function verifyAccessToken(token: string): JwtPayload {

@@ -1,19 +1,25 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { JwtPayload } from "@/lib/auth";
 
 import { PostService } from "../services/post.service";
 import { updatePostSchema } from "../validations/post.validation";
 
 const postService = new PostService();
 
-// Only author can update.
 export async function updatePost(
   req: NextRequest,
+  user: JwtPayload,
   id: string,
-  authorId: string,
 ) {
   const body = await req.json();
 
   const data = updatePostSchema.parse(body);
 
-  return postService.updatePost(id, authorId, data);
+  const result = await postService.updatePost(
+    id,
+    user.userId,
+    data,
+  );
+
+  return NextResponse.json(result);
 }

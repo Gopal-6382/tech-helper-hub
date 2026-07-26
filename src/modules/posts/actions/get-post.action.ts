@@ -1,8 +1,10 @@
+import { NextResponse } from "next/server";
 import { PostService } from "../services/post.service";
 
 const postService = new PostService();
 
-// Get one post.
 export async function getPost(id: string) {
-  return postService.getPost(id);
+  const post = await postService.getPost(id);
+
+  return NextResponse.json(post);
 }
