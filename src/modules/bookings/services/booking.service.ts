@@ -46,13 +46,16 @@ export class BookingService {
   async acceptBooking(id: string) {
     await this.getBooking(id);
 
-    return this.bookingRepository.updateStatus(id, BookingStatus.ACCEPTED);
+    return this.bookingRepository.update(id, {
+  status: BookingStatus.ACCEPTED,
+  acceptedAt: new Date(),
+});
   }
 
   async rejectBooking(id: string) {
     await this.getBooking(id);
 
-    return this.bookingRepository.updateStatus(id, BookingStatus.CANCELLED);
+    return this.bookingRepository.updateStatus(id, BookingStatus.REJECTED);
   }
 
   async completeBooking(id: string) {

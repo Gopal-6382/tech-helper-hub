@@ -2,9 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyAccessToken, JwtPayload } from "@/lib/auth";
 
 export function authMiddleware(
-  handler: (req: NextRequest, user: JwtPayload) => Promise<NextResponse>,
+  handler: (
+    req: NextRequest,
+    user: JwtPayload,
+    context: { params: Record<string, string> }
+  ) => Promise<NextResponse>,
 ) {
-  return async (req: NextRequest) => {
+  return async (
+    req: NextRequest,
+    context: { params: Record<string, string> }
+  ) => {
     try {
       const authHeader = req.headers.get("authorization");
 
@@ -14,26 +21,21 @@ export function authMiddleware(
             success: false,
             message: "Unauthorized",
           },
-          { status: 401 },
+          { status: 401 }
         );
       }
 
       const token = authHeader.split(" ")[1];
-
       const user = verifyAccessToken(token);
 
-      return handler(req, user);
+      return handler(req, user, context);
     } catch (error) {
-      console.log(error);
-
       return NextResponse.json(
         {
           success: false,
           message: error instanceof Error ? error.message : "Invalid token",
         },
-        {
-          status: 401,
-        },
+        { status: 401 }
       );
     }
   };

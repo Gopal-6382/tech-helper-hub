@@ -1,5 +1,4 @@
 import { authMiddleware } from "@/middleware/auth.middleware";
+import { updateAvailabilityAction } from "@/modules/professional/actions/update-availability";
 
-import { updateAvailability } from "@/modules/professional/actions/update-availability.action";
-
-export const PATCH = authMiddleware(updateAvailability);
+export const PATCH = authMiddleware(updateAvailabilityAction);

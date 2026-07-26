@@ -5,13 +5,16 @@ export interface CreateBookingDto {
   professionalId: string;
 }
 
-export interface CreateBookingData extends CreateBookingDto {
+export interface CreateBookingData {
+  serviceRequestId: string;
+  professionalId: string;
   userId: string;
 }
 
 export interface UpdateBookingDto {
   scheduledAt?: Date;
-  status?: BookingStatus;
+  amount?: number;
+  cancelReason?: string;
 }
 
 export interface BookingStatusDto {

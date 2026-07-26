@@ -14,7 +14,7 @@ export class ServiceRequestRepository {
       },
       include: {
         category: true,
-        user: {
+        requester: {
           select: {
             id: true,
             name: true,
@@ -28,7 +28,7 @@ export class ServiceRequestRepository {
   async findByUserId(userId: string) {
     return prisma.serviceRequest.findMany({
       where: {
-        userId,
+        requesterId: userId,
       },
       include: {
         category: true,
@@ -42,8 +42,26 @@ export class ServiceRequestRepository {
   async create(userId: string, data: CreateServiceRequestDto) {
     return prisma.serviceRequest.create({
       data: {
-        userId,
-        ...data,
+        requester: {
+          connect: {
+            id: userId,
+          },
+        },
+        category: {
+          connect: {
+            id: data.categoryId,
+          },
+        },
+
+        title: data.title,
+        description: data.description,
+        images: data.images,
+        mode: data.mode,
+        budget: data.budget,
+        address: data.address,
+        city: data.city,
+        latitude: data.latitude,
+        longitude: data.longitude,
       },
     });
   }
