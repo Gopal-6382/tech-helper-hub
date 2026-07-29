@@ -1,15 +1,10 @@
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreatePostLikeData,
-} from "../types/post-like.types";
+import { CreatePostLikeData } from "../types/post-like.types";
 
 export class PostLikeRepository {
   // Check whether user already liked
-  async findLike(
-    postId: string,
-    userId: string,
-  ) {
+  async findLike(postId: string, userId: string) {
     return prisma.postLike.findUnique({
       where: {
         postId_userId: {
@@ -21,19 +16,14 @@ export class PostLikeRepository {
   }
 
   // Like post
-  async create(
-    data: CreatePostLikeData,
-  ) {
+  async create(data: CreatePostLikeData) {
     return prisma.postLike.create({
       data,
     });
   }
 
   // Unlike post
-  async delete(
-    postId: string,
-    userId: string,
-  ) {
+  async delete(postId: string, userId: string) {
     return prisma.postLike.delete({
       where: {
         postId_userId: {
@@ -45,9 +35,7 @@ export class PostLikeRepository {
   }
 
   // Get all likes of a post
-  async findByPost(
-    postId: string,
-  ) {
+  async findByPost(postId: string) {
     return prisma.postLike.findMany({
       where: {
         postId,
@@ -68,9 +56,7 @@ export class PostLikeRepository {
   }
 
   // Count likes
-  async count(
-    postId: string,
-  ) {
+  async count(postId: string) {
     return prisma.postLike.count({
       where: {
         postId,

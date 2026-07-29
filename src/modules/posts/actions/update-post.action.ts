@@ -15,11 +15,7 @@ export async function updatePost(
 
   const data = updatePostSchema.parse(body);
 
-  const result = await postService.updatePost(
-    id,
-    user.userId,
-    data,
-  );
+  const result = await postService.updatePost(id, user.userId, data);
 
   return NextResponse.json(result);
 }

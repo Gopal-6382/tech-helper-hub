@@ -1,9 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreateCommentDto,
-  UpdateCommentDto,
-} from "../types/comment.types";
+import { CreateCommentDto, UpdateCommentDto } from "../types/comment.types";
 
 export class CommentRepository {
   async create(data: CreateCommentDto & { authorId: string }) {
@@ -40,10 +37,7 @@ export class CommentRepository {
     });
   }
 
-  async update(
-    id: string,
-    data: UpdateCommentDto,
-  ) {
+  async update(id: string, data: UpdateCommentDto) {
     return prisma.comment.update({
       where: { id },
       data,

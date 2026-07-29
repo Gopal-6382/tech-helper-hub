@@ -23,10 +23,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Reply not found",
+        message: error instanceof Error ? error.message : "Reply not found",
       },
       {
         status: 404,
@@ -44,22 +41,11 @@ export async function PATCH(
     params: Promise<{ id: string }>;
   },
 ) {
-  const handler = authMiddleware(
-    async (
-      request,
-      user,
-      context,
-    ) => {
-      const { id } =
-        await context.params!;
+  const handler = authMiddleware(async (request, user, context) => {
+    const { id } = await context.params!;
 
-      return updateCommentReply(
-        request,
-        user,
-        id,
-      );
-    },
-  );
+    return updateCommentReply(request, user, id);
+  });
 
   return handler(req, { params });
 }
@@ -73,21 +59,11 @@ export async function DELETE(
     params: Promise<{ id: string }>;
   },
 ) {
-  const handler = authMiddleware(
-    async (
-      _request,
-      user,
-      context,
-    ) => {
-      const { id } =
-        await context.params!;
+  const handler = authMiddleware(async (_request, user, context) => {
+    const { id } = await context.params!;
 
-      return deleteCommentReply(
-        id,
-        user.userId,
-      );
-    },
-  );
+    return deleteCommentReply(id, user.userId);
+  });
 
   return handler(req, { params });
 }

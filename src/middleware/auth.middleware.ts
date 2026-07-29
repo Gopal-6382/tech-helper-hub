@@ -13,18 +13,11 @@ export function authMiddleware(
     context: RouteContext,
   ) => Promise<NextResponse>,
 ) {
-  return async (
-    req: NextRequest,
-    context: RouteContext = {},
-  ) => {
+  return async (req: NextRequest, context: RouteContext = {}) => {
     try {
-      const authHeader =
-        req.headers.get("authorization");
+      const authHeader = req.headers.get("authorization");
 
-      if (
-        !authHeader ||
-        !authHeader.startsWith("Bearer ")
-      ) {
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return NextResponse.json(
           {
             success: false,
@@ -38,22 +31,14 @@ export function authMiddleware(
 
       const token = authHeader.split(" ")[1];
 
-      const user =
-        verifyAccessToken(token);
+      const user = verifyAccessToken(token);
 
-      return handler(
-        req,
-        user,
-        context,
-      );
+      return handler(req, user, context);
     } catch (error) {
       return NextResponse.json(
         {
           success: false,
-          message:
-            error instanceof Error
-              ? error.message
-              : "Invalid token",
+          message: error instanceof Error ? error.message : "Invalid token",
         },
         {
           status: 401,

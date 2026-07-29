@@ -7,19 +7,12 @@ import { createCommentSchema } from "../validations/comment.validation";
 
 const commentService = new CommentService();
 
-export async function createComment(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function createComment(req: NextRequest, user: JwtPayload) {
   const body = await req.json();
 
   const data = createCommentSchema.parse(body);
 
-  const result =
-    await commentService.createComment(
-      user.userId,
-      data,
-    );
+  const result = await commentService.createComment(user.userId, data);
 
   return NextResponse.json(result, {
     status: 201,

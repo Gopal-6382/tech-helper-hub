@@ -4,15 +4,8 @@ export class PostLikeService {
   private postLikeRepository = new PostLikeRepository();
 
   // Like a post
-  async likePost(
-    postId: string,
-    userId: string,
-  ) {
-    const existing =
-      await this.postLikeRepository.findLike(
-        postId,
-        userId,
-      );
+  async likePost(postId: string, userId: string) {
+    const existing = await this.postLikeRepository.findLike(postId, userId);
 
     if (existing) {
       throw new Error("Post already liked");
@@ -25,37 +18,23 @@ export class PostLikeService {
   }
 
   // Unlike a post
-  async unlikePost(
-    postId: string,
-    userId: string,
-  ) {
-    const existing =
-      await this.postLikeRepository.findLike(
-        postId,
-        userId,
-      );
+  async unlikePost(postId: string, userId: string) {
+    const existing = await this.postLikeRepository.findLike(postId, userId);
 
     if (!existing) {
       throw new Error("Like not found");
     }
 
-    return this.postLikeRepository.delete(
-      postId,
-      userId,
-    );
+    return this.postLikeRepository.delete(postId, userId);
   }
 
   // Get all likes of a post
   async getPostLikes(postId: string) {
-    return this.postLikeRepository.findByPost(
-      postId,
-    );
+    return this.postLikeRepository.findByPost(postId);
   }
 
   // Count likes
   async getLikeCount(postId: string) {
-    return this.postLikeRepository.count(
-      postId,
-    );
+    return this.postLikeRepository.count(postId);
   }
 }

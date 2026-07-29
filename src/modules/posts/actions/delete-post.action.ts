@@ -5,10 +5,7 @@ import { PostService } from "../services/post.service";
 
 const postService = new PostService();
 
-export async function deletePost(
-  user: JwtPayload,
-  id: string,
-) {
+export async function deletePost(user: JwtPayload, id: string) {
   await postService.deletePost(id, user.userId);
 
   return NextResponse.json({

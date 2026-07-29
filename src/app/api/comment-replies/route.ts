@@ -11,8 +11,7 @@ export const POST = authMiddleware(createCommentReply);
 // GET /api/comment-replies?commentId=xxxx
 export async function GET(req: NextRequest) {
   try {
-    const commentId =
-      req.nextUrl.searchParams.get("commentId");
+    const commentId = req.nextUrl.searchParams.get("commentId");
 
     if (!commentId) {
       return NextResponse.json(
@@ -32,9 +31,7 @@ export async function GET(req: NextRequest) {
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+          error instanceof Error ? error.message : "Something went wrong",
       },
       {
         status: 500,

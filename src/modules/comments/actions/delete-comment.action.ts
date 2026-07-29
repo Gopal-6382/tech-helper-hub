@@ -6,15 +6,8 @@ import { CommentService } from "../services/comment.service";
 
 const commentService = new CommentService();
 
-export async function deleteComment(
-  user: JwtPayload,
-  id: string,
-) {
-  const result =
-    await commentService.deleteComment(
-      id,
-      user.userId,
-    );
+export async function deleteComment(user: JwtPayload, id: string) {
+  const result = await commentService.deleteComment(id, user.userId);
 
   return NextResponse.json(result);
 }

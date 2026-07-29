@@ -7,20 +7,12 @@ import { createPostLikeSchema } from "../validations/post-like.validation";
 
 const postLikeService = new PostLikeService();
 
-export async function likePost(
-  req: NextRequest,
-  user: JwtPayload,
-) {
+export async function likePost(req: NextRequest, user: JwtPayload) {
   const body = await req.json();
 
-  const { postId } =
-    createPostLikeSchema.parse(body);
+  const { postId } = createPostLikeSchema.parse(body);
 
-  const result =
-    await postLikeService.likePost(
-      postId,
-      user.userId,
-    );
+  const result = await postLikeService.likePost(postId, user.userId);
 
   return NextResponse.json(result);
 }

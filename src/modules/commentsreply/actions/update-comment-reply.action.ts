@@ -12,15 +12,9 @@ export async function updateCommentReply(
 ) {
   const body = await request.json();
 
-  const data =
-    updateCommentReplySchema.parse(body);
+  const data = updateCommentReplySchema.parse(body);
 
-  const result =
-    await commentReplyService.updateReply(
-      id,
-      user.userId,
-      data,
-    );
+  const result = await commentReplyService.updateReply(id, user.userId, data);
 
   return NextResponse.json(result);
 }

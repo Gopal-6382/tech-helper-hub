@@ -16,12 +16,7 @@ export async function updateComment(
 
   const data = updateCommentSchema.parse(body);
 
-  const result =
-    await commentService.updateComment(
-      id,
-      user.userId,
-      data,
-    );
+  const result = await commentService.updateComment(id, user.userId, data);
 
   return NextResponse.json(result);
 }

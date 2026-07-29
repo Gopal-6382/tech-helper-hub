@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
           success: false,
           message: "postId is required",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -34,11 +34,9 @@ export async function GET(req: NextRequest) {
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Something went wrong",
+          error instanceof Error ? error.message : "Something went wrong",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

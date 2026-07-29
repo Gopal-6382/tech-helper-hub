@@ -12,7 +12,7 @@ export async function GET(
     params,
   }: {
     params: Promise<{ postId: string }>;
-  }
+  },
 ) {
   try {
     const { postId } = await params;
@@ -23,11 +23,9 @@ export async function GET(
       {
         success: false,
         message:
-          error instanceof Error
-            ? error.message
-            : "Unable to fetch likes",
+          error instanceof Error ? error.message : "Unable to fetch likes",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -41,13 +39,11 @@ export async function DELETE(
     params: Promise<{ id: string }>;
   },
 ) {
-  const handler = authMiddleware(
-    async (_req, user, context) => {
-      const { id } = (await context.params)! ;
+  const handler = authMiddleware(async (_req, user, context) => {
+    const { id } = (await context.params)!;
 
-      return unlikePost(id, user.userId);
-    },
-  );
+    return unlikePost(id, user.userId);
+  });
 
   return handler(req, {
     params,

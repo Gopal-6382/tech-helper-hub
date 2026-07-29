@@ -44,10 +44,7 @@ export class CommentReplyRepository {
   }
 
   // Update
-  async update(
-    id: string,
-    data: UpdateCommentReplyData,
-  ) {
+  async update(id: string, data: UpdateCommentReplyData) {
     return prisma.commentReply.update({
       where: {
         id,

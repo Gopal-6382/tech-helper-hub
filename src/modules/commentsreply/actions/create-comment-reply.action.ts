@@ -13,11 +13,10 @@ export async function createCommentReply(
 
   const data = createCommentReplySchema.parse(body);
 
-  const result =
-    await commentReplyService.createReply({
-      ...data,
-      authorId: user.userId,
-    });
+  const result = await commentReplyService.createReply({
+    ...data,
+    authorId: user.userId,
+  });
 
   return NextResponse.json(result);
 }
