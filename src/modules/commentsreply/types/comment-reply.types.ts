@@ -1,8 +1,9 @@
-export interface CreateCommentDto {
-  postId: string;
+export interface CreateCommentReplyData {
+  commentId: string;
+  authorId: string;
   content: string;
 }
 
-export interface UpdateCommentDto {
+export interface UpdateCommentReplyData {
   content: string;
 }

@@ -1,19 +1,17 @@
 import { NextResponse } from "next/server";
 
-import { JwtPayload } from "@/lib/auth";
+import { CommentReplyService } from "../services/comment-reply.service";
 
-import { CommentService } from "../services/comment-reply.service";
+const commentReplyService = new CommentReplyService();
 
-const commentService = new CommentService();
-
-export async function deleteComment(
-  user: JwtPayload,
+export async function deleteCommentReply(
   id: string,
+  userId: string,
 ) {
   const result =
-    await commentService.deleteComment(
+    await commentReplyService.deleteReply(
       id,
-      user.userId,
+      userId,
     );
 
   return NextResponse.json(result);

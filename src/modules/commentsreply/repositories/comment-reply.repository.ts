@@ -1,58 +1,67 @@
 import { prisma } from "@/lib/prisma";
 
 import {
-  CreateCommentDto,
-  UpdateCommentDto,
+  CreateCommentReplyData,
+  UpdateCommentReplyData,
 } from "../types/comment-reply.types";
 
-export class CommentRepository {
-  async create(data: CreateCommentDto & { authorId: string }) {
-    return prisma.comment.create({
+export class CommentReplyRepository {
+  // Create
+  async create(data: CreateCommentReplyData) {
+    return prisma.commentReply.create({
       data,
     });
   }
 
-  async findById(id: string) {
-    return prisma.comment.findUnique({
-      where: { id },
-
-      include: {
-        author: true,
-        replies: true,
-      },
-    });
-  }
-
-  async findByPostId(postId: string) {
-    return prisma.comment.findMany({
+  // Get all replies of a comment
+  async findByComment(commentId: string) {
+    return prisma.commentReply.findMany({
       where: {
-        postId,
+        commentId,
       },
-
       include: {
-        author: true,
-        replies: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
       },
-
       orderBy: {
         createdAt: "asc",
       },
     });
   }
 
+  // Get reply by id
+  async findById(id: string) {
+    return prisma.commentReply.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  // Update
   async update(
     id: string,
-    data: UpdateCommentDto,
+    data: UpdateCommentReplyData,
   ) {
-    return prisma.comment.update({
-      where: { id },
+    return prisma.commentReply.update({
+      where: {
+        id,
+      },
       data,
     });
   }
 
+  // Delete
   async delete(id: string) {
-    return prisma.comment.delete({
-      where: { id },
+    return prisma.commentReply.delete({
+      where: {
+        id,
+      },
     });
   }
 }

@@ -1,12 +1,26 @@
 import { NextResponse } from "next/server";
 
-import { CommentService } from "../services/comment-reply.service";
+import { CommentReplyService } from "../services/comment-reply.service";
+import { updateCommentReplySchema } from "../validations/comment-reply.validation";
 
-const commentService = new CommentService();
+const commentReplyService = new CommentReplyService();
 
-export async function getComment(id: string) {
+export async function updateCommentReply(
+  request: Request,
+  user: { userId: string },
+  id: string,
+) {
+  const body = await request.json();
+
+  const data =
+    updateCommentReplySchema.parse(body);
+
   const result =
-    await commentService.getComment(id);
+    await commentReplyService.updateReply(
+      id,
+      user.userId,
+      data,
+    );
 
   return NextResponse.json(result);
 }

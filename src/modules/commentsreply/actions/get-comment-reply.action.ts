@@ -1,7 +1,14 @@
-import { CommentService } from "../services/comment-reply.service";
+import { NextResponse } from "next/server";
 
-const commentService = new CommentService();
+import { CommentReplyService } from "../services/comment-reply.service";
 
-export async function getComments(postId: string) {
-  return commentService.getComments(postId);
+const commentReplyService = new CommentReplyService();
+
+export async function getCommentReply(
+  id: string,
+) {
+  const result =
+    await commentReplyService.getReply(id);
+
+  return NextResponse.json(result);
 }

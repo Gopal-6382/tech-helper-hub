@@ -1,89 +1,93 @@
-import { CommentRepository } from "../repositories/comment-reply.repository";
-import { PostRepository } from "@/modules/posts/repositories/post.repository";
-
 import {
-  CreateCommentDto,
-  UpdateCommentDto,
+  CreateCommentReplyData,
+  UpdateCommentReplyData,
 } from "../types/comment-reply.types";
 
-export class CommentService {
-  private commentRepository =
-    new CommentRepository();
+import { CommentReplyRepository } from "../repositories/comment-reply.repository";
 
-  private postRepository =
-    new PostRepository();
+export class CommentReplyService {
+  private commentReplyRepository =
+    new CommentReplyRepository();
 
-  async createComment(
-    authorId: string,
-    data: CreateCommentDto,
+  // Create reply
+  async createReply(
+    data: CreateCommentReplyData,
   ) {
-    const post =
-      await this.postRepository.findById(
-        data.postId,
-      );
-
-    if (!post) {
-      throw new Error("Post not found");
-    }
-
-    return this.commentRepository.create({
-      ...data,
-      authorId,
-    });
-  }
-
-  async getComment(id: string) {
-    const comment =
-      await this.commentRepository.findById(id);
-
-    if (!comment) {
-      throw new Error("Comment not found");
-    }
-
-    return comment;
-  }
-
-  async getComments(postId: string) {
-    await this.postRepository.findById(postId);
-
-    return this.commentRepository.findByPostId(
-      postId,
+    return this.commentReplyRepository.create(
+      data,
     );
   }
 
-  async updateComment(
+  // Get replies
+  async getReplies(commentId: string) {
+    return this.commentReplyRepository.findByComment(
+      commentId,
+    );
+  }
+
+  // Get single reply
+  async getReply(id: string) {
+    const reply =
+      await this.commentReplyRepository.findById(
+        id,
+      );
+
+    if (!reply) {
+      throw new Error("Reply not found");
+    }
+
+    return reply;
+  }
+
+  // Update reply (only author)
+  async updateReply(
     id: string,
     authorId: string,
-    data: UpdateCommentDto,
+    data: UpdateCommentReplyData,
   ) {
-    const comment =
-      await this.getComment(id);
+    const reply =
+      await this.commentReplyRepository.findById(
+        id,
+      );
 
-    if (comment.authorId !== authorId) {
+    if (!reply) {
+      throw new Error("Reply not found");
+    }
+
+    if (reply.authorId !== authorId) {
       throw new Error(
-        "You can only update your own comment",
+        "You can only update your own reply",
       );
     }
 
-    return this.commentRepository.update(
+    return this.commentReplyRepository.update(
       id,
       data,
     );
   }
 
-  async deleteComment(
+  // Delete reply (only author)
+  async deleteReply(
     id: string,
     authorId: string,
   ) {
-    const comment =
-      await this.getComment(id);
+    const reply =
+      await this.commentReplyRepository.findById(
+        id,
+      );
 
-    if (comment.authorId !== authorId) {
+    if (!reply) {
+      throw new Error("Reply not found");
+    }
+
+    if (reply.authorId !== authorId) {
       throw new Error(
-        "You can only delete your own comment",
+        "You can only delete your own reply",
       );
     }
 
-    return this.commentRepository.delete(id);
+    return this.commentReplyRepository.delete(
+      id,
+    );
   }
 }
