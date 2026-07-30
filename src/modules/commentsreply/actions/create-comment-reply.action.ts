@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 
 import { CommentReplyService } from "../services/comment-reply.service";
 import { createCommentReplySchema } from "../validations/comment-reply.validation";
-
+import {JwtPayload} from "@/lib/auth";
 const commentReplyService = new CommentReplyService();
 
 export async function createCommentReply(
   request: Request,
-  user: { userId: string },
+  user:JwtPayload,
 ) {
   const body = await request.json();
 

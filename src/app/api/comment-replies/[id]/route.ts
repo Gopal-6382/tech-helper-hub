@@ -62,7 +62,7 @@ export async function DELETE(
   const handler = authMiddleware(async (_request, user, context) => {
     const { id } = await context.params!;
 
-    return deleteCommentReply(id, user.userId);
+    return deleteCommentReply(id, user);
   });
 
   return handler(req, { params });
