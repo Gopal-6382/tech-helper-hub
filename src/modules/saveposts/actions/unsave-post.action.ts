@@ -1,21 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+
 import { JwtPayload } from "@/lib/auth";
 
-import { PostService } from "../services/saved-post.service";
-import { updatePostSchema } from "../validations/saved-post.validation";
+import { SavedPostService } from "../services/saved-post.service";
 
-const postService = new PostService();
+const savedPostService = new SavedPostService();
 
-export async function updatePost(
-  req: NextRequest,
+export async function unsavePost(
   user: JwtPayload,
-  id: string,
+  postId: string,
 ) {
-  const body = await req.json();
-
-  const data = updatePostSchema.parse(body);
-
-  const result = await postService.updatePost(id, user.userId, data);
+  const result = await savedPostService.unsavePost(
+    user.userId,
+    postId,
+  );
 
   return NextResponse.json(result);
 }

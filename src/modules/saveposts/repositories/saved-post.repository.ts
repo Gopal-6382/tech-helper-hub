@@ -1,150 +1,69 @@
-import { PostStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-import { CreatePostData, UpdatePostDto } from "../types/saved-post.types";
+import { CreateSavedPostData } from "../types/saved-post.types";
 
-export class PostRepository {
-  // Get one post by id.
-  // Includes:
-  // - Author
-  // - Category
-  // - Comment count
-  // - Like count
-  async findById(id: string) {
-    return prisma.problemPost.findUnique({
+export class SavedPostRepository {
+  async findByUserAndPost(
+    userId: string,
+    postId: string,
+  ) {
+    return prisma.savedPost.findUnique({
       where: {
-        id,
-      },
-      include: {
-        author: true,
-
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
+        userId_postId: {
+          userId,
+          postId,
         },
       },
     });
   }
 
-  // --------------------------------------------------
-  // Feed
-  //
-  // Latest posts first.
-  // --------------------------------------------------
-  async findAll() {
-    return prisma.problemPost.findMany({
-      include: {
-        author: true,
-
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
-        },
-      },
-
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }
-
-  // --------------------------------------------------
-  // Logged in user's posts.
-  // --------------------------------------------------
-  async findByAuthorId(authorId: string) {
-    return prisma.problemPost.findMany({
-      where: {
-        authorId,
-      },
-
-      include: {
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
-        },
-      },
-
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }
-
-  // --------------------------------------------------
-  // Create new post.
-  // --------------------------------------------------
-  async create(data: CreatePostData) {
-    return prisma.problemPost.create({
+  async create(data: CreateSavedPostData) {
+    return prisma.savedPost.create({
       data,
     });
   }
 
-  // --------------------------------------------------
-  // Update post.
-  // --------------------------------------------------
-  async update(id: string, data: UpdatePostDto) {
-    return prisma.problemPost.update({
+  async delete(
+    userId: string,
+    postId: string,
+  ) {
+    return prisma.savedPost.delete({
       where: {
-        id,
-      },
-
-      data,
-    });
-  }
-
-  // --------------------------------------------------
-  // Change only status.
-  // --------------------------------------------------
-  async updateStatus(id: string, status: PostStatus) {
-    return prisma.problemPost.update({
-      where: {
-        id,
-      },
-
-      data: {
-        status,
-      },
-    });
-  }
-
-  // --------------------------------------------------
-  // Delete post.
-  // --------------------------------------------------
-  async delete(id: string) {
-    return prisma.problemPost.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
-  // --------------------------------------------------
-  // Increase view count.
-  //
-  // Atomic increment avoids race conditions.
-  // --------------------------------------------------
-  async incrementView(id: string) {
-    return prisma.problemPost.update({
-      where: {
-        id,
-      },
-
-      data: {
-        viewCount: {
-          increment: 1,
+        userId_postId: {
+          userId,
+          postId,
         },
+      },
+    });
+  }
+
+  async findByUser(userId: string) {
+    return prisma.savedPost.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        post: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+            category: true,
+            _count: {
+              select: {
+                comments: true,
+                likes: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
   }

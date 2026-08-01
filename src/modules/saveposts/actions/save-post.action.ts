@@ -1,15 +1,26 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-import { PostService } from "../services/saved-post.service";
-import { createPostSchema } from "../validations/saved-post.validation";
+import { JwtPayload } from "@/lib/auth";
 
-const postService = new PostService();
+import { SavedPostService } from "../services/saved-post.service";
+import { createSavedPostSchema } from "../validations/saved-post.validation";
 
-// Business Rule: User must be authenticated. AuthorId comes from JWT.
-export async function createPost(req: NextRequest, authorId: string) {
+const savedPostService = new SavedPostService();
+
+export async function savePost(
+  req: NextRequest,
+  user: JwtPayload,
+) {
   const body = await req.json();
 
-  const data = createPostSchema.parse(body);
+  const data = createSavedPostSchema.parse(body);
 
-  return postService.createPost(authorId, data);
+  const result = await savedPostService.savePost(
+    user.userId,
+    data,
+  );
+
+  return NextResponse.json(result, {
+    status: 201,
+  });
 }
