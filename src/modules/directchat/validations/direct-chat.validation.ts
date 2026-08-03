@@ -1,0 +1,13 @@
+import { z } from "zod";
+
+export const createConversationSchema = z.object({
+  receiverId: z.string().uuid("Invalid receiver id"),
+});
+
+export const sendMessageSchema = z.object({
+  content: z
+    .string()
+    .trim()
+    .min(1, "Message cannot be empty")
+    .max(5000, "Message is too long"),
+});

@@ -13,10 +13,7 @@ export async function getSavedPosts(
     params?: Promise<Record<string, string>>;
   },
 ) {
-  const result =
-    await savedPostService.getSavedPosts(
-      user.userId,
-    );
+  const result = await savedPostService.getSavedPosts(user.userId);
 
   return NextResponse.json(result);
 }

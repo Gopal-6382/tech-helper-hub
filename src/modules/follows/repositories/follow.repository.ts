@@ -4,10 +4,7 @@ import { CreateFollowData } from "../types/follow.types";
 
 export class FollowRepository {
   // Check if already following
-  async findFollow(
-    followerId: string,
-    followingId: string,
-  ) {
+  async findFollow(followerId: string, followingId: string) {
     return prisma.follow.findUnique({
       where: {
         followerId_followingId: {
@@ -19,16 +16,16 @@ export class FollowRepository {
   }
 
   // Check target user exists
-async userExists(userId: string) {
-  return prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      id: true,
-    },
-  });
-}
+  async userExists(userId: string) {
+    return prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+      },
+    });
+  }
 
   // Follow user
   async create(data: CreateFollowData) {
@@ -38,10 +35,7 @@ async userExists(userId: string) {
   }
 
   // Unfollow user
-  async delete(
-    followerId: string,
-    followingId: string,
-  ) {
+  async delete(followerId: string, followingId: string) {
     return prisma.follow.delete({
       where: {
         followerId_followingId: {

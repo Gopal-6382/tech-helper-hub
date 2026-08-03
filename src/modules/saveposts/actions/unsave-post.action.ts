@@ -6,14 +6,8 @@ import { SavedPostService } from "../services/saved-post.service";
 
 const savedPostService = new SavedPostService();
 
-export async function unsavePost(
-  user: JwtPayload,
-  postId: string,
-) {
-  const result = await savedPostService.unsavePost(
-    user.userId,
-    postId,
-  );
+export async function unsavePost(user: JwtPayload, postId: string) {
+  const result = await savedPostService.unsavePost(user.userId, postId);
 
   return NextResponse.json(result);
 }

@@ -3,10 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { CreateSavedPostData } from "../types/saved-post.types";
 
 export class SavedPostRepository {
-  async findByUserAndPost(
-    userId: string,
-    postId: string,
-  ) {
+  async findByUserAndPost(userId: string, postId: string) {
     return prisma.savedPost.findUnique({
       where: {
         userId_postId: {
@@ -23,10 +20,7 @@ export class SavedPostRepository {
     });
   }
 
-  async delete(
-    userId: string,
-    postId: string,
-  ) {
+  async delete(userId: string, postId: string) {
     return prisma.savedPost.delete({
       where: {
         userId_postId: {

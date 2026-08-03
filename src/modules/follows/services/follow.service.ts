@@ -4,33 +4,24 @@ import { FollowRepository } from "../repositories/follow.repository";
 export class FollowService {
   private followRepository = new FollowRepository();
 
-  async followUser(
-    followerId: string,
-    data: CreateFollowDto,
-  ) {
+  async followUser(followerId: string, data: CreateFollowDto) {
     if (followerId === data.followingId) {
       throw new Error("You cannot follow yourself");
     }
 
-    const user =
-      await this.followRepository.userExists(
-        data.followingId,
-      );
+    const user = await this.followRepository.userExists(data.followingId);
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    const existing =
-      await this.followRepository.findFollow(
-        followerId,
-        data.followingId,
-      );
+    const existing = await this.followRepository.findFollow(
+      followerId,
+      data.followingId,
+    );
 
     if (existing) {
-      throw new Error(
-        "Already following this user",
-      );
+      throw new Error("Already following this user");
     }
 
     return this.followRepository.create({
@@ -39,26 +30,17 @@ export class FollowService {
     });
   }
 
-  async unfollowUser(
-    followerId: string,
-    followingId: string,
-  ) {
-    const existing =
-      await this.followRepository.findFollow(
-        followerId,
-        followingId,
-      );
-
-    if (!existing) {
-      throw new Error(
-        "Follow relationship not found",
-      );
-    }
-
-    return this.followRepository.delete(
+  async unfollowUser(followerId: string, followingId: string) {
+    const existing = await this.followRepository.findFollow(
       followerId,
       followingId,
     );
+
+    if (!existing) {
+      throw new Error("Follow relationship not found");
+    }
+
+    return this.followRepository.delete(followerId, followingId);
   }
 
   async getFollowers(userId: string) {
