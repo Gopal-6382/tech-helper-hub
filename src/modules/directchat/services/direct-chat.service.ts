@@ -9,7 +9,6 @@ import {
 } from "../types/direct-chat.types";
 
 export class DirectChatService {
-  
   private directchat = new DirectChatRepository();
   // 🔹 Conversations
 
@@ -18,14 +17,17 @@ export class DirectChatService {
       throw new Error("You cannot create a conversation with yourself");
     }
     // validate receiverId
-    createConversationSchema.parse({ receiverId: data.receiverId, senderId:data.senderId });
+    createConversationSchema.parse({
+      receiverId: data.receiverId,
+      senderId: data.senderId,
+    });
     const conversation = await this.directchat.findConversationBetweenUsers(
       data.senderId,
       data.receiverId,
     );
     // already exists
     if (conversation) {
-      return conversation; 
+      return conversation;
     }
     const newConversation = await this.directchat.createConversation();
 
