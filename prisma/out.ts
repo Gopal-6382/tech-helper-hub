@@ -111,13 +111,21 @@ async function main() {
   await prisma.profile.upsert({
     where: { userId: professionalUser.id },
     update: {},
-    create: { userId: professionalUser.id, city: "Dindigul", state: "Tamil Nadu" },
+    create: {
+      userId: professionalUser.id,
+      city: "Dindigul",
+      state: "Tamil Nadu",
+    },
   });
 
   await prisma.profile.upsert({
     where: { userId: professionalUser2.id },
     update: {},
-    create: { userId: professionalUser2.id, city: "Tiruppur", state: "Tamil Nadu" },
+    create: {
+      userId: professionalUser2.id,
+      city: "Tiruppur",
+      state: "Tamil Nadu",
+    },
   });
 
   // ---------------------------------------------------------------------
@@ -127,7 +135,10 @@ async function main() {
   const verification = await prisma.verification.upsert({
     where: { userId: professionalUser.id },
     update: {},
-    create: { userId: professionalUser.id, status: VerificationStatus.VERIFIED },
+    create: {
+      userId: professionalUser.id,
+      status: VerificationStatus.VERIFIED,
+    },
   });
   console.log("Verification");
   console.log(verification);
@@ -135,7 +146,10 @@ async function main() {
   const verification2 = await prisma.verification.upsert({
     where: { userId: professionalUser2.id },
     update: {},
-    create: { userId: professionalUser2.id, status: VerificationStatus.PENDING },
+    create: {
+      userId: professionalUser2.id,
+      status: VerificationStatus.PENDING,
+    },
   });
   console.log("Verification 2");
   console.log(verification2);
@@ -212,7 +226,11 @@ async function main() {
   // BOOKING — no unique field either, so check-then-create
   // ---------------------------------------------------------------------
   let booking = await prisma.booking.findFirst({
-    where: { serviceRequestId: request.id, userId: user.id, professionalId: professional.id },
+    where: {
+      serviceRequestId: request.id,
+      userId: user.id,
+      professionalId: professional.id,
+    },
   });
 
   if (!booking) {
@@ -264,7 +282,9 @@ async function printAllData() {
       bookings: true,
     },
   });
-  console.log("\n--- Users (with profile, professionalProfile, verification, requests, bookings) ---");
+  console.log(
+    "\n--- Users (with profile, professionalProfile, verification, requests, bookings) ---",
+  );
   console.log(JSON.stringify(users, null, 2));
 
   const categories = await prisma.category.findMany();

@@ -82,10 +82,30 @@ async function main() {
   // ---------------------------------------------------------------------
   await prisma.profile.createMany({
     data: [
-      { userId: user1.id, city: "Dindigul", state: "Tamil Nadu", pincode: "624001" },
-      { userId: user2.id, city: "Palani", state: "Tamil Nadu", pincode: "624601" },
-      { userId: proUser1.id, city: "Dindigul", state: "Tamil Nadu", pincode: "624001" },
-      { userId: proUser2.id, city: "Tiruppur", state: "Tamil Nadu", pincode: "641601" },
+      {
+        userId: user1.id,
+        city: "Dindigul",
+        state: "Tamil Nadu",
+        pincode: "624001",
+      },
+      {
+        userId: user2.id,
+        city: "Palani",
+        state: "Tamil Nadu",
+        pincode: "624601",
+      },
+      {
+        userId: proUser1.id,
+        city: "Dindigul",
+        state: "Tamil Nadu",
+        pincode: "624001",
+      },
+      {
+        userId: proUser2.id,
+        city: "Tiruppur",
+        state: "Tamil Nadu",
+        pincode: "641601",
+      },
     ],
   });
 
@@ -116,7 +136,8 @@ async function main() {
     data: {
       userId: proUser1.id,
       headline: "Certified Electrician",
-      description: "5+ years fixing residential and commercial electrical faults.",
+      description:
+        "5+ years fixing residential and commercial electrical faults.",
       experienceYears: 5,
       hourlyRate: 300,
       serviceMode: ServiceMode.BOTH,
@@ -128,7 +149,8 @@ async function main() {
     data: {
       userId: proUser2.id,
       headline: "Licensed Plumber",
-      description: "Handles leak repairs, pipe fitting, and bathroom installations.",
+      description:
+        "Handles leak repairs, pipe fitting, and bathroom installations.",
       experienceYears: 3,
       hourlyRate: 250,
       serviceMode: ServiceMode.ONSITE,
@@ -232,7 +254,8 @@ async function main() {
     data: {
       postId: post1.id,
       authorId: proUser1.id,
-      content: "Sounds like a capacitor issue, get it checked before the motor burns out.",
+      content:
+        "Sounds like a capacitor issue, get it checked before the motor burns out.",
     },
   });
 
