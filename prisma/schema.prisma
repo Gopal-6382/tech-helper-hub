@@ -403,6 +403,19 @@ model DirectMessage {
   @@map("direct_messages")
 }
 
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("Follower", fields: [followerId], references: [id])
+  following User @relation("Following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
 model Group {
   id            String    @id @default(uuid())
   name          String
@@ -447,19 +460,6 @@ model GroupMessage {
 
   @@index([groupId])
   @@map("group_messages")
-}
-
-model Follow {
-  id          String   @id @default(uuid())
-  followerId  String
-  followingId String
-  createdAt   DateTime @default(now())
-
-  follower  User @relation("Follower", fields: [followerId], references: [id])
-  following User @relation("Following", fields: [followingId], references: [id])
-
-  @@unique([followerId, followingId])
-  @@map("follows")
 }
 
 model Notification {
