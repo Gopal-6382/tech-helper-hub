@@ -13,9 +13,7 @@ export const createGroupSchema = z.object({
     .max(500, "Description cannot exceed 500 characters")
     .optional(),
 
-  image: z.string()
-    .url({ message: "Invalid image URL" })
-    .optional(),
+  image: z.string().url({ message: "Invalid image URL" }).optional(),
 });
 
 export const addMemberSchema = z.object({
