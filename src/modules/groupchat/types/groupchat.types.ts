@@ -21,6 +21,11 @@ export interface CreateGroupData {
   description?: string;
   image?: string;
 }
+export interface updateGroupData {
+  name: string;
+  description?: string;
+  image?: string;
+}
 
 export interface AddMemberData {
   groupId: string;

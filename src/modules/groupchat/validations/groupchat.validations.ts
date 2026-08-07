@@ -1,18 +1,17 @@
 import { z } from "zod";
 
 export const createGroupSchema = z.object({
+  ownerId: z.string().uuid({ message: "Invalid owner id" }),
   name: z
     .string()
     .trim()
     .min(3, "Group name must be at least 3 characters")
     .max(100, "Group name cannot exceed 100 characters"),
-
   description: z
     .string()
     .trim()
     .max(500, "Description cannot exceed 500 characters")
     .optional(),
-
   image: z.string().url({ message: "Invalid image URL" }).optional(),
 });
 
