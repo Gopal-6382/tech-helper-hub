@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import {
   CreateGroupData,
-  CreateGroupMessageData,
+  CreateGroupMessage,
   updateGroupData,
 } from "../types/groupchat.types";
 
@@ -129,7 +129,7 @@ export class GroupChatRepository {
   }
 
   // create the group message via group id and sender id and content
-  async createMessage(data: CreateGroupMessageData) {
+  async createMessage(data: CreateGroupMessage) {
     return prisma.groupMessage.create({
       data,
     });

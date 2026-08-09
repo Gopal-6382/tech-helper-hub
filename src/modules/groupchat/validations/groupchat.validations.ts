@@ -19,14 +19,15 @@ export const addMemberSchema = z.object({
   userId: z.string().uuid({ message: "Invalid user id" }),
 });
 
-export const sendGroupMessageSchema = z.object({
+export const CreateGroupMessage = z.object({
+  groupId: z.string().uuid({ message: "Invalid group id" }),
+  senderId: z.string().uuid({ message: "Invalid sender id" }),
   content: z
     .string()
     .trim()
     .min(1, "Message cannot be empty")
     .max(5000, "Message is too long"),
 });
-
 export const makeAdminSchema = z.object({
   isAdmin: z.boolean(),
 });
