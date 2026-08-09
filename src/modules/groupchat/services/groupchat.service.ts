@@ -54,6 +54,19 @@ export class GroupChatService {
 
     return member;
   }
+  private async requireMessage(messageId: string, userId: string) {
+    const message = await this.groupChat.findMessageById(messageId);
+
+    if (!message) {
+      throw new Error("Message not found");
+    }
+
+    if (message.senderId !== userId) {
+      throw new Error("You are not the owner of this message");
+    }
+
+    return message;
+  }
 
   // GROUP
 
@@ -71,7 +84,8 @@ export class GroupChatService {
     return group;
   }
 
-  async getGroup(groupId: string) {
+  async getGroup(groupId: string, userId: string) {
+    await this.requireMember(groupId, userId);
     return this.requireGroup(groupId);
   }
 
@@ -91,7 +105,7 @@ export class GroupChatService {
     // MVP: only owner can modify group information.
     const group = await this.requireOwner(groupId, userId);
 
-    const validatedData = createGroupSchema.partial().parse(data);
+    const validatedData = createGroupSchema.parse(data);
 
     return this.groupChat.updateGroup(group.id, validatedData);
   }
@@ -131,7 +145,7 @@ export class GroupChatService {
 
   async addMember(groupId: string, requesterId: string, userId: string) {
     // MVP: owner/admin can add members.
-    await this.requireAdmin(groupId, requesterId);
+    await this.requireOwner(groupId, requesterId);
 
     const existingMember = await this.groupChat.isMember(groupId, userId);
 
@@ -230,38 +244,18 @@ export class GroupChatService {
     userId: string,
     data: Partial<{ content: string }>,
   ) {
-    const message = await this.groupChat.findMessageById(messageId);
+    const message = await this.requireMessage(messageId, userId);
 
-    if (!message) {
-      throw new Error("Message not found");
-    }
-
-    // MVP: only sender can edit.
-    if (message.senderId !== userId) {
-      throw new Error("You can only edit your own message");
-    }
-
-    const validatedData = CreateGroupMessage
-      .pick({ content: true })
+    const validatedData = CreateGroupMessage.pick({ content: true })
       .partial()
       .parse(data);
 
-    return this.groupChat.updateMessage(messageId, validatedData);
+    return this.groupChat.updateMessage(message.id, validatedData);
   }
 
   async deleteMessage(messageId: string, userId: string) {
-    const message = await this.groupChat.findMessageById(messageId);
+    const message = await this.requireMessage(messageId, userId);
 
-    if (!message) {
-      throw new Error("Message not found");
-    }
-
-    // MVP: sender can delete own message.
-    // Admin/owner deletion can be added later.
-    if (message.senderId !== userId) {
-      throw new Error("You can only delete your own message");
-    }
-
-    return this.groupChat.deleteMessage(messageId);
+    return this.groupChat.deleteMessage(message.id);
   }
 }

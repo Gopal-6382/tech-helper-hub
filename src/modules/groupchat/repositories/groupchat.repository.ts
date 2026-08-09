@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import {
   CreateGroupData,
-  CreateGroupMessage,
+  CreateGroupMessageData,
   updateGroupData,
 } from "../types/groupchat.types";
 
@@ -25,7 +25,9 @@ export class GroupChatRepository {
         members: {
           some: { userId },
         },
-        orderBy: { lastMessageAt: "desc" },
+      },
+      orderBy: {
+        lastMessageAt: "desc",
       },
     });
   }
@@ -74,9 +76,13 @@ export class GroupChatRepository {
     return prisma.groupMember.findMany({
       where: { groupId },
       include: {
-        user: true,
-        avatar: true,
-        name: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
       },
     });
   }
@@ -129,7 +135,7 @@ export class GroupChatRepository {
   }
 
   // create the group message via group id and sender id and content
-  async createMessage(data: CreateGroupMessage) {
+  async createMessage(data: CreateGroupMessageData) {
     return prisma.groupMessage.create({
       data,
     });

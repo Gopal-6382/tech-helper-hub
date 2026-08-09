@@ -1,0 +1,14 @@
+| Operation          | Owner | Admin | Member |
+| ------------------ | ----: | ----: | -----: |
+| View group         |   Yes |   Yes |    Yes |
+| View members       |   Yes |   Yes |    Yes |
+| Send message       |   Yes |   Yes |    Yes |
+| Edit own message   |   Yes |   Yes |    Yes |
+| Delete own message |   Yes |   Yes |    Yes |
+| Leave group        |   No* |   Yes |    Yes |
+| Add member         |   Yes |   Yes |     No |
+| Remove member      |   Yes |   Yes |     No |
+| Make admin         |   Yes |    No |     No |
+| Remove admin       |   Yes |    No |     No |
+| Update group       |   Yes |    No |     No |
+| Delete group       |   Yes |    No |     No |
