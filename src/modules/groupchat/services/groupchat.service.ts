@@ -84,10 +84,13 @@ export class GroupChatService {
     return group;
   }
 
-  async getGroup(groupId: string, userId: string) {
-    await this.requireMember(groupId, userId);
-    return this.requireGroup(groupId);
-  }
+ async getGroup(groupId: string, userId: string) {
+  const group = await this.requireGroup(groupId);
+
+  await this.requireMember(groupId, userId);
+
+  return group;
+}
 
   async getMyGroups(userId: string) {
     return this.groupChat.findUserGroups(userId);

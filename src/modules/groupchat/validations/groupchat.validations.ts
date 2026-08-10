@@ -28,6 +28,7 @@ export const CreateGroupMessage = z.object({
     .min(1, "Message cannot be empty")
     .max(5000, "Message is too long"),
 });
+
 export const updateGroupSchema = z.object({
   name: z.string().trim().min(3).max(100).optional(),
 
@@ -35,6 +36,7 @@ export const updateGroupSchema = z.object({
 
   image: z.url().optional(),
 });
+
 export const makeAdminSchema = z.object({
   isAdmin: z.boolean(),
 });

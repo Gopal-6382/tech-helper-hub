@@ -22,7 +22,7 @@ export interface CreateGroupData {
   image?: string;
 }
 export interface updateGroupData {
-  name: string;
+  name?: string;
   description?: string;
   image?: string;
 }
