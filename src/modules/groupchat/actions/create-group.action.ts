@@ -1,19 +1,10 @@
-import { NextRequest } from "next/server";
 import { GroupChatService } from "@/modules/groupchat/services/groupchat.service";
-import { JwtPayload } from "@/lib/auth";
+import { CreateGroupDto } from "../types/groupchat.types";
 const groupChatService = new GroupChatService();
 
-export async function createGroup(
-  req: NextRequest,
-  userId: JwtPayload["userId"],
-) {
-  const { name, description, image } = await req.json();
-
-  const result = await groupChatService.createGroup({
+export async function createGroup(userId: string, data: CreateGroupDto) {
+  return groupChatService.createGroup({
     ownerId: userId,
-    name,
-    description,
-    image,
+    ...data,
   });
-  return result;
 }
