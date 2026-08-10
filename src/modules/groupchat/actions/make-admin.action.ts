@@ -3,12 +3,8 @@ const groupChatService = new GroupChatService();
 
 export async function makeAdmin(
   groupId: string,
-  requesterId:string,
+  requesterId: string,
   userId: string,
 ) {
-  return groupChatService.makeAdmin(
-    groupId,
-    requesterId,
-    userId
-  );
+  return groupChatService.makeAdmin(groupId, requesterId, userId);
 }

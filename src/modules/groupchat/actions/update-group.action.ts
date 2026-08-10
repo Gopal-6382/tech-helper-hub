@@ -7,9 +7,5 @@ export async function updateGroup(
   userId: string,
   data: updateGroupData,
 ) {
-  return groupChatService.updateGroup(
-    groupId,
-    userId,
-    data,
-  );
+  return groupChatService.updateGroup(groupId, userId, data);
 }

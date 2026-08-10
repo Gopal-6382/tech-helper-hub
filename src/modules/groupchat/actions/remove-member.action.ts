@@ -3,12 +3,8 @@ const groupChatService = new GroupChatService();
 
 export async function removeMember(
   groupId: string,
-  requesterId:string,
+  requesterId: string,
   userId: string,
 ) {
-  return groupChatService.removeMember(
-    groupId,
-    requesterId,
-    userId
-  );
+  return groupChatService.removeMember(groupId, requesterId, userId);
 }

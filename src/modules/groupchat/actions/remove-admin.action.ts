@@ -3,12 +3,8 @@ const groupChatService = new GroupChatService();
 
 export async function removeAdmin(
   groupId: string,
-  requesterId:string,
+  requesterId: string,
   userId: string,
 ) {
-  return groupChatService.removeAdmin(
-    groupId,
-    requesterId,
-    userId
-  );
+  return groupChatService.removeAdmin(groupId, requesterId, userId);
 }
