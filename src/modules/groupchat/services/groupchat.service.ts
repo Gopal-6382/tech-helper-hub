@@ -6,6 +6,7 @@ import {
 import {
   createGroupSchema,
   CreateGroupMessage,
+  updateGroupSchema,
 } from "../validations/groupchat.validations";
 
 export class GroupChatService {
@@ -105,10 +106,10 @@ export class GroupChatService {
       image: string;
     }>,
   ) {
-    // MVP: only owner can modify group information.
+    // only owner can modify group information.
     const group = await this.requireOwner(groupId, userId);
 
-    const validatedData = createGroupSchema.parse(data);
+    const validatedData = updateGroupSchema.parse(data);
 
     return this.groupChat.updateGroup(group.id, validatedData);
   }

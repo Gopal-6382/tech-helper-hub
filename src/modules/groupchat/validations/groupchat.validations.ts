@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createGroupSchema = z.object({
-  ownerId: z.cuid2({ message: "Invalid owner id" }),
+  ownerId: z.string().uuid({ message: "Invalid owner id" }),
   name: z
     .string()
     .trim()
@@ -15,13 +15,14 @@ export const createGroupSchema = z.object({
   image: z.url({ message: "Invalid image URL" }).optional(),
 });
 
+
 export const addMemberSchema = z.object({
   userId: z.cuid2({ message: "Invalid user id" }),
 });
 
 export const CreateGroupMessage = z.object({
-  groupId: z.cuid2({ message: "Invalid group id" }),
-  senderId: z.cuid2({ message: "Invalid sender id" }),
+  groupId: z.uuid({ message: "Invalid group id" }),
+  senderId: z.uuid({ message: "Invalid sender id" }),
   content: z
     .string()
     .trim()
