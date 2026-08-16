@@ -7,8 +7,8 @@ export async function createIssueReport(
   userId: string,
   data: CreateIssueReportData,
 ) {
- return issueReportService.createReport({
-  ...data,
-  userId,
-});
+  return issueReportService.createReport({
+    ...data,
+    userId,
+  });
 }
