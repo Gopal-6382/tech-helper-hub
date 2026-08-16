@@ -68,6 +68,23 @@ enum ReportStatus {
   ACTION_TAKEN
 }
 
+enum IssueCategory {
+  BUG
+  PAYMENT
+  ACCOUNT
+  BOOKING
+  CHAT
+  CONTENT
+  UI
+  OTHER
+}
+
+enum IssueReportStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
 // USER (Auth + Profile)
 
 model User {
@@ -109,6 +126,7 @@ model User {
   following Follow[] @relation("Following")
 
   notifications Notification[]
+  issueReports  IssueReport[]
 
   @@map("users")
 }
@@ -495,4 +513,25 @@ model Report {
 
   @@index([status])
   @@map("reports")
+}
+
+model IssueReport {
+  id          String            @id @default(uuid())
+  userId      String
+  category    IssueCategory
+  title       String
+  description String            @db.Text
+  rating      Int?
+  pageUrl     String?
+  status      IssueReportStatus @default(PENDING)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([category])
+  @@index([status])
+  @@index([createdAt])
+  @@map("issue_reports")
 }

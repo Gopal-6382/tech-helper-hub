@@ -8,10 +8,10 @@ import { getReports } from "@/modules/postreport/actions/get-reports.action";
 
 import { CreateReportData } from "@/modules/postreport/types/postreport.types";
 
-export const POST = authMiddleware(async (req: NextRequest, user) => {
+export const POST = authMiddleware(
+  async (req: NextRequest, user) => {
   return handleRequest(async () => {
     const body: CreateReportData = await req.json();
-
     return createReport(user.userId, body);
   });
 });
