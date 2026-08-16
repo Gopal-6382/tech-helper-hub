@@ -1,5 +1,5 @@
 import { IssueReportRepository } from "../repositories/issue-report.repository";
-import { EmailService } from "@/utils/mail";
+import { EmailService } from "@/utils/email.service";
 import { CreateIssueReportData } from "../types/issue-report.types";
 import { createIssueReportSchema } from "../validations/issue-report.validations";
 
