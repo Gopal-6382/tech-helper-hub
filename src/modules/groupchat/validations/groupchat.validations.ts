@@ -15,7 +15,6 @@ export const createGroupSchema = z.object({
   image: z.url({ message: "Invalid image URL" }).optional(),
 });
 
-
 export const addMemberSchema = z.object({
   userId: z.cuid2({ message: "Invalid user id" }),
 });

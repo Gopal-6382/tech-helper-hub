@@ -10,14 +10,13 @@ import { updateGroupData } from "@/modules/groupchat/types/groupchat.types";
 export const GET = authMiddleware(
   async (req: NextRequest, user, { params }) => {
     return handleRequest(async () => {
-       const route = await params;
+      const route = await params;
 
       if (!route || !("groupId" in route)) {
         throw new Error("groupId missing");
       }
 
-      const { groupId} = route;
-
+      const { groupId } = route;
 
       return getGroup(groupId, user.userId);
     });
@@ -37,11 +36,7 @@ export const PATCH = authMiddleware(
 
       const body: updateGroupData = await req.json();
 
-      return updateGroup(
-        groupId,
-        user.userId,
-        body,
-      );
+      return updateGroup(groupId, user.userId, body);
     });
   },
 );
@@ -56,7 +51,6 @@ export const DELETE = authMiddleware(
       }
 
       const { groupId } = route;
-
 
       return deleteGroup(groupId, user.userId);
     });

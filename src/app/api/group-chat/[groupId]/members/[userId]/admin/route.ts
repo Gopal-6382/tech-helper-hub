@@ -3,7 +3,7 @@ import { authMiddleware } from "@/middleware/auth.middleware";
 import { handleRequest } from "@/utils/api.helper";
 
 import { removeAdmin } from "@/modules/groupchat/actions/remove-admin.action";
-export const  DELETE = authMiddleware(
+export const DELETE = authMiddleware(
   async (req: NextRequest, user, { params }) => {
     return handleRequest(async () => {
       const route = await params;
@@ -18,4 +18,3 @@ export const  DELETE = authMiddleware(
     });
   },
 );
-
