@@ -1,11 +1,14 @@
 import { IssueReportService } from "../services/issue-report.service";
-import { CreateIssueReportData } from "../types/issue-report.types";
+
+import {
+  CreateIssueReportDto,
+} from "../types/issue-report.types";
 
 const issueReportService = new IssueReportService();
 
 export async function createIssueReport(
   userId: string,
-  data: CreateIssueReportData,
+  data: CreateIssueReportDto,
 ) {
   return issueReportService.createReport({
     ...data,

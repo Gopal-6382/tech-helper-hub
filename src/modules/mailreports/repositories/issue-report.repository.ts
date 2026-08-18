@@ -10,14 +10,32 @@ export class IssueReportRepository {
 
   async findByUser(userId: string) {
     return prisma.issueReport.findMany({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }
 
   async findById(id: string) {
     return prisma.issueReport.findUnique({
-      where: { id },
+      where: {
+        id,
+      },
+    });
+  }
+
+  // MVP: get only the email needed for the issue-report email.
+  async findUserEmail(userId: string) {
+    return prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        email: true,
+      },
     });
   }
 }

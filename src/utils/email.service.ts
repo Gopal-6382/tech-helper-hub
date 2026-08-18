@@ -1,7 +1,16 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 export class EmailService {
-  private resend = new Resend(process.env.RESEND_API_KEY);
+  private transporter = nodemailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: Number(process.env.MAIL_PORT),
+    secure: false,
+
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASSWORD,
+    },
+  });
 
   async sendIssueReportEmail(data: {
     category: string;
@@ -11,9 +20,9 @@ export class EmailService {
     pageUrl?: string;
     userEmail: string;
   }) {
-    const { data: result, error } = await this.resend.emails.send({
-      from: process.env.EMAIL_FROM!,
-      to: process.env.SUPPORT_EMAIL!,
+    await this.transporter.sendMail({
+      from: process.env.MAIL_FROM,
+      to: process.env.MAIL_USER,
       replyTo: data.userEmail,
 
       subject: `[Issue Report] ${data.category}: ${data.title}`,
@@ -21,29 +30,37 @@ export class EmailService {
       html: `
         <h2>New Issue Report</h2>
 
-        <p><strong>Category:</strong> ${data.category}</p>
+        <p>
+          <strong>Category:</strong>
+          ${data.category}
+        </p>
 
-        <p><strong>Title:</strong> ${data.title}</p>
+        <p>
+          <strong>Title:</strong>
+          ${data.title}
+        </p>
 
-        <p><strong>Rating:</strong> ${
-          data.rating ?? "Not provided"
-        }</p>
+        <p>
+          <strong>Rating:</strong>
+          ${data.rating ?? "Not provided"}
+        </p>
 
-        <p><strong>User:</strong> ${data.userEmail}</p>
+        <p>
+          <strong>User:</strong>
+          ${data.userEmail}
+        </p>
 
-        <p><strong>Page:</strong> ${
-          data.pageUrl ?? "Not provided"
-        }</p>
+        <p>
+          <strong>Page:</strong>
+          ${data.pageUrl ?? "Not provided"}
+        </p>
 
         <h3>Description</h3>
-        <p>${data.description}</p>
+
+        <p>
+          ${data.description}
+        </p>
       `,
     });
-
-    if (error) {
-      throw new Error(`Failed to send issue report email: ${error.message}`);
-    }
-
-    return result;
   }
 }
