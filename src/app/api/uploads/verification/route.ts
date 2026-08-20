@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
-import { cloudinaryService } from "@/infrastructure/cloudinary/cloudinary.service";
+import { uploadImage } from "@/utils/upload.helper";
+import { CLOUDINARY_FOLDERS } from "@/infrastructure/cloudinary/cloudinary.constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,17 +12,16 @@ export async function POST(req: NextRequest) {
       return Response.json(
         {
           success: false,
-          message: "Image file is required",
+          message: "Verification document is required",
         },
         { status: 400 },
       );
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const result = await cloudinaryService.uploadBuffer(buffer, {
-      folder: "tech-helper-hub/test",
+    const result = await uploadImage(buffer, {
+      folder: CLOUDINARY_FOLDERS.verification,
     });
 
     return Response.json({
@@ -32,12 +32,12 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Cloudinary upload failed:", error);
+    console.error("Verification upload failed:", error);
 
     return Response.json(
       {
         success: false,
-        message: "Cloudinary upload failed",
+        message: "Verification upload failed",
       },
       { status: 500 },
     );

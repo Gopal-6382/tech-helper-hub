@@ -5,19 +5,12 @@ import { handleRequest } from "@/utils/api.helper";
 
 import { createIssueReport } from "@/modules/mailreports/actions/createIssueReport.action";
 
-import {
-  CreateIssueReportDto,
-} from "@/modules/mailreports/types/issue-report.types";
+import { CreateIssueReportDto } from "@/modules/mailreports/types/issue-report.types";
 
-export const POST = authMiddleware(
-  async (req: NextRequest, user) => {
-    return handleRequest(async () => {
-      const body: CreateIssueReportDto = await req.json();
+export const POST = authMiddleware(async (req: NextRequest, user) => {
+  return handleRequest(async () => {
+    const body: CreateIssueReportDto = await req.json();
 
-      return createIssueReport(
-        user.userId,
-        body,
-      );
-    });
-  },
-);
+    return createIssueReport(user.userId, body);
+  });
+});

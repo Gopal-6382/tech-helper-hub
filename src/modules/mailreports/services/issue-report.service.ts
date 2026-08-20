@@ -1,13 +1,9 @@
 import { IssueReportRepository } from "../repositories/issue-report.repository";
 import { EmailService } from "@/utils/email.service";
 
-import {
-  CreateIssueReportData,
-} from "../types/issue-report.types";
+import { CreateIssueReportData } from "../types/issue-report.types";
 
-import {
-  createIssueReportSchema,
-} from "../validations/issue-report.validations";
+import { createIssueReportSchema } from "../validations/issue-report.validations";
 
 export class IssueReportService {
   private issueReport = new IssueReportRepository();
@@ -30,9 +26,7 @@ export class IssueReportService {
     });
 
     // 3. Find the authenticated user's email
-    const user = await this.issueReport.findUserEmail(
-      data.userId,
-    );
+    const user = await this.issueReport.findUserEmail(data.userId);
 
     if (!user) {
       throw new Error("User not found");
@@ -50,10 +44,7 @@ export class IssueReportService {
       });
     } catch (error) {
       // Don't lose the issue report just because email failed.
-      console.error(
-        "Failed to send issue report email:",
-        error,
-      );
+      console.error("Failed to send issue report email:", error);
     }
 
     // 5. Return database record

@@ -1,8 +1,6 @@
 import { IssueReportService } from "../services/issue-report.service";
 
-import {
-  CreateIssueReportDto,
-} from "../types/issue-report.types";
+import { CreateIssueReportDto } from "../types/issue-report.types";
 
 const issueReportService = new IssueReportService();
 

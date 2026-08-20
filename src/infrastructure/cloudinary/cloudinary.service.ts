@@ -1,5 +1,8 @@
 import { cloudinary } from "./cloudinary.config";
-import { CloudinaryUploadResult,CloudinaryUploadOptions } from "./cloudinary.types";
+import {
+  CloudinaryUploadResult,
+  CloudinaryUploadOptions,
+} from "./cloudinary.types";
 
 export class CloudinaryService {
   async uploadBuffer(
@@ -11,7 +14,7 @@ export class CloudinaryService {
         {
           folder: options.folder,
           public_id: options.publicId,
-         resource_type: options.resourceType ?? "image",
+          resource_type: options.resourceType ?? "image",
         },
         (error, result) => {
           if (error) {
@@ -39,24 +42,22 @@ export class CloudinaryService {
   }
 
   async deleteImage(publicId: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.destroy(publicId, (error, result) => {
-      if (error) {
-        reject(error);
-        return;
-      }
+    return new Promise((resolve, reject) => {
+      cloudinary.uploader.destroy(publicId, (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
 
-      if (result.result !== "ok" && result.result !== "not found") {
-        reject(new Error(`Cloudinary delete failed: ${result.result}`));
-        return;
-      }
+        if (result.result !== "ok" && result.result !== "not found") {
+          reject(new Error(`Cloudinary delete failed: ${result.result}`));
+          return;
+        }
 
-      resolve();
+        resolve();
+      });
     });
-  });
-}
-
-
+  }
 }
 
 export const cloudinaryService = new CloudinaryService();

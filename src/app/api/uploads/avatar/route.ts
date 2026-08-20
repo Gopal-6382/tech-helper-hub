@@ -1,5 +1,7 @@
 import { NextRequest } from "next/server";
-import { cloudinaryService } from "@/infrastructure/cloudinary/cloudinary.service";
+
+import { uploadImage } from "@/utils/upload.helper";
+import { CLOUDINARY_FOLDERS } from "@/infrastructure/cloudinary/cloudinary.constants";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,11 +19,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!file.type.startsWith("image/")) {
+      return Response.json(
+        {
+          success: false,
+          message: "Only image files are allowed",
+        },
+        { status: 400 },
+      );
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const result = await cloudinaryService.uploadBuffer(buffer, {
-      folder: "tech-helper-hub/test",
+    const result = await uploadImage(buffer, {
+      folder: CLOUDINARY_FOLDERS.users,
     });
 
     return Response.json({
@@ -32,12 +44,12 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Cloudinary upload failed:", error);
+    console.error("Avatar upload failed:", error);
 
     return Response.json(
       {
         success: false,
-        message: "Cloudinary upload failed",
+        message: "Avatar upload failed",
       },
       { status: 500 },
     );

@@ -1,15 +1,7 @@
-export type IssueCategory =
-  | "BUG"
-  | "PAYMENT"
-  | "ACCOUNT"
-  | "BOOKING"
-  | "CHAT"
-  | "CONTENT"
-  | "UI"
-  | "OTHER";
+import { IssueReport } from "@prisma/client";
 
 export interface CreateIssueReportDto {
-  category: IssueCategory;
+  category: IssueReport;
   title: string;
   description: string;
   rating?: number;

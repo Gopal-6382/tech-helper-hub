@@ -1,10 +1,22 @@
 import { cloudinaryService } from "@/infrastructure/cloudinary/cloudinary.service";
-import {CloudinaryUploadOptions} from "@/infrastructure/cloudinary/cloudinary.types";
+import {
+  CloudinaryUploadOptions,
+  CloudinaryUploadResult,
+} from "@/infrastructure/cloudinary/cloudinary.types";
+
 export async function uploadImage(
- types:CloudinaryUploadOptions
-) {
+  buffer: Buffer,
+  options: CloudinaryUploadOptions,
+): Promise<CloudinaryUploadResult> {
   return cloudinaryService.uploadBuffer(buffer, {
-    types.folder,
-    publicId,
+    folder: options.folder,
+    publicId: options.publicId,
+    resourceType: options.resourceType ?? "image",
   });
+}
+
+export async function fileToBuffer(file: File): Promise<Buffer> {
+  const arrayBuffer = await file.arrayBuffer();
+
+  return Buffer.from(arrayBuffer);
 }

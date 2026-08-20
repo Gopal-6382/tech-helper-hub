@@ -24,15 +24,7 @@ export const createIssueReportSchema = z.object({
     .min(10, "Description must be at least 10 characters")
     .max(5000, "Description is too long"),
 
-  rating: z
-    .number()
-    .int()
-    .min(1)
-    .max(5)
-    .optional(),
+  rating: z.number().int().min(1).max(5).optional(),
 
-  pageUrl: z
-    .string()
-    .url("Invalid page URL")
-    .optional(),
+  pageUrl: z.string().url("Invalid page URL").optional(),
 });
