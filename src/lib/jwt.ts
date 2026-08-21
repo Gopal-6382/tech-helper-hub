@@ -60,3 +60,24 @@ export function verifyAccessToken(token: string): JwtPayload {
 export function verifyRefreshToken(token: string): JwtPayload {
   return jwt.verify(token, getRefreshSecret()) as JwtPayload;
 }
+
+export function extractBearerToken(
+  authorization: string | null,
+): string {
+  if (!authorization) {
+    throw new Error("Unauthorized");
+  }
+
+  if (!authorization.startsWith("Bearer ")) {
+    throw new Error("Invalid authorization header");
+  }
+
+  const token = authorization.slice(7).trim();
+
+  if (!token) {
+    throw new Error("Token missing");
+  }
+
+  return token;
+}
+

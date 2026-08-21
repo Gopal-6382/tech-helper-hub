@@ -8,7 +8,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
-} from "../util/jwt";
+} from "../../../lib/jwt";
 
 import { generateResetToken, hashResetToken } from "../util/reset-token";
 
