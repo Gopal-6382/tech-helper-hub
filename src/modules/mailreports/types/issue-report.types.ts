@@ -1,7 +1,7 @@
-import { IssueReport } from "@prisma/client";
+import { IssueCategory } from "@prisma/client";
 
 export interface CreateIssueReportDto {
-  category: IssueReport;
+  category: IssueCategory;
   title: string;
   description: string;
   rating?: number;

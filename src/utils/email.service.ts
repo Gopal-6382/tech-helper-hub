@@ -63,4 +63,46 @@ export class EmailService {
       `,
     });
   }
+  async sendPasswordResetEmail(data: {
+    userEmail: string;
+    userName: string;
+    resetUrl: string;
+  }) {
+    await this.transporter.sendMail({
+      from: process.env.MAIL_FROM,
+      to: data.userEmail,
+      subject: "Reset your Tech Helper Hub password",
+      html: `
+      <h2>Password Reset Request</h2>
+
+      <p>Hello ${data.userName},</p>
+
+      <p>
+        We received a request to reset your Tech Helper Hub password.
+      </p>
+
+      <p>
+        Click the link below to reset your password:
+      </p>
+
+      <p>
+        <a href="${data.resetUrl}">
+          Reset Password
+        </a>
+      </p>
+
+      <p>
+        This link will expire in 10 minutes.
+      </p>
+
+      <p>
+        If you did not request a password reset, you can safely ignore this email.
+      </p>
+
+      <p>
+        Tech Helper Hub
+      </p>
+    `,
+    });
+  }
 }

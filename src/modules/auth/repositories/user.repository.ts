@@ -1,6 +1,5 @@
-import { prisma } from "../../../lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { RegisterUserDto } from "../types/auth.types";
-
 export class UserRepository {
   async findByEmail(email: string) {
     return prisma.user.findUnique({
@@ -10,21 +9,10 @@ export class UserRepository {
     });
   }
 
-  async findById(id: string) {
+  async findById(userId: string) {
     return prisma.user.findUnique({
       where: {
-        id,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        avatar: true,
-        role: true,
-        isActive: true,
-        createdAt: true,
-        updatedAt: true,
+        id: userId,
       },
     });
   }
@@ -42,6 +30,17 @@ export class UserRepository {
       },
       data: {
         refreshToken,
+      },
+    });
+  }
+
+  async updatePassword(userId: string, password: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password,
       },
     });
   }

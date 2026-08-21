@@ -1,16 +1,8 @@
 import { z } from "zod";
+import { IssueCategory } from "@prisma/client";
 
 export const createIssueReportSchema = z.object({
-  category: z.enum([
-    "BUG",
-    "PAYMENT",
-    "ACCOUNT",
-    "BOOKING",
-    "CHAT",
-    "CONTENT",
-    "UI",
-    "OTHER",
-  ]),
+  category: z.enum(IssueCategory),
 
   title: z
     .string()
@@ -26,5 +18,5 @@ export const createIssueReportSchema = z.object({
 
   rating: z.number().int().min(1).max(5).optional(),
 
-  pageUrl: z.string().url("Invalid page URL").optional(),
+  pageUrl: z.url("Invalid page URL").optional(),
 });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { verifyAccessToken, JwtPayload } from "@/lib/auth";
+import { verifyAccessToken, JwtPayload } from "@/modules/auth/util/jwt";
 
 type RouteContext = {
   params?: Promise<Record<string, string>>;

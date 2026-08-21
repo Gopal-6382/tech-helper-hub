@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loginAction } from "@/modules/auth/actions/login.action";
+
+import { resetPasswordAction } from "@/modules/auth/actions/reset-password.action";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const result = await loginAction(body);
+  const result = await resetPasswordAction(body);
 
   return NextResponse.json(result);
 }

@@ -1,27 +1,30 @@
-export interface RegisterUserDto {
+import { Role } from "@prisma/client";
+
+export type RegisterUserDto = {
   name: string;
   email: string;
+  phone?: string;
   password: string;
-}
+};
 
-export interface LoginUserDto {
+export type LoginUserDto = {
   email: string;
   password: string;
-}
+};
 
-export interface AuthUser {
+export type ResetPasswordDto = {
+  token: string;
+  password: string;
+};
+
+export type AuthUser = {
   id: string;
   name: string;
   email: string;
-  role: "USER" | "PROFESSIONAL" | "ADMIN";
-  avatar?: string | null;
-}
-
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  user?: AuthUser;
-  accessToken?: string;
-  refreshToken?: string;
-  error?: string;
-}
+  phone: string | null;
+  avatar: string | null;
+  role: Role;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
