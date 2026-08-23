@@ -1,9 +1,31 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import { Role } from "@prisma/client";
+
+//Define the JWT payload
 export type JwtPayload = {
   userId: string;
-  role: Role;
+  roles: Role[];
 };
+
+//Extract the bearer token
+export function extractBearerToken(authorization: string | null): string {
+  if (!authorization) {
+    throw new Error("Unauthorized");
+  }
+
+  if (!authorization.startsWith("Bearer ")) {
+    throw new Error("Invalid authorization header");
+  }
+
+  const token = authorization.slice(7).trim();
+
+  if (!token) {
+    throw new Error("Token missing");
+  }
+
+  return token;
+}
+
 //Get the access secerete token
 function getAccessSecret(): string {
   const secret = process.env.JWT_ACCESS_SECRET;
@@ -25,11 +47,14 @@ function getRefreshSecret(): string {
   return secret;
 }
 //Generate the access token
-export function generateAccessToken(userId: string, role: string): string {
+export function generateAccessToken(
+  userId: string,
+  roles: Role[],
+): string {
   return jwt.sign(
     {
       userId,
-      role,
+      roles,
     },
     getAccessSecret(),
     {
@@ -39,11 +64,14 @@ export function generateAccessToken(userId: string, role: string): string {
   );
 }
 //Generate the refresh token
-export function generateRefreshToken(userId: string, role: string): string {
+export function generateRefreshToken(
+  userId: string,
+  roles: Role[],
+): string {
   return jwt.sign(
     {
       userId,
-      role,
+      roles,
     },
     getRefreshSecret(),
     {
@@ -60,24 +88,3 @@ export function verifyAccessToken(token: string): JwtPayload {
 export function verifyRefreshToken(token: string): JwtPayload {
   return jwt.verify(token, getRefreshSecret()) as JwtPayload;
 }
-
-export function extractBearerToken(
-  authorization: string | null,
-): string {
-  if (!authorization) {
-    throw new Error("Unauthorized");
-  }
-
-  if (!authorization.startsWith("Bearer ")) {
-    throw new Error("Invalid authorization header");
-  }
-
-  const token = authorization.slice(7).trim();
-
-  if (!token) {
-    throw new Error("Token missing");
-  }
-
-  return token;
-}
-
