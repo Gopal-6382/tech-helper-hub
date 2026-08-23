@@ -1,12 +1,9 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
-
 // ENUMS
 
 enum Role {
@@ -93,7 +90,7 @@ model User {
   phone        String?  @unique
   password     String
   avatar       String?
-  role         Role     @default(USER)
+  roles         Role[]   @default([USER])
   refreshToken String?
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
