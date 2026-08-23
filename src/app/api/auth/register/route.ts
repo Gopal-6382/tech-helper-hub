@@ -1,12 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+
 import { registerAction } from "@/modules/auth/actions/register.action";
+import { successResponse, handleApiError } from "@/utils/api-response";
+import { registerSchema } from "@/modules/auth/validations/auth.schema";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const result = await registerAction(body);
+    const validatedData = registerSchema.parse(body);
 
-  return NextResponse.json(result, {
-    status: 201,
-  });
+    const data = await registerAction(validatedData);
+
+    return successResponse(data);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }

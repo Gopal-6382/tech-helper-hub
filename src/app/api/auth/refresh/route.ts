@@ -1,11 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-
+import { NextRequest } from "next/server";
 import { refreshAction } from "@/modules/auth/actions/refresh.action";
+import { successResponse, handleApiError } from "@/utils/api-response";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const result = await refreshAction(body.refreshToken);
+    const data = await refreshAction(body.refreshToken);
 
-  return NextResponse.json(result);
+    return successResponse(data);
+  } catch (error) {
+    return handleApiError(error);
+  }
 }

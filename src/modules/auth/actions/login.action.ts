@@ -1,11 +1,8 @@
-import { loginSchema } from "../validations/auth.schema";
 import { AuthService } from "../services/auth.service";
 import { LoginUserDto } from "../types/auth.types";
 
 const authService = new AuthService();
 
-export async function loginAction(input: LoginUserDto) {
-  const data = loginSchema.parse(input);
-
+export async function loginAction(data: LoginUserDto) {
   return authService.login(data);
 }

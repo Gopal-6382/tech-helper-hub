@@ -47,10 +47,7 @@ function getRefreshSecret(): string {
   return secret;
 }
 //Generate the access token
-export function generateAccessToken(
-  userId: string,
-  roles: Role[],
-): string {
+export function generateAccessToken(userId: string, roles: Role[]): string {
   return jwt.sign(
     {
       userId,
@@ -64,10 +61,7 @@ export function generateAccessToken(
   );
 }
 //Generate the refresh token
-export function generateRefreshToken(
-  userId: string,
-  roles: Role[],
-): string {
+export function generateRefreshToken(userId: string, roles: Role[]): string {
   return jwt.sign(
     {
       userId,

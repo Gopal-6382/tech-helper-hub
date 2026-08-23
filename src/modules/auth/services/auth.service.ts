@@ -36,16 +36,15 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const accessToken = generateAccessToken(user.id, user.role);
+    const accessToken = generateAccessToken(user.id, user.roles);
 
-    const refreshToken = generateRefreshToken(user.id, user.role);
+    const refreshToken = generateRefreshToken(user.id, user.roles);
 
     const hashedRefreshToken = await hashPassword(refreshToken);
 
     await this.userRepository.updateRefreshToken(user.id, hashedRefreshToken);
 
     return {
-      success: true,
       message: "Registration successful",
       user: this.sanitizeUser(user),
       accessToken,
@@ -70,16 +69,15 @@ export class AuthService {
       throw new Error("Invalid email or password");
     }
 
-    const accessToken = generateAccessToken(user.id, user.role);
+    const accessToken = generateAccessToken(user.id, user.roles);
 
-    const refreshToken = generateRefreshToken(user.id, user.role);
+    const refreshToken = generateRefreshToken(user.id, user.roles);
 
     const hashedRefreshToken = await hashPassword(refreshToken);
 
     await this.userRepository.updateRefreshToken(user.id, hashedRefreshToken);
 
     return {
-      success: true,
       message: "Login successful",
       user: this.sanitizeUser(user),
       accessToken,
@@ -119,7 +117,7 @@ export class AuthService {
       throw new Error("Invalid refresh token");
     }
 
-    const accessToken = generateAccessToken(user.id, user.role);
+    const accessToken = generateAccessToken(user.id, user.roles);
 
     return {
       success: true,

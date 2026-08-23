@@ -23,7 +23,7 @@ export type AuthUser = {
   email: string;
   phone: string | null;
   avatar: string | null;
-  role: Role;
+  roles: Role[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
