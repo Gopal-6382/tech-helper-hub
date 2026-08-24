@@ -1,57 +1,17 @@
 import { NextRequest } from "next/server";
 
-import { uploadImage } from "@/utils/upload.helper";
-import { CLOUDINARY_FOLDERS } from "@/infrastructure/cloudinary/cloudinary.constants";
+import { handleSingleUpload } from "@/utils/upload-route.helper";
+import { CLOUDINARY_FOLDERS } from "@/constant/cloudinary.constants";
+import { FILE_TYPES } from "@/constant/uploadfiles.types";
 
 export async function POST(req: NextRequest) {
-  try {
-    const formData = await req.formData();
+  const result = await handleSingleUpload(req, {
+    folder: CLOUDINARY_FOLDERS.users,
+    allowedTypes: FILE_TYPES.IMAGE,
+  });
 
-    const file = formData.get("file");
-
-    if (!(file instanceof File)) {
-      return Response.json(
-        {
-          success: false,
-          message: "Image file is required",
-        },
-        { status: 400 },
-      );
-    }
-
-    if (!file.type.startsWith("image/")) {
-      return Response.json(
-        {
-          success: false,
-          message: "Only image files are allowed",
-        },
-        { status: 400 },
-      );
-    }
-
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const result = await uploadImage(buffer, {
-      folder: CLOUDINARY_FOLDERS.users,
-    });
-
-    return Response.json({
-      success: true,
-      data: {
-        publicId: result.publicId,
-        secureUrl: result.secureUrl,
-      },
-    });
-  } catch (error) {
-    console.error("Avatar upload failed:", error);
-
-    return Response.json(
-      {
-        success: false,
-        message: "Avatar upload failed",
-      },
-      { status: 500 },
-    );
-  }
+  return Response.json({
+    success: true,
+    data: result,
+  });
 }
