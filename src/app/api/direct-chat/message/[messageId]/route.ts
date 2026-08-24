@@ -1,36 +1,38 @@
-import { NextRequest } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 import { deleteMessage } from "@/modules/directchat/actions/delete-message.action";
 import { markMessageRead } from "@/modules/directchat/actions/mark-as-read.action";
-import { handleRequest } from "@/utils/api.helper";
+import { USER_ROLES } from "@/constant/role.constant";
+import { sendMessageSchema } from "@/modules/directchat/validations/direct-chat.validation";
 
-export const PATCH = authMiddleware(
-  async (req: NextRequest, user: JwtPayload, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
-      if (!route || !("messageId" in route)) {
-        throw new Error("messageId missing");
-      }
+type MessageParams = {
+  messageId: string;
+};
 
-      const { messageId } = route;
+export const PATCH = routeHandler<MessageParams>(
+  async (_req, _user, { params }) => {
+    const { messageId } = await params;
+    if (!messageId) {
+      throw new Error("messageId is required");
+    }
 
-      return markMessageRead(messageId);
-    });
+    return markMessageRead(messageId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );
 
-export const DELETE = authMiddleware(
-  async (req: NextRequest, user: JwtPayload, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
-      if (!route || !("messageId" in route)) {
-        throw new Error("messageId missing");
-      }
+export const DELETE = routeHandler<MessageParams>(
+  async (_req, _user, { params }) => {
+    const { messageId } = await params;
 
-      const { messageId } = route;
-      return deleteMessage(messageId);
-    });
+    if (!messageId) {
+      throw new Error("messageId is required");
+    }
+
+    return deleteMessage(messageId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

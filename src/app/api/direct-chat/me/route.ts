@@ -1,14 +1,12 @@
-import { NextRequest } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 import { getUserConversations } from "@/modules/directchat/actions/get-my-chats.action";
-import { handleRequest } from "@/utils/api.helper";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const GET = authMiddleware(
-  async (req: NextRequest, user: JwtPayload) => {
-    return handleRequest(async () => {
-      return getUserConversations(user.userId);
-    });
+export const GET = routeHandler(
+  async (_req, user) => {
+    return getUserConversations(user.userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

@@ -1,16 +1,22 @@
-import { NextRequest } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 import { getConversation } from "@/modules/directchat/actions/get-chat.action";
-import { handleRequest } from "@/utils/api.helper";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const GET = authMiddleware(
-  async (req: NextRequest, user: JwtPayload, { params }) => {
-    return handleRequest(async () => {
-      const { chatId } = (await params) as { chatId: string };
+type ChatParams = {
+  chatId: string;
+};
 
-      return getConversation(chatId);
-    });
+export const GET = routeHandler<ChatParams>(
+  async (_req, _user, { params }) => {
+    const { chatId } = await params;
+
+    if (!chatId) {
+      throw new Error("chatId is required");
+    }
+
+    return getConversation(chatId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

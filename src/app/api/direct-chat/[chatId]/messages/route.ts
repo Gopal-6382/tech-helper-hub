@@ -1,42 +1,43 @@
-import { NextRequest } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 import { getMessages } from "@/modules/directchat/actions/get-messages.action";
 import { sendMessage } from "@/modules/directchat/actions/send-message.action";
 import { SendMessageDto } from "@/modules/directchat/types/direct-chat.types";
-import { handleRequest } from "@/utils/api.helper";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const GET = authMiddleware(
-  async (req: NextRequest, user: JwtPayload, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
-      if (!route || !("chatId" in route)) {
-        throw new Error("chatId missing");
-      }
+type MessageRouteParams = {
+  chatId: string;
+};
 
-      const { chatId } = route;
+export const GET = routeHandler<MessageRouteParams>(
+  async (_req, _user, { params }) => {
+    const { chatId } = await params;
 
-      return getMessages(chatId);
-    });
+    if (!chatId) {
+      throw new Error("chatId is required");
+    }
+
+    return getMessages(chatId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );
 
-export const POST = authMiddleware(
-  async (req: NextRequest, user: JwtPayload, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
-      if (!route || !("chatId" in route)) {
-        throw new Error("chatId missing");
-      }
+export const POST = routeHandler<MessageRouteParams>(
+  async (req, user, { params }) => {
+    const { chatId } = await params;
 
-      const { chatId } = route;
+    if (!chatId) {
+      throw new Error("chatId is required");
+    }
 
-      const body: SendMessageDto = await req.json();
+    const body: SendMessageDto = await req.json();
 
-      return sendMessage(user.userId, chatId, {
-        content: body.content,
-      });
+    return sendMessage(user.userId, chatId, {
+      content: body.content,
     });
   },
+  {
+    roles: USER_ROLES,
+  }
 );
