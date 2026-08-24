@@ -1,22 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-
 import { CommentService } from "../services/comment.service";
-import { updateCommentSchema } from "../validations/comment.validation";
+import { UpdateCommentDto } from "../types/comment.types";
 
 const commentService = new CommentService();
 
 export async function updateComment(
-  req: NextRequest,
-  user: JwtPayload,
+  user: string,
   id: string,
+  data: UpdateCommentDto
 ) {
-  const body = await req.json();
 
-  const data = updateCommentSchema.parse(body);
+  const result = await commentService.updateComment(id, user, data);
 
-  const result = await commentService.updateComment(id, user.userId, data);
-
-  return NextResponse.json(result);
+  return result;
 }

@@ -1,20 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { JwtPayload } from "@/lib/auth";
-
 import { CommentService } from "../services/comment.service";
-import { createCommentSchema } from "../validations/comment.validation";
+import { CreateCommentDto } from "../types/comment.types";
 
 const commentService = new CommentService();
 
-export async function createComment(req: NextRequest, user: JwtPayload) {
-  const body = await req.json();
+export async function createComment( user: string,data: CreateCommentDto) {
 
-  const data = createCommentSchema.parse(body);
+  const result = await commentService.createComment(user, data);
 
-  const result = await commentService.createComment(user.userId, data);
-
-  return NextResponse.json(result, {
-    status: 201,
-  });
+  return result;
 }

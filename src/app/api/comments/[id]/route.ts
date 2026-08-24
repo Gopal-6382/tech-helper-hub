@@ -1,46 +1,50 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 
 import { getComment } from "@/modules/comments/actions/get-comment.action";
 import { updateComment } from "@/modules/comments/actions/update-comment.action";
 import { deleteComment } from "@/modules/comments/actions/delete-comment.action";
 
-// GET
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  try {
+import { updateCommentSchema } from "@/modules/comments/validations/comment.validation";
+import { USER_ROLES } from "@/constant/role.constant";
+
+type CommentParams = {
+  id: string;
+};
+
+// GET /api/comments/:id
+export const GET = routeHandler<CommentParams>(
+  async (_req, _user, { params }) => {
     const { id } = await params;
 
-    const comment = await getComment(id);
-
-    return NextResponse.json({
-      success: true,
-      data: comment,
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "Comment not found",
-      },
-      { status: 404 },
-    );
+    return getComment(id);
+  },
+  {
+    roles: USER_ROLES,
   }
-}
+);
 
-// PATCH
-export const PATCH = authMiddleware(async (req, user, context) => {
-  const { id } = await context.params;
+// PATCH /api/comments/:id
+export const PATCH = routeHandler<CommentParams>(
+  async (req, user, { params }) => {
+    const { id } = await params;
 
-  return updateComment(req, user, id);
-});
+    const body = await req.json();
 
-// DELETE
-export const DELETE = authMiddleware(async (_req, user, context) => {
-  const { id } = await context.params;
+    const data = updateCommentSchema.parse(body);
 
-  return deleteComment(id, user.userId);
-});
+    return updateComment(id, user.userId, data);
+  }, {
+    roles: USER_ROLES,
+  }
+);
+
+// DELETE /api/comments/:id
+export const DELETE = routeHandler<CommentParams>(
+  async (_req, user, { params }) => {
+    const { id } = await params;
+
+    return deleteComment(id, user.userId);
+  }, {
+    roles: USER_ROLES,
+  }
+);

@@ -32,8 +32,11 @@ export class CommentService {
   }
 
   async getComments(postId: string) {
-    await this.postRepository.findById(postId);
+     const post = await this.postRepository.findById(postId);
 
+  if (!post) {
+    throw new Error("Post not found");
+  }
     return this.commentRepository.findByPostId(postId);
   }
 

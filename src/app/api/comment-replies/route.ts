@@ -4,7 +4,7 @@ import { createCommentReply } from "@/modules/commentsreply/actions/create-comme
 import { getCommentReplies } from "@/modules/commentsreply/actions/get-comment-replies.action";
 import { CreateCommentReplyData } from "@/modules/commentsreply/types/comment-reply.types";
 import { createCommentReplyDataSchema } from "@/modules/commentsreply/validations/comment-reply.validation";
-
+import {USER_ROLES} from "@/constant/role.constant";
 // POST /api/comment-replies
 export const POST = routeHandler(async (req, user) => {
   const body: CreateCommentReplyData = await req.json();
@@ -22,4 +22,7 @@ export const GET = routeHandler(async (req) => {
   }
 
   return getCommentReplies(commentId);
+}
+, {
+  roles: USER_ROLES,
 });

@@ -5,6 +5,7 @@ import { updateCommentReply } from "@/modules/commentsreply/actions/update-comme
 import { deleteCommentReply } from "@/modules/commentsreply/actions/delete-comment-reply.action";
 import { updateCommentReplySchema } from "@/modules/commentsreply/validations/comment-reply.validation";
 import { UpdateCommentReplyData } from "@/modules/commentsreply/types/comment-reply.types";
+import { USER_ROLES } from "@/constant/role.constant";
 
 type CommentReplyParams = {
   id: string;
@@ -45,5 +46,8 @@ export const DELETE = routeHandler<CommentReplyParams>(
     }
 
     return deleteCommentReply(id, user.userId);
+  },
+  {
+    roles: USER_ROLES,
   },
 );

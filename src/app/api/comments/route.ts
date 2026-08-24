@@ -1,42 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { USER_ROLES } from "@/constant/role.constant";
+import { routeHandler } from "@/middleware/route.handler";
 
 import { createComment } from "@/modules/comments/actions/create-comment.action";
 import { getComments } from "@/modules/comments/actions/get-comments.action";
+import { createCommentSchema } from "@/modules/comments/validations/comment.validation";
 
 // POST /api/comments
-export const POST = authMiddleware(createComment);
+export const POST = routeHandler(async (req, user) => {
+  const body = await req.json();
+
+  const data = createCommentSchema.parse(body);
+
+  return createComment(user.userId, data);
+},
+{
+  roles: USER_ROLES,
+});
+type getcommentsParams = {
+  id: string;
+};
 
 // GET /api/comments?postId=xxxx
-export async function GET(req: NextRequest) {
-  try {
-    const postId = req.nextUrl.searchParams.get("postId");
+export const GET = routeHandler<getcommentsParams>(
+  async (req, _user, { params }) => {
+  const {id} = await params;
 
-    if (!postId) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "postId is required",
-        },
-        { status: 400 },
-      );
-    }
-
-    const comments = await getComments(postId);
-
-    return NextResponse.json({
-      success: true,
-      data: comments,
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Something went wrong",
-      },
-      { status: 500 },
-    );
+  if (!id) {
+    throw new Error("postId is required");
   }
-}
+
+  return getComments(id);
+},
+{
+  roles: USER_ROLES,
+});
