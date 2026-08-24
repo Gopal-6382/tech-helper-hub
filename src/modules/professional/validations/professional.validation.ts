@@ -16,19 +16,34 @@ export const becomeProfessionalSchema = z.object({
 
   experienceYears: z.number().int().min(0).max(50),
 
-  hourlyRate: z.number().positive(),
+  hourlyRate: z.number().positive("Hourly rate must be a positive number"),
 
   serviceMode: z.enum(ServiceMode),
 
   workingRadiusKm: z.number().int().min(1).max(100),
+
+  categoryIds: z
+    .array(z.string().uuid("Invalid category ID format"))
+    .min(1, "Select at least one category"),
+
+  isAvailable: z.boolean().optional(),
 });
 
-export const updateProfessionalSchema = becomeProfessionalSchema
-  .partial()
-  .extend({
-    isAvailable: z.boolean().optional(),
-  });
+export const updateProfessionalSchema = becomeProfessionalSchema.partial();
+
+export const updateAvailabilitySchema = z.object({
+  isAvailable: z.boolean(),
+});
 
 export const updateProfessionalCategoriesSchema = z.object({
-  categoryIds: z.array(z.uuid()).min(1, "Select at least one category"),
+  categoryIds: z
+    .array(z.string().uuid("Invalid category ID format"))
+    .min(1, "Select at least one category"),
 });
+
+export type BecomeProfessionalDto = z.infer<typeof becomeProfessionalSchema>;
+export type UpdateProfessionalDto = z.infer<typeof updateProfessionalSchema>;
+export type UpdateAvailabilityDto = z.infer<typeof updateAvailabilitySchema>;
+export type UpdateProfessionalCategoriesDto = z.infer<
+  typeof updateProfessionalCategoriesSchema
+>;

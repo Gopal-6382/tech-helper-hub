@@ -1,16 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
 import { ProfessionalService } from "../services/professional.service";
-import { updateProfessionalCategoriesSchema } from "../validations/professional.validation";
+import { UpdateProfessionalCategoriesDto } from "../types/professional.types";
 
 const professionalService = new ProfessionalService();
 
-export async function updateCategories(req: NextRequest, user: JwtPayload) {
-  const body = await req.json();
+export async function updateCategories( user: string ,body: UpdateProfessionalCategoriesDto) {
 
-  const data = updateProfessionalCategoriesSchema.parse(body);
 
-  const result = await professionalService.updateCategories(user.userId, data);
+  return await professionalService.updateCategories(user, body);
 
-  return NextResponse.json(result);
 }

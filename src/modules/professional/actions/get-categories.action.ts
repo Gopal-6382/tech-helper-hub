@@ -1,15 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
 import { ProfessionalService } from "../services/professional.service";
+import { updateProfessionalCategoriesSchema } from "../validations/professional.validation";
 
 const professionalService = new ProfessionalService();
 
-export async function getCategories(_req: NextRequest, _user: JwtPayload) {
-  const categories = await professionalService.getCategories();
-
-  return NextResponse.json({
-    success: true,
-    categories,
-  });
+export async function getCategories() {
+  return professionalService.getCategories();
 }
-console.log(getCategories);
+
+export async function updateCategories(userId: string, body: unknown) {
+  const data = updateProfessionalCategoriesSchema.parse(body);
+
+  return professionalService.updateCategories(userId, data);
+}

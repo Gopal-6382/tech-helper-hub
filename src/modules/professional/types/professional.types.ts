@@ -23,5 +23,8 @@ export interface UpdateProfessionalDto {
 
 export interface UpdateProfessionalCategoriesDto {
   categoryIds: string[];
-  isAvailable?: boolean;
+}
+
+export interface Updateprofessional {
+  isAvailable: boolean;
 }
