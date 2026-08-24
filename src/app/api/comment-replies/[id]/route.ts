@@ -1,69 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 
 import { getCommentReply } from "@/modules/commentsreply/actions/get-comment-reply.action";
 import { updateCommentReply } from "@/modules/commentsreply/actions/update-comment-reply.action";
 import { deleteCommentReply } from "@/modules/commentsreply/actions/delete-comment-reply.action";
+import { updateCommentReplySchema } from "@/modules/commentsreply/validations/comment-reply.validation";
+import { UpdateCommentReplyData } from "@/modules/commentsreply/types/comment-reply.types";
 
-// GET
-export async function GET(
-  _req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ id: string }>;
-  },
-) {
-  try {
+type CommentReplyParams = {
+  id: string;
+};
+
+export const GET = routeHandler<CommentReplyParams>(
+  async (_req, _user, { params }) => {
     const { id } = await params;
 
+    if (!id) {
+      throw new Error("Reply id is required");
+    }
+
     return getCommentReply(id);
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "Reply not found",
-      },
-      {
-        status: 404,
-      },
-    );
-  }
-}
-
-// PATCH
-export async function PATCH(
-  req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ id: string }>;
   },
-) {
-  const handler = authMiddleware(async (request, user, context) => {
-    const { id } = await context.params!;
+);
 
-    return updateCommentReply(request, user, id);
-  });
+export const PATCH = routeHandler<CommentReplyParams>(
+  async (req, user, { params }) => {
+    const { id } = await params;
+    const body = await req.json();
+    const data: UpdateCommentReplyData = updateCommentReplySchema.parse(body);
 
-  return handler(req, { params });
-}
+    if (!id) {
+      throw new Error("Reply id is required");
+    }
 
-// DELETE
-export async function DELETE(
-  req: NextRequest,
-  {
-    params,
-  }: {
-    params: Promise<{ id: string }>;
+    return updateCommentReply(id, user.userId, data);
   },
-) {
-  const handler = authMiddleware(async (_request, user, context) => {
-    const { id } = await context.params!;
+);
 
-    return deleteCommentReply(id, user);
-  });
+export const DELETE = routeHandler<CommentReplyParams>(
+  async (_req, user, { params }) => {
+    const { id } = await params;
 
-  return handler(req, { params });
-}
+    if (!id) {
+      throw new Error("Reply id is required");
+    }
+
+    return deleteCommentReply(id, user.userId);
+  },
+);

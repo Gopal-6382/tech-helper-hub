@@ -1,41 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
+import { routeHandler } from "@/middleware/route.handler";
 
 import { createCommentReply } from "@/modules/commentsreply/actions/create-comment-reply.action";
 import { getCommentReplies } from "@/modules/commentsreply/actions/get-comment-replies.action";
+import { CreateCommentReplyData } from "@/modules/commentsreply/types/comment-reply.types";
+import { createCommentReplyDataSchema } from "@/modules/commentsreply/validations/comment-reply.validation";
 
 // POST /api/comment-replies
-export const POST = authMiddleware(createCommentReply);
+export const POST = routeHandler(async (req, user) => {
+  const body: CreateCommentReplyData = await req.json();
+  const data = createCommentReplyDataSchema.parse(body);
+
+  return createCommentReply(user.userId, data);
+});
 
 // GET /api/comment-replies?commentId=xxxx
-export async function GET(req: NextRequest) {
-  try {
-    const commentId = req.nextUrl.searchParams.get("commentId");
+export const GET = routeHandler(async (req) => {
+  const commentId = req.nextUrl.searchParams.get("commentId");
 
-    if (!commentId) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "commentId is required",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    return getCommentReplies(commentId);
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Something went wrong",
-      },
-      {
-        status: 500,
-      },
-    );
+  if (!commentId) {
+    throw new Error("commentId is required");
   }
-}
+
+  return getCommentReplies(commentId);
+});
