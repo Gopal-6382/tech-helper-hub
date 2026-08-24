@@ -1,20 +1,23 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { removeAdmin } from "@/modules/groupchat/actions/remove-admin.action";
-export const DELETE = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+import { USER_ROLES } from "@/constant/role.constant";
 
-      if (!route || !("groupId" in route) || !("userId" in route)) {
-        throw new Error("groupId or userId missing");
-      }
+type GroupAdminParams = {
+  groupId: string;
+  userId: string;
+};
 
-      const { groupId, userId } = route;
+export const DELETE = routeHandler<GroupAdminParams>(
+  async (_req, user, { params }) => {
+    const { groupId, userId } = await params;
 
-      return removeAdmin(groupId, user.userId, userId);
-    });
+    if (!groupId || !userId) {
+      throw new Error("groupId and userId are required");
+    }
+
+    return removeAdmin(groupId, user.userId, userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

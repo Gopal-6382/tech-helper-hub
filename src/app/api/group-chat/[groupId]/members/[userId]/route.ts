@@ -1,39 +1,39 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { makeAdmin } from "@/modules/groupchat/actions/make-admin.action";
-import { removeAdmin } from "@/modules/groupchat/actions/remove-admin.action";
 import { removeMember } from "@/modules/groupchat/actions/remove-member.action";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const PATCH = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+type GroupAdminParams = {
+  groupId: string;
+  userId: string;
+};
 
-      if (!route || !("groupId" in route) || !("userId" in route)) {
-        throw new Error("groupId or userId missing");
-      }
+export const PATCH = routeHandler<GroupAdminParams>(
+  async (_req, user, { params }) => {
+    const { groupId, userId } = await params;
 
-      const { groupId, userId } = route;
+    if (!groupId || !userId) {
+      throw new Error("groupId and userId are required");
+    }
 
-      return makeAdmin(groupId, user.userId, userId);
-    });
+    return makeAdmin(groupId, user.userId, userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );
 
-export const DELETE = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+export const DELETE = routeHandler<GroupAdminParams>(
+  async (_req, user, { params }) => {
+    const { groupId, userId } = await params;
 
-      if (!route || !("groupId" in route) || !("userId" in route)) {
-        throw new Error("groupId or userId missing");
-      }
+    if (!groupId || !userId) {
+      throw new Error("groupId and userId are required");
+    }
 
-      const { groupId, userId } = route;
-
-      return removeMember(groupId, user.userId, userId);
-    });
+    return removeMember(groupId, user.userId, userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

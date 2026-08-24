@@ -1,42 +1,35 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
+import { routeHandler } from "@/middleware/route.handler";
 
 import { updateMessage } from "@/modules/groupchat/actions/update-message.action";
 import { deleteMessage } from "@/modules/groupchat/actions/delete-message.action";
 
 import { SendGroupMessageDto } from "@/modules/groupchat/types/groupchat.types";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const PATCH = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+type MessageParams = {
+  messageId: string;
+};
 
-      if (!route || !("messageId" in route)) {
-        throw new Error("messageId missing");
-      }
+export const PATCH = routeHandler<MessageParams>(
+  async (req, user, { params }) => {
+    const { messageId } = await params;
 
-      const { messageId } = route;
+    const body: SendGroupMessageDto = await req.json();
 
-      const body: SendGroupMessageDto = await req.json();
-
-      return updateMessage(messageId, user.userId, body.content);
-    });
+    return updateMessage(messageId, user.userId, body.content);
+  },
+  {
+    roles: USER_ROLES,
   },
 );
 
-export const DELETE = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+export const DELETE = routeHandler<MessageParams>(
+  async (req, user, { params }) => {
+    const { messageId } = await params;
 
-      if (!route || !("messageId" in route)) {
-        throw new Error("messageId missing");
-      }
-
-      const { messageId } = route;
-
-      return deleteMessage(messageId, user.userId);
-    });
+    return deleteMessage(messageId, user.userId);
+  },
+  {
+    roles: USER_ROLES,
   },
 );

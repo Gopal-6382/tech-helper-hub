@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createGroupSchema = z.object({
-  ownerId: z.string().uuid({ message: "Invalid owner id" }),
+  ownerId: z.uuid({ message: "Invalid owner id" }),
   name: z
     .string()
     .trim()

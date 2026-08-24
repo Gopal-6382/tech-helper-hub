@@ -1,41 +1,41 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { getMembers } from "@/modules/groupchat/actions/get-members.action";
 import { addMember } from "@/modules/groupchat/actions/add-member.action";
-
 import { AddMemberDto } from "@/modules/groupchat/types/groupchat.types";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const GET = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+type GroupMemberParams = {
+  groupId: string;
+};
 
-      if (!route || !("groupId" in route)) {
-        throw new Error("groupId missing");
-      }
+export const GET = routeHandler<GroupMemberParams>(
+  async (_req, user, { params }) => {
+    const { groupId } = await params;
 
-      const { groupId } = route;
-      return getMembers(groupId, user.userId);
-    });
+    if (!groupId) {
+      throw new Error("groupId is required");
+    }
+
+    return getMembers(groupId, user.userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );
 
-export const POST = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+export const POST = routeHandler<GroupMemberParams>(
+  async (req, user, { params }) => {
+    const { groupId } = await params;
 
-      if (!route || !("groupId" in route)) {
-        throw new Error("groupId missing");
-      }
+    if (!groupId) {
+      throw new Error("groupId is required");
+    }
 
-      const { groupId } = route;
+    const body: AddMemberDto = await req.json();
 
-      const body: AddMemberDto = await req.json();
-
-      return addMember(groupId, user.userId, body.userId);
-    });
+    return addMember(groupId, user.userId, body.userId);
   },
+  {
+    roles: USER_ROLES,
+  }
 );

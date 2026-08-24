@@ -1,13 +1,12 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
+import { routeHandler } from "@/middleware/route.handler";
 import { CreateGroupDto } from "@/modules/groupchat/types/groupchat.types";
 import { createGroup } from "@/modules/groupchat/actions/create-group.action";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const POST = authMiddleware(async (req: NextRequest, user) => {
-  return handleRequest(async () => {
-    const body: CreateGroupDto = await req.json();
-
-    return createGroup(user.userId, body);
-  });
+export const POST = routeHandler(async (req, user) => {
+  const body: CreateGroupDto = await req.json();
+  return createGroup(user.userId, body);
+}
+, {
+  roles:USER_ROLES,
 });
