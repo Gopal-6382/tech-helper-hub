@@ -2,7 +2,7 @@ import { PostStatus } from "@prisma/client";
 
 import { PostRepository } from "../repositories/post.repository";
 
-import { CreatePostDto, UpdatePostDto } from "../types/post.types";
+import { CreatePostData,  UpdatePostDto } from "../types/post.types";
 
 export class PostService {
   private postRepository = new PostRepository();
@@ -10,10 +10,9 @@ export class PostService {
   // Business Rule:
   // Logged-in user becomes the author.
   // Client cannot send authorId.
-  async createPost(authorId: string, data: CreatePostDto) {
+  async createPost( data: CreatePostData) {
     return this.postRepository.create({
       ...data,
-      authorId,
     });
   }
 

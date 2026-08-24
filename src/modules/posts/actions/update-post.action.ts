@@ -1,21 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
-
 import { PostService } from "../services/post.service";
-import { updatePostSchema } from "../validations/post.validation";
+import { UpdatePostDto } from "../types/post.types";
 
 const postService = new PostService();
 
-export async function updatePost(
-  req: NextRequest,
-  user: JwtPayload,
-  id: string,
-) {
-  const body = await req.json();
+export async function updatePost(postId: string, userId: string, body: UpdatePostDto) {
 
-  const data = updatePostSchema.parse(body);
-
-  const result = await postService.updatePost(id, user.userId, data);
-
-  return NextResponse.json(result);
+  return postService.updatePost(postId, userId, body);
 }

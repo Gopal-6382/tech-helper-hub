@@ -1,53 +1,59 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { getPost } from "@/modules/posts/actions/get-post.action";
 import { updatePost } from "@/modules/posts/actions/update-post.action";
 import { deletePost } from "@/modules/posts/actions/delete-post.action";
+import { USER_ROLES } from "@/constant/role.constant";
+import { updatePostSchema } from "@/modules/posts/validations/post.validation";
+import { UpdatePostDto } from "@/modules/posts/types/post.types";
 
-// GET
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  try {
+type PostRouteParams = {
+  id: string;
+};
+
+// GET /api/posts/[id]
+export const GET = routeHandler<PostRouteParams>(
+  async (_req, _user, { params }) => {
     const { id } = await params;
 
+    if (!id) {
+      throw new Error("Post ID is required");
+    }
+
     return getPost(id);
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "Post not found",
-      },
-      { status: 404 },
-    );
   }
-}
+);
 
-// PATCH
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const { id } = await params;
+// PATCH /api/posts/[id]
+export const PATCH = routeHandler<PostRouteParams>(
+  async (req, user, { params }) => {
+    const { id } = await params;
 
-  const handler = authMiddleware((request, user) =>
-    updatePost(request, user, id),
-  );
+    if (!id) {
+      throw new Error("Post ID is required");
+    }
 
-  return handler(req);
-}
+    const body :UpdatePostDto= await req.json();
+const data = updatePostSchema.parse(body);
 
-// DELETE
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const { id } = await params;
+    return updatePost(id, user.userId, data);
+  },
+  {
+    roles: USER_ROLES,
+  }
+);
 
-  const handler = authMiddleware((_request, user) => deletePost(user, id));
+// DELETE /api/posts/[id]
+export const DELETE = routeHandler<PostRouteParams>(
+  async (_req, user, { params }) => {
+    const { id } = await params;
 
-  return handler(req);
-}
+    if (!id) {
+      throw new Error("Post ID is required");
+    }
+
+    return deletePost(id, user.userId);
+  },
+  {
+    roles: USER_ROLES,
+  }
+);

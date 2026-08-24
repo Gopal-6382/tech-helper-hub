@@ -1,60 +1,29 @@
-import { NextResponse } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
-
-import { createPost } from "@/modules/posts/actions/create-post.action";
+import { routeHandler } from "@/middleware/route.handler";
 import { getPosts } from "@/modules/posts/actions/get-posts.action";
+import { createPost } from "@/modules/posts/actions/create-post.action";
+import { USER_ROLES } from "@/constant/role.constant";
+import { CreatePostDto } from "@/modules/posts/types/post.types";
+import { createPostSchema } from "@/modules/posts/validations/post.validation";
 
-// GET /api/posts
-// Public feed
-export async function GET() {
-  try {
-    const posts = await getPosts();
+// GET /api/posts - Public feed (or role-protected depending on your standard)
+export const GET = routeHandler(
+  async () => {
+    return getPosts();
+  }
+);
 
-    return NextResponse.json({
-      success: true,
-      data: posts,
+// POST /api/posts - Login Required
+export const POST = routeHandler(
+  async (req, user) => {
+    const body:CreatePostDto = await req.json();
+const data=createPostSchema.parse(body);
+    // Combine user ID with the body so the action receives everything in one place
+    return createPost({
+      ...data,
+      authorId: user.userId,
     });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to fetch posts",
-      },
-      {
-        status: 500,
-      },
-    );
+  },
+  {
+    roles: USER_ROLES,
   }
-}
-
-// POST /api/posts
-// Login Required
-export const POST = authMiddleware(async (req, user) => {
-  try {
-    const post = await createPost(req, user.userId);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Post created successfully",
-        data: post,
-      },
-      {
-        status: 201,
-      },
-    );
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Failed to create post",
-      },
-      {
-        status: 500,
-      },
-    );
-  }
-});
+);

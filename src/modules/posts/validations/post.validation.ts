@@ -8,7 +8,7 @@ import { z } from "zod";
 // It comes from JWT.
 // --------------------------------------------------
 export const createPostSchema = z.object({
-  categoryId: z.string().uuid().optional(),
+  categoryId: z.uuid().optional(),
 
   title: z
     .string()
@@ -38,7 +38,7 @@ export const createPostSchema = z.object({
 // may update only one field.
 // --------------------------------------------------
 export const updatePostSchema = z.object({
-  categoryId: z.string().uuid().optional(),
+  categoryId: z.uuid().optional(),
 
   title: z.string().trim().min(5).max(150).optional(),
 
@@ -57,5 +57,5 @@ export const updatePostSchema = z.object({
 // Validation for changing only the post status.
 // --------------------------------------------------
 export const updatePostStatusSchema = z.object({
-  status: z.nativeEnum(PostStatus),
+  status: z.enum(PostStatus),
 });

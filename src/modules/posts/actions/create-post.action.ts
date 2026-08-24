@@ -1,15 +1,9 @@
-import { NextRequest } from "next/server";
-
 import { PostService } from "../services/post.service";
-import { createPostSchema } from "../validations/post.validation";
+import { CreatePostData } from "../types/post.types";
 
 const postService = new PostService();
 
-// Business Rule: User must be authenticated. AuthorId comes from JWT.
-export async function createPost(req: NextRequest, authorId: string) {
-  const body = await req.json();
+export async function createPost( body: CreatePostData) {
 
-  const data = createPostSchema.parse(body);
-
-  return postService.createPost(authorId, data);
+  return postService.createPost(body);
 }
