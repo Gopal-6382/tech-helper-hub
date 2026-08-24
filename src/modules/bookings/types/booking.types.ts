@@ -15,8 +15,11 @@ export interface UpdateBookingDto {
   scheduledAt?: Date;
   amount?: number;
   cancelReason?: string;
+  status?: BookingStatus;
+  acceptedAt?: Date | null;
 }
 
 export interface BookingStatusDto {
   status: BookingStatus;
+  acceptedAt: Date | null;
 }

@@ -1,9 +1,22 @@
-import { authMiddleware } from "@/middleware/auth.middleware";
-
+import { USER_AND_PROFESSIONAL_ROLES } from "@/constant/role.constant";
+import { routeHandler } from "@/middleware/route.handler";
 import { rejectBooking } from "@/modules/bookings/actions/reject-booking.action";
 
-export const PATCH = authMiddleware(async (req, user, context) => {
-  const { id } = await context.params;
+type BookingParams = {
+  id: string;
+};
 
-  return rejectBooking(id);
-});
+export const PATCH = routeHandler<BookingParams>(
+  async (_req, _user, { params }) => {
+    const { id } = await params;
+
+    if (!id) {
+      throw new Error("Booking id is required");
+    }
+
+    return rejectBooking(id);
+  },
+  {
+    roles: USER_AND_PROFESSIONAL_ROLES,
+  },
+);

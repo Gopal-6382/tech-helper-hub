@@ -1,15 +1,23 @@
-import { authMiddleware } from "@/middleware/auth.middleware";
-
+// app/api/bookings/route.ts
+import { PROFESSIONAL_ROLES } from "@/constant/role.constant";
+import { routeHandler } from "@/middleware/route.handler";
 import { getBooking } from "@/modules/bookings/actions/get-booking.action";
 
-// app/api/bookings/route.ts
+type BookingParams = {
+  id: string;
+};
 
-export const GET = authMiddleware(async (req, user) => {
-  const id = new URL(req.url).searchParams.get("id");
+export const PATCH = routeHandler<BookingParams>(
+  async (_req, _user, { params }) => {
+    const { id } = await params;
 
-  if (!id) {
-    throw new Error("Booking id is required");
-  }
+    if (!id) {
+      throw new Error("Booking id is required");
+    }
 
-  return getBooking(id);
-});
+    return getBooking(id);
+  },
+  {
+    roles: PROFESSIONAL_ROLES,
+  },
+);
