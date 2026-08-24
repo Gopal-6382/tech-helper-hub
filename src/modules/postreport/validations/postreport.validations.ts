@@ -3,8 +3,8 @@ import { ReportStatus } from "@prisma/client";
 
 export const createReportSchema = z
   .object({
-    postId: z.string().uuid("Invalid post id").optional(),
-    commentId: z.string().uuid("Invalid comment id").optional(),
+    postId: z.uuid("Invalid post id").optional(),
+    commentId: z.uuid("Invalid comment id").optional(),
     reason: z
       .string()
       .trim()
@@ -16,10 +16,5 @@ export const createReportSchema = z
   });
 
 export const updateReportStatusSchema = z.object({
-  status: z.enum([
-    ReportStatus.PENDING,
-    ReportStatus.REVIEWED,
-    ReportStatus.DISMISSED,
-    ReportStatus.ACTION_TAKEN,
-  ]),
+  status: z.enum(ReportStatus),
 });
