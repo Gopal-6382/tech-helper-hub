@@ -2,7 +2,6 @@ import { routeHandler } from "@/middleware/route.handler";
 import { deleteMessage } from "@/modules/directchat/actions/delete-message.action";
 import { markMessageRead } from "@/modules/directchat/actions/mark-as-read.action";
 import { USER_ROLES } from "@/constant/role.constant";
-import { sendMessageSchema } from "@/modules/directchat/validations/direct-chat.validation";
 
 type MessageParams = {
   messageId: string;

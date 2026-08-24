@@ -1,9 +1,22 @@
-import { authMiddleware } from "@/middleware/auth.middleware";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { unfollowUser } from "@/modules/follows/actions/unfollow-user.action";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const DELETE = authMiddleware(async (_req, user, context) => {
-  const { userId } = await context.params!;
+type UnfollowParams = {
+  userId: string;
+};
 
-  return unfollowUser(user, userId);
-});
+export const DELETE = routeHandler<UnfollowParams>(
+  async (_req, user, { params }) => {
+    const { userId: followingId } = await params;
+
+    if (!followingId) {
+      throw new Error("userId is required");
+    }
+
+    return unfollowUser(user.userId, followingId);
+  },
+  {
+    roles: USER_ROLES,
+  }
+);
