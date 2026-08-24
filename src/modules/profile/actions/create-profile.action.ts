@@ -1,28 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
 import { ProfileService } from "../services/profile.service";
+import { createProfileSchema } from "../validations/profile.validation";
 
 const profileService = new ProfileService();
 
-export async function createProfile(req: NextRequest, user: JwtPayload) {
-  try {
-    const body = await req.json();
+export async function createProfile(userId: string, body: unknown) {
+  const data = createProfileSchema.parse(body);
 
-    const result = await profileService.createProfile(user.userId, body);
-
-    return NextResponse.json(result, {
-      status: 201,
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          error instanceof Error ? error.message : "Something went wrong",
-      },
-      {
-        status: 400,
-      },
-    );
-  }
+  return profileService.createProfile(userId, data);
 }

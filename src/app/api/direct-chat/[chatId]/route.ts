@@ -18,5 +18,5 @@ export const GET = routeHandler<ChatParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

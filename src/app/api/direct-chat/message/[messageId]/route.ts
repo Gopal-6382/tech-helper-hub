@@ -18,7 +18,7 @@ export const PATCH = routeHandler<MessageParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 export const DELETE = routeHandler<MessageParams>(
@@ -33,5 +33,5 @@ export const DELETE = routeHandler<MessageParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

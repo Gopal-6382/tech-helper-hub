@@ -35,7 +35,7 @@ export class ServiceRequestService {
   ) {
     const request = await this.getRequest(requestId);
 
-    if (request.userId !== userId) {
+    if (request.requesterId !== userId) {
       throw new Error("Unauthorized");
     }
 
@@ -49,7 +49,7 @@ export class ServiceRequestService {
   async cancelRequest(userId: string, requestId: string) {
     const request = await this.getRequest(requestId);
 
-    if (request.userId !== userId) {
+    if (request.requesterId !== userId) {
       throw new Error("Unauthorized");
     }
 

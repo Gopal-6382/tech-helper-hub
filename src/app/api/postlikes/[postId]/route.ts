@@ -20,7 +20,7 @@ export const GET = routeHandler<PostLikeRouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // DELETE /api/post-likes/:postId
@@ -36,5 +36,5 @@ export const DELETE = routeHandler<PostLikeRouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

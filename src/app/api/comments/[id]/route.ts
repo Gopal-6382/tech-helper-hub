@@ -20,7 +20,7 @@ export const GET = routeHandler<CommentParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // PATCH /api/comments/:id
@@ -33,9 +33,10 @@ export const PATCH = routeHandler<CommentParams>(
     const data = updateCommentSchema.parse(body);
 
     return updateComment(id, user.userId, data);
-  }, {
+  },
+  {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // DELETE /api/comments/:id
@@ -44,7 +45,8 @@ export const DELETE = routeHandler<CommentParams>(
     const { id } = await params;
 
     return deleteComment(id, user.userId);
-  }, {
+  },
+  {
     roles: USER_ROLES,
-  }
+  },
 );

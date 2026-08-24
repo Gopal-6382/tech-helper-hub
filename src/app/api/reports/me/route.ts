@@ -1,12 +1,13 @@
-import { NextRequest } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { getMyReports } from "@/modules/postreport/actions/get-my-reports.action";
+import { USER_ROLES } from "@/constant/role.constant";
 
-export const GET = authMiddleware(async (req: NextRequest, user) => {
-  return handleRequest(async () => {
+// GET /api/postreport/my
+export const GET = routeHandler(
+  async (_req, user) => {
     return getMyReports(user.userId);
-  });
-});
+  },
+  {
+    roles: USER_ROLES,
+  },
+);

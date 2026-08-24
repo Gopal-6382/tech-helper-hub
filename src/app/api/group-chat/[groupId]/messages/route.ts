@@ -20,7 +20,7 @@ export const GET = routeHandler<GroupMessageParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 export const POST = routeHandler<GroupMessageParams>(
@@ -40,5 +40,5 @@ export const POST = routeHandler<GroupMessageParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

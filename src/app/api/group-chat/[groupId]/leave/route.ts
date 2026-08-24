@@ -18,5 +18,5 @@ export const POST = routeHandler<LeaveGroupParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

@@ -1,9 +1,12 @@
-import { authMiddleware } from "@/middleware/auth.middleware";
-
 import { cancelRequest } from "@/modules/servicerequest/actions/cancel-request.action";
+import { routeHandler } from "@/middleware/route.handler";
+export type RequestParams = {
+  params: {
+    id: string;
+  };
+};
+export const PATCH = routeHandler(async (req, user, { params }) => {
+  const { id } = await params;
 
-export const PATCH = authMiddleware(async (req, user, context) => {
-  const { id } = await context.params;
-
-  return cancelRequest(req, user, id);
+  return cancelRequest(user.userId, id);
 });

@@ -8,5 +8,5 @@ export const GET = routeHandler(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

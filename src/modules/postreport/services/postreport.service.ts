@@ -48,7 +48,7 @@ export class PostReportService {
       throw new Error("User not found");
     }
 
-    if (user.role !== "ADMIN") {
+    if (!user.roles.includes("ADMIN")) {
       throw new Error("Only admin can view all reports");
     }
 
@@ -62,7 +62,7 @@ export class PostReportService {
       throw new Error("User not found");
     }
 
-    if (user.role !== "ADMIN") {
+    if (!user.roles.includes("ADMIN")) {
       throw new Error("Only admin can view reports");
     }
 
@@ -86,7 +86,7 @@ export class PostReportService {
       throw new Error("User not found");
     }
 
-    if (user.role !== "ADMIN") {
+    if (!user.roles.includes("ADMIN")) {
       throw new Error("Only admin can update reports");
     }
 

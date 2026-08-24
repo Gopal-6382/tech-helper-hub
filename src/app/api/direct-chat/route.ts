@@ -7,11 +7,11 @@ import { createConversationSchema } from "@/modules/directchat/validations/direc
 export const POST = routeHandler(
   async (req, user) => {
     const body: CreateConversationDto = await req.json();
-const data = createConversationSchema.parse(body);
+    const data = createConversationSchema.parse(body);
     // Directly return the action; routeHandler wraps it in successResponse automatically
     return createConversation(user.userId, data);
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

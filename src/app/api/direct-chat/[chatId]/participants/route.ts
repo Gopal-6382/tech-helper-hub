@@ -18,5 +18,5 @@ export const GET = routeHandler<ParticipantParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

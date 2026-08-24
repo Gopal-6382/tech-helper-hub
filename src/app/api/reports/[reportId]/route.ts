@@ -1,43 +1,45 @@
-import { NextRequest } from "next/server";
-
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
-
+import { routeHandler } from "@/middleware/route.handler";
 import { getReport } from "@/modules/postreport/actions/get-report.action";
 import { updateReportStatus } from "@/modules/postreport/actions/update-report-status.action";
-
+import { updateReportStatusSchema } from "@/modules/postreport/validations/postreport.validations";
+import { USER_ROLES } from "@/constant/role.constant";
 import { UpdateReportStatusData } from "@/modules/postreport/types/postreport.types";
 
-export const GET = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+type ReportRouteParams = {
+  reportId: string;
+};
 
-      if (!route || !("reportId" in route)) {
-        throw new Error("reportId missing");
-      }
+// GET /api/postreport/[reportId]
+export const GET = routeHandler<ReportRouteParams>(
+  async (_req, user, { params }) => {
+    const { reportId } = await params;
 
-      const { reportId } = route;
+    if (!reportId) {
+      throw new Error("reportId is required");
+    }
 
-      return getReport(reportId, user.userId);
-    });
+    return getReport(reportId, user.userId);
+  },
+  {
+    roles: USER_ROLES,
   },
 );
 
-export const PATCH = authMiddleware(
-  async (req: NextRequest, user, { params }) => {
-    return handleRequest(async () => {
-      const route = await params;
+// PATCH /api/postreport/[reportId]
+export const PATCH = routeHandler<ReportRouteParams>(
+  async (req, user, { params }) => {
+    const { reportId } = await params;
 
-      if (!route || !("reportId" in route)) {
-        throw new Error("reportId missing");
-      }
+    if (!reportId) {
+      throw new Error("reportId is required");
+    }
 
-      const { reportId } = route;
+    const body: UpdateReportStatusData = await req.json();
+    const data = updateReportStatusSchema.parse(body);
 
-      const body: UpdateReportStatusData = await req.json();
-
-      return updateReportStatus(reportId, user.userId, body);
-    });
+    return updateReportStatus(reportId, user.userId, data);
+  },
+  {
+    roles: USER_ROLES,
   },
 );

@@ -11,5 +11,3 @@ export const sendMessageSchema = z.object({
     .min(1, "Message cannot be empty")
     .max(5000, "Message is too long"),
 });
-
-

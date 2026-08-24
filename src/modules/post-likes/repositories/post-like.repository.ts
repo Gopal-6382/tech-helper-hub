@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-import {
-  CreatePostLikeData,
-} from "../types/post-like.types";
+import { CreatePostLikeData } from "../types/post-like.types";
 
 export class PostLikeRepository {
   // Check whether user already liked

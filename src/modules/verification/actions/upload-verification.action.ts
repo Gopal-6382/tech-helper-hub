@@ -1,22 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
-
 import { VerificationService } from "../services/verification.service";
-import { createVerificationSchema } from "../validations/verification.validation";
+import { CreateVerificationDto } from "../types/verification.types";
 
 const verificationService = new VerificationService();
 
-export async function uploadVerification(req: NextRequest, user: JwtPayload) {
-  const body = await req.json();
-
-  const data = createVerificationSchema.parse(body);
-
-  const result = await verificationService.uploadVerification(
-    user.userId,
-    data,
-  );
-
-  return NextResponse.json(result, {
-    status: 201,
-  });
+export async function uploadVerification(
+  userId: string,
+  data: CreateVerificationDto,
+) {
+  return verificationService.uploadVerification(userId, data);
 }

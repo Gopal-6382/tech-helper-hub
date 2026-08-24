@@ -21,23 +21,23 @@ export class ProfessionalRepository {
     });
   }
 
- // In professional.repository.ts
-async create(userId: string, data: BecomeProfessionalDto) {
-  const updatedUser = await prisma.user.update({
-    where: { id: userId },
-    data: {
-      roles: { push: Role.PROFESSIONAL },
-      professionalProfile: {
-        create: data,
+  // In professional.repository.ts
+  async create(userId: string, data: BecomeProfessionalDto) {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        roles: { push: Role.PROFESSIONAL },
+        professionalProfile: {
+          create: data,
+        },
       },
-    },
-    include: {
-      professionalProfile: true,
-    },
-  });
+      include: {
+        professionalProfile: true,
+      },
+    });
 
-  return updatedUser.professionalProfile;
-}
+    return updatedUser.professionalProfile;
+  }
 
   async update(userId: string, data: UpdateProfessionalDto) {
     return prisma.professionalProfile.update({

@@ -20,7 +20,7 @@ export const GET = routeHandler<PostRouteParams>(
     }
 
     return getPost(id);
-  }
+  },
 );
 
 // PATCH /api/posts/[id]
@@ -32,14 +32,14 @@ export const PATCH = routeHandler<PostRouteParams>(
       throw new Error("Post ID is required");
     }
 
-    const body :UpdatePostDto= await req.json();
-const data = updatePostSchema.parse(body);
+    const body: UpdatePostDto = await req.json();
+    const data = updatePostSchema.parse(body);
 
     return updatePost(id, user.userId, data);
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // DELETE /api/posts/[id]
@@ -55,5 +55,5 @@ export const DELETE = routeHandler<PostRouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

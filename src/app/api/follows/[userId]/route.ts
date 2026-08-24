@@ -18,5 +18,5 @@ export const DELETE = routeHandler<UnfollowParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

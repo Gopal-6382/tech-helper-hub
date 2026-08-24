@@ -20,7 +20,7 @@ export const GET = routeHandler<GroupMemberParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 export const POST = routeHandler<GroupMemberParams>(
@@ -37,5 +37,5 @@ export const POST = routeHandler<GroupMemberParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

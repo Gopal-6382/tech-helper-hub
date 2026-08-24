@@ -20,7 +20,7 @@ export const PATCH = routeHandler<GroupParams>(
     const { groupId } = await params;
 
     const body: updateGroupData = await req.json();
-const data = updateGroupSchema.parse(body);
+    const data = updateGroupSchema.parse(body);
     return updateGroup(groupId, user.userId, data);
   },
 );

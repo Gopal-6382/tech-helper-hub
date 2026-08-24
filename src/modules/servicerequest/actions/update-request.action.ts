@@ -1,25 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { JwtPayload } from "@/lib/auth";
-
 import { ServiceRequestService } from "../services/service-request.service";
-import { updateServiceRequestSchema } from "../validations/service-request.validation";
+import { UpdateServiceRequestDto } from "../types/service-request.types";
 
 const serviceRequestService = new ServiceRequestService();
 
 export async function updateRequest(
-  req: NextRequest,
-  user: JwtPayload,
+  userId: string,
   requestId: string,
+  data: UpdateServiceRequestDto,
 ) {
-  const body = await req.json();
-
-  const data = updateServiceRequestSchema.parse(body);
-
-  const result = await serviceRequestService.updateRequest(
-    user.userId,
-    requestId,
-    data,
-  );
-
-  return NextResponse.json(result);
+  return await serviceRequestService.updateRequest(userId, requestId, data);
 }

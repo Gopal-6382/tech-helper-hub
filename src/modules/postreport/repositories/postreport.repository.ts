@@ -33,7 +33,7 @@ export class PostReportRepository {
       where: { id },
       select: {
         id: true,
-        role: true,
+        roles: true,
       },
     });
   }

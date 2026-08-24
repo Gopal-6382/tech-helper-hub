@@ -3,8 +3,7 @@ import { CreateCommentDto } from "../types/comment.types";
 
 const commentService = new CommentService();
 
-export async function createComment( user: string,data: CreateCommentDto) {
-
+export async function createComment(user: string, data: CreateCommentDto) {
   const result = await commentService.createComment(user, data);
 
   return result;

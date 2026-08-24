@@ -7,10 +7,10 @@ import { createIssueReportSchema } from "@/modules/mailreports/validations/issue
 export const POST = routeHandler(
   async (req, user) => {
     const body: CreateIssueReportDto = await req.json();
-const data=createIssueReportSchema.parse(body);
+    const data = createIssueReportSchema.parse(body);
     return createIssueReport(user.userId, data);
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

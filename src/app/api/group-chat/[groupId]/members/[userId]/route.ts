@@ -20,7 +20,7 @@ export const PATCH = routeHandler<GroupAdminParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 export const DELETE = routeHandler<GroupAdminParams>(
@@ -35,5 +35,5 @@ export const DELETE = routeHandler<GroupAdminParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

@@ -19,5 +19,5 @@ export const DELETE = routeHandler<GroupAdminParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

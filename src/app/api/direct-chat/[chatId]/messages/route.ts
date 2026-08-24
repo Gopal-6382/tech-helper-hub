@@ -20,7 +20,7 @@ export const GET = routeHandler<MessageRouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 export const POST = routeHandler<MessageRouteParams>(
@@ -39,5 +39,5 @@ export const POST = routeHandler<MessageRouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

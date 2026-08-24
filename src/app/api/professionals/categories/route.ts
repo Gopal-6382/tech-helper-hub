@@ -12,17 +12,17 @@ export const GET = routeHandler(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // PATCH: Update professional categories
 export const PATCH = routeHandler(
   async (req, user) => {
-    const body :UpdateProfessionalCategoriesDto= await req.json();
-const data = updateProfessionalCategoriesSchema.parse(body);
+    const body: UpdateProfessionalCategoriesDto = await req.json();
+    const data = updateProfessionalCategoriesSchema.parse(body);
     return updateCategories(user.userId, data);
   },
   {
     roles: PROFESSIONAL_ROLES,
-  }
+  },
 );

@@ -10,5 +10,5 @@ export const POST = routeHandler(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

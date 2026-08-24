@@ -6,9 +6,8 @@ const commentService = new CommentService();
 export async function updateComment(
   user: string,
   id: string,
-  data: UpdateCommentDto
+  data: UpdateCommentDto,
 ) {
-
   const result = await commentService.updateComment(id, user, data);
 
   return result;
