@@ -1,10 +1,7 @@
-import { NextRequest } from "next/server";
-import { authMiddleware } from "@/middleware/auth.middleware";
-import { handleRequest } from "@/utils/api.helper";
+import { routeHandler } from "@/middleware/route.handler";
+
 import { getGroup } from "@/modules/groupchat/actions/get-my-groups.action";
 
-export const GET = authMiddleware(async (req: NextRequest, user) => {
-  return handleRequest(async () => {
-    return getGroup(user.userId);
-  });
+export const GET = routeHandler(async (req, user) => {
+  return getGroup(user.userId);
 });
