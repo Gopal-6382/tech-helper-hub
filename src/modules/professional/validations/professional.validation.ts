@@ -41,9 +41,4 @@ export const updateProfessionalCategoriesSchema = z.object({
     .min(1, "Select at least one category"),
 });
 
-export type BecomeProfessionalDto = z.infer<typeof becomeProfessionalSchema>;
-export type UpdateProfessionalDto = z.infer<typeof updateProfessionalSchema>;
-export type UpdateAvailabilityDto = z.infer<typeof updateAvailabilitySchema>;
-export type UpdateProfessionalCategoriesDto = z.infer<
-  typeof updateProfessionalCategoriesSchema
->;
+////////

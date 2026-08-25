@@ -1,7 +1,7 @@
 import { BookingStatus } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
-import { CreateBookingData, BookingStatusDto } from "../types/booking.types";
+import { CreateBookingData, UpdateBookingDto } from "../types/booking.types";
 
 export class BookingRepository {
   // Find one booking by booking ID with all related details
@@ -70,7 +70,7 @@ export class BookingRepository {
   }
 
   // Update booking details
-  async update(id: string, data: BookingStatusDto) {
+  async update(id: string, data: UpdateBookingDto) {
     return prisma.booking.update({
       where: {
         id,

@@ -17,8 +17,5 @@ export const createCommentReplyDataSchema = z.object({
     .max(1000, "Content must be less than 1000 characters"),
 });
 
-export type CreateCommentReplyData = z.infer<
-  typeof createCommentReplyDataSchema
->;
 
-export type UpdateCommentReplyDto = z.infer<typeof updateCommentReplySchema>;
+

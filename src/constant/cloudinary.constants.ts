@@ -1,4 +1,4 @@
-export const CLOUDINARY_ROOT = "tech-helper-hub";
+const CLOUDINARY_ROOT = "tech-helper-hub";
 
 export const CLOUDINARY_FOLDERS = {
   users: `${CLOUDINARY_ROOT}/users`,

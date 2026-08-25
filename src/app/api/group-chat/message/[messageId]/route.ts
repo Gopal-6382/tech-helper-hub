@@ -24,7 +24,7 @@ export const PATCH = routeHandler<MessageParams>(
 );
 
 export const DELETE = routeHandler<MessageParams>(
-  async (req, user, { params }) => {
+  async (_req, user, { params }) => {
     const { messageId } = await params;
 
     return deleteMessage(messageId, user.userId);

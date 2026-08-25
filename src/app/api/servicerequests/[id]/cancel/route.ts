@@ -5,7 +5,7 @@ export type RequestParams = {
     id: string;
   };
 };
-export const PATCH = routeHandler(async (req, user, { params }) => {
+export const PATCH = routeHandler(async (_req, user, { params }) => {
   const { id } = await params;
 
   return cancelRequest(user.userId, id);

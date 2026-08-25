@@ -1,5 +1,3 @@
-import { Role } from "@prisma/client";
-
 export type RegisterUserDto = {
   name: string;
   email: string;
@@ -17,14 +15,4 @@ export type ResetPasswordDto = {
   password: string;
 };
 
-export type AuthUser = {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  avatar: string | null;
-  roles: Role[];
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+

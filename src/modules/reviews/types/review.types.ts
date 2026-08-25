@@ -1,5 +1,4 @@
-import { Review } from "@prisma/client";
-
+/*/--
 /**
  * DTO received from client.
  * userId and professionalId come from Booking,
@@ -31,4 +30,3 @@ export interface UpdateReviewDto {
 /**
  * Review response type.
  */
-export type ReviewResponse = Review;

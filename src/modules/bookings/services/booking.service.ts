@@ -4,7 +4,7 @@ import { BookingRepository } from "../repositories/booking.repository";
 import {
   CreateBookingDto,
   CreateBookingData,
-  BookingStatusDto,
+  UpdateBookingDto,
 } from "../types/booking.types";
 
 export class BookingService {
@@ -37,7 +37,7 @@ export class BookingService {
     return this.bookingRepository.findByProfessionalId(professionalId);
   }
 
-  async updateBooking(id: string, data: BookingStatusDto) {
+  async updateBooking(id: string, data: UpdateBookingDto) {
     await this.getBooking(id);
 
     return this.bookingRepository.update(id, data);

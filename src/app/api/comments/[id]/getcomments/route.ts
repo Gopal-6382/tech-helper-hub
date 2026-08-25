@@ -8,7 +8,7 @@ type CommentParams = {
 
 // GET /api/comments?postId=xxxx
 export const GET = routeHandler<CommentParams>(
-  async (req, _user, { params }) => {
+  async (_req, _user, { params }) => {
     const { id } = await params;
 
     if (!id) {

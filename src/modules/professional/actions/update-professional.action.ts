@@ -1,9 +1,10 @@
 import { ProfessionalService } from "../services/professional.service";
-import { updateProfessionalSchema } from "../validations/professional.validation";
+import { UpdateProfessionalDto } from "../types/professional.types";
+import {  updateProfessionalSchema } from "../validations/professional.validation";
 
 const professionalService = new ProfessionalService();
 
-export async function updateProfessional(userId: string, body: unknown) {
+export async function updateProfessional(userId: string, body: UpdateProfessionalDto) {
   const data = updateProfessionalSchema.parse(body);
 
   return professionalService.updateProfessional(userId, data);

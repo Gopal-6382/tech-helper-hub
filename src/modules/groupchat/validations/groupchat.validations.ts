@@ -16,7 +16,7 @@ export const createGroupSchema = z.object({
 });
 
 export const addMemberSchema = z.object({
-  userId: z.cuid2({ message: "Invalid user id" }),
+  userId: z.uuid({ message: "Invalid user id" }),
 });
 
 export const CreateGroupMessage = z.object({
@@ -37,6 +37,4 @@ export const updateGroupSchema = z.object({
   image: z.url().optional(),
 });
 
-export const makeAdminSchema = z.object({
-  isAdmin: z.boolean(),
-});
+

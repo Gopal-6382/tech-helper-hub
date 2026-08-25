@@ -50,12 +50,6 @@ export interface UpdatePostDto {
   latitude?: number;
 
   longitude?: number;
-}
+  status?: PostStatus;
 
-// --------------------------------------------------
-// Only status update.
-// Used when solving/closing a post.
-// --------------------------------------------------
-export interface UpdatePostStatusDto {
-  status: PostStatus;
 }

@@ -9,7 +9,7 @@ type GroupParams = {
   groupId: string;
 };
 
-export const GET = routeHandler<GroupParams>(async (req, user, { params }) => {
+export const GET = routeHandler<GroupParams>(async (_req, user, { params }) => {
   const { groupId } = await params;
 
   return getGroup(groupId, user.userId);
@@ -26,7 +26,7 @@ export const PATCH = routeHandler<GroupParams>(
 );
 
 export const DELETE = routeHandler<GroupParams>(
-  async (req, user, { params }) => {
+  async (_req, user, { params }) => {
     const { groupId } = await params;
 
     return deleteGroup(groupId, user.userId);

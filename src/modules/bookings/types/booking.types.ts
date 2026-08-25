@@ -19,7 +19,4 @@ export interface UpdateBookingDto {
   acceptedAt?: Date | null;
 }
 
-export interface BookingStatusDto {
-  status: BookingStatus;
-  acceptedAt: Date | null;
-}
+

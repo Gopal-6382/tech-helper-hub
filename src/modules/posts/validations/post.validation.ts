@@ -51,11 +51,5 @@ export const updatePostSchema = z.object({
   latitude: z.number().optional(),
 
   longitude: z.number().optional(),
-});
-
-// --------------------------------------------------
-// Validation for changing only the post status.
-// --------------------------------------------------
-export const updatePostStatusSchema = z.object({
-  status: z.enum(PostStatus),
+  status: z.enum(PostStatus).optional(),
 });

@@ -59,5 +59,3 @@ export class CloudinaryService {
     });
   }
 }
-
-export const cloudinaryService = new CloudinaryService();

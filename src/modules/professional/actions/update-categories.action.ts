@@ -9,3 +9,4 @@ export async function updateCategories(
 ) {
   return await professionalService.updateCategories(user, body);
 }
+

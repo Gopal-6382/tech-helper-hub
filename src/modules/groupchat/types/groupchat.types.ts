@@ -29,8 +29,8 @@ export interface updateGroupData {
 
 export interface AddMemberData {
   groupId: string;
+  requesterId: string;
   userId: string;
-  isAdmin: boolean;
 }
 
 export interface CreateGroupMessageData {

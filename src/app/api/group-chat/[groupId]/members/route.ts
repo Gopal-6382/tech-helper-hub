@@ -3,6 +3,7 @@ import { getMembers } from "@/modules/groupchat/actions/get-members.action";
 import { addMember } from "@/modules/groupchat/actions/add-member.action";
 import { AddMemberDto } from "@/modules/groupchat/types/groupchat.types";
 import { USER_ROLES } from "@/constant/role.constant";
+import { addMemberSchema } from "@/modules/groupchat/validations/groupchat.validations";
 
 type GroupMemberParams = {
   groupId: string;
@@ -32,8 +33,13 @@ export const POST = routeHandler<GroupMemberParams>(
     }
 
     const body: AddMemberDto = await req.json();
+    const data = addMemberSchema.parse(body);
 
-    return addMember(groupId, user.userId, body.userId);
+    return addMember({
+      groupId,
+      requesterId: data.userId,
+      userId: user.userId,
+    });
   },
   {
     roles: USER_ROLES,
