@@ -192,7 +192,7 @@ model ProfessionalProfile {
   headline        String?
   description     String?     @db.Text
   experienceYears Int         @default(0)
-  hourlyRate      Float?
+  hourlyRate     Decimal @db.Decimal(10,2)
   serviceMode     ServiceMode @default(BOTH)
   workingRadiusKm Int         @default(10)
   averageRating   Float       @default(0)
