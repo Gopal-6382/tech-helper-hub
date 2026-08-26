@@ -6,17 +6,19 @@ import {
   getCategoriesAction,
 } from "@/admin/categories/actions/main.action";
 
-// GET /api/categories
 export const GET = routeHandler(
   async (req) => {
     const { searchParams } = new URL(req.url);
-
-    // Explicit string comparison
+    // Parse the query parameter explicitly
+    if (!searchParams.get("includeInactive")) {
+      return getCategoriesAction(true);
+    }
     const includeInactive = searchParams.get("includeInactive") === "true";
 
+    // Call service directly (bypass Server Action)
     return getCategoriesAction(includeInactive);
   },
-  { roles: USER_ROLES }
+  { roles: USER_ROLES },
 );
 
 // POST /api/categories
@@ -27,5 +29,5 @@ export const POST = routeHandler(
 
     return createCategoryAction(parsed);
   },
-  { roles: USER_ROLES }
+  { roles: USER_ROLES },
 );

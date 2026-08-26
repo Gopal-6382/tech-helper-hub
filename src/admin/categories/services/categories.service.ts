@@ -17,7 +17,7 @@ export class CategoryService {
     });
   }
 
-  async getCategories(includeInactive = false) {
+  async getCategories(includeInactive:boolean= true) {
     return this.categoryRepo.findAll(includeInactive);
   }
 

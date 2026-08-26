@@ -28,9 +28,11 @@ export class CategoryRepository {
     });
   }
   
- async findAll(includeInactive: boolean = false) {
+// category.repository.ts
+
+async findAll(includeInactive: boolean = true) {
   return prisma.category.findMany({
-    where: includeInactive ? {} : { isActive: true },
+    where: { isActive: includeInactive }, 
     orderBy: { name: "asc" },
   });
 }
