@@ -22,23 +22,57 @@ export class ProfessionalRepository {
   }
 
   // In professional.repository.ts
-  async create(userId: string, data: BecomeProfessionalDto) {
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        roles: { push: Role.PROFESSIONAL },
-        professionalProfile: {
-          create: data,
-        },
-      },
-      include: {
-        professionalProfile: true,
-      },
-    });
+async create(userId: string, data: BecomeProfessionalDto) {
+  const { categoryIds, ...profileData } = data;
 
-    return updatedUser.professionalProfile;
+  // 1. Fetch current roles to avoid duplicate "PROFESSIONAL" entries
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { roles: true },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
   }
 
+  // 2. Add PROFESSIONAL role if not already present
+  const updatedRoles = user.roles.includes(Role.PROFESSIONAL)
+    ? user.roles
+    : [...user.roles, Role.PROFESSIONAL];
+
+  // 3. Update User and Create Professional Profile in a single transaction
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      roles: updatedRoles,
+      professionalProfile: {
+        create: {
+          ...profileData,
+          categories: {
+            create: categoryIds.map((categoryId) => ({
+              category: {
+                connect: { id: categoryId },
+              },
+            })),
+          },
+        },
+      },
+    },
+    include: {
+      professionalProfile: {
+        include: {
+          categories: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return updatedUser.professionalProfile;
+}
   async update(userId: string, data: UpdateProfessionalDto) {
     return prisma.professionalProfile.update({
       where: {
