@@ -47,11 +47,26 @@ export class UserRepository {
     });
   }
 
-  async delete(userId: string) {
-    return prisma.user.delete({
-      where: {
-        id: userId,
-      },
+  async deactivate(userId: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { isActive: false },
     });
+  }
+
+  async activate(userId: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { isActive: true },
+    });
+  }
+
+  async getActiveStatus(userId: string): Promise<boolean> {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { isActive: true },
+    });
+
+    return user?.isActive ?? false;
   }
 }

@@ -104,24 +104,41 @@ export class UserService {
     };
   }
 
-  async deleteMe(userId: string, password: string) {
+  async deactivateMeAction(userId: string) {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordCorrect) {
-      throw new Error("Password is incorrect");
+    if (!user.isActive) {
+      throw new Error("Your account is already deactivated");
     }
 
-    await this.userRepository.delete(userId);
+    await this.userRepository.deactivate(userId);
 
     return {
       success: true,
-      message: "Account deleted successfully",
+      message: "Account deactivated successfully",
+    };
+  }
+
+  async activateMeAction(userId: string) {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (user.isActive) {
+      throw new Error("Your account is already active");
+    }
+
+    await this.userRepository.activate(userId);
+
+    return {
+      success: true,
+      message: "Account activated successfully",
     };
   }
 }

@@ -1,10 +1,9 @@
 import { routeHandler } from "@/middleware/route.handler";
 import { getMeAction } from "@/modules/users/actions/get-me.action";
 import { updateMeAction } from "@/modules/users/actions/update-me.action";
-import { deleteMeAction } from "@/modules/users/actions/delete-me.action";
+import { deactivateMeAction } from "@/modules/users/actions/deactivateMeAction.action";
 import {
   updateMeSchema,
-  deleteUserSchema,
 } from "@/modules/users/validations/user.validation";
 import { USER_ROLES } from "@/constant/role.constant";
 
@@ -33,11 +32,8 @@ export const PATCH = routeHandler(
 
 // DELETE /api/users/me
 export const DELETE = routeHandler(
-  async (req, user) => {
-    const body = await req.json();
-    const data = deleteUserSchema.parse(body);
-
-    return deleteMeAction(user.userId, data);
+  async (_req, user) => {
+    return deactivateMeAction(user.userId);
   },
   {
     roles: USER_ROLES,
