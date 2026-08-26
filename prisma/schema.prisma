@@ -31,7 +31,6 @@ enum RequestStatus {
 enum BookingStatus {
   PENDING
   ACCEPTED
-  REJECTED
   STARTED
   COMPLETED
   CANCELLED
