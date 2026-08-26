@@ -39,9 +39,7 @@ export class ProfessionalService {
 
     return this.professionalRepository.updateAvailability(userId, isAvailable);
   }
-  async getCategories() {
-    return this.professionalRepository.getCategories();
-  }
+
   async updateCategories(
     userId: string,
     data: UpdateProfessionalCategoriesDto,

@@ -110,11 +110,4 @@ async create(userId: string, data: BecomeProfessionalDto) {
       })),
     });
   }
-  async getCategories() {
-    return prisma.category.findMany({
-      orderBy: {
-        name: "asc",
-      },
-    });
-  }
 }
