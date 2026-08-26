@@ -33,6 +33,4 @@ export const changePasswordSchema = z
     message: "New password must be different from current password",
     path: ["newPassword"],
   });
-export const deleteUserSchema = z.object({
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
+

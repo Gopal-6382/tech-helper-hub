@@ -9,6 +9,4 @@ export type ChangePasswordDto = {
   currentPassword: string;
   newPassword: string;
 };
-export type DeleteUserDto = {
-  password: string;
-};
+

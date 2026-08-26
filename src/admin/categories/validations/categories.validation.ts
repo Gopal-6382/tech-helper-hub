@@ -25,5 +25,7 @@ export const updateCategorySchema = createCategorySchema.partial().extend({
 
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
 export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
-export const UpdateCategory = createCategorySchema.partial();
-export type updatecategory=z.infer<typeof UpdateCategory >;
+export type updatecategory = {
+  name?: string;
+  slug?: string;
+}
