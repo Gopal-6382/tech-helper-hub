@@ -18,7 +18,7 @@ export class CategoryService {
   }
 
   async getCategories(includeInactive = false) {
-    return this.categoryRepo.findAll(!includeInactive);
+    return this.categoryRepo.findAll(includeInactive);
   }
 
   async updateCategory(id: string, input: UpdateCategoryInput) {
@@ -50,4 +50,28 @@ export class CategoryService {
 
     return this.categoryRepo.delete(id);
   }
+
+// Category Service
+
+async deactivateCategory(id: string) {
+  const category = await this.categoryRepo.findById(id);
+  if (!category) {
+    throw new Error("Category not found");
+  } 
+  if (!category.isActive) {
+    throw new Error("Category is already deactivated");
+  }
+  return this.categoryRepo.deactivate(id);
+}
+
+async activateCategory(id: string) {
+  const category = await this.categoryRepo.findById(id);
+  if (!category) {
+    throw new Error("Category not found");
+  } 
+  if (category.isActive) {
+    throw new Error("Category is already active");
+  }
+  return this.categoryRepo.activate(id);
+}
 }

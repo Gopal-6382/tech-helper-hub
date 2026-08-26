@@ -28,12 +28,12 @@ export class CategoryRepository {
     });
   }
   
-  async findAll(onlyActive = true) {
-    return prisma.category.findMany({
-      where: onlyActive ? { isActive: true } : {},
-      orderBy: { name: "asc" },
-    });
-  }
+ async findAll(includeInactive: boolean = false) {
+  return prisma.category.findMany({
+    where: includeInactive ? {} : { isActive: true },
+    orderBy: { name: "asc" },
+  });
+}
 
   async update(id: string, data: UpdateCategoryInput) {
     return prisma.category.update({
@@ -64,5 +64,24 @@ export class CategoryRepository {
 
   async delete(id: string) {
     return prisma.category.delete({ where: { id } });
+  }
+// Deactivate Category (Soft Delete)
+  async deactivate(id: string) {
+    return prisma.category.update({
+      where: { id },
+      data: {
+        isActive: false,
+      },
+    });
+  }
+
+  // Activate Category
+  async activate(id: string) {
+    return prisma.category.update({
+      where: { id },
+      data: {
+        isActive: true,
+      },
+    });
   }
 }

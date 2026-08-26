@@ -1,8 +1,7 @@
-"use me server";
+"use server";
 
 import { CategoryService } from "../services/categories.service";
 import {
-  createCategorySchema,
   CreateCategoryInput,
   updateCategorySchema,
   UpdateCategoryInput,
@@ -11,9 +10,8 @@ import {
 const categoryService = new CategoryService();
 
 export async function createCategoryAction(data: CreateCategoryInput) {
-  const parsed = createCategorySchema.parse(data);
-  const category = await categoryService.createCategory(parsed);
-  return { success: true, data: category };
+  const category = await categoryService.createCategory(data);
+  return category;
 }
 
 export async function updateCategoryAction(
@@ -21,11 +19,22 @@ export async function updateCategoryAction(
   data: UpdateCategoryInput,
 ) {
   const parsed = updateCategorySchema.parse(data);
-  const category = await categoryService.updateCategory(id, parsed);
-  return { success: true, data: category };
+  return categoryService.updateCategory(id, parsed);
 }
 
 export async function deleteCategoryAction(id: string) {
   await categoryService.deleteCategory(id);
-  return { success: true };
+  return { message: "Category deleted successfully" };
+}
+
+export async function getCategoriesAction(includeInactive = true) {
+  return categoryService.getCategories(includeInactive);
+}
+
+export async function deactivateCategoryAction(id: string) {
+  return categoryService.deactivateCategory(id);
+}
+
+export async function activateCategoryAction(id: string) {
+  return categoryService.activateCategory(id);
 }

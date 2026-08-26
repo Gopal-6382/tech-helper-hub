@@ -1,32 +1,31 @@
-import { routeHandler } from "@/middleware/route.handler"; // Adjust import path to your routeHandler file
-import { CategoryService } from "@/admin/categories/services/categories.service";
-import { updateCategorySchema } from "@/admin/categories/validations/categories.validation";
+import { routeHandler } from "@/middleware/route.handler";
 import { USER_ROLES } from "@/constant/role.constant";
-
-const categoryService = new CategoryService();
+import { updateCategorySchema } from "@/admin/categories/validations/categories.validation";
+import {
+  updateCategoryAction,
+  deleteCategoryAction,
+} from "@/admin/categories/actions/main.action";
 
 type CategoryParams = { id: string };
 
-// PUT /api/categories/[id] (Admin only)
+// PATCH /api/categories/[id]
 export const PATCH = routeHandler<CategoryParams>(
   async (req, _user, context) => {
     const { id } = await context.params;
     const body = await req.json();
     const parsed = updateCategorySchema.parse(body);
 
-    return categoryService.updateCategory(id, parsed);
+    return updateCategoryAction(id, parsed);
   },
-  {  roles:USER_ROLES,}
+  { roles: USER_ROLES }
 );
 
-// DELETE /api/categories/[id] (Admin only)
+// DELETE /api/categories/[id]
 export const DELETE = routeHandler<CategoryParams>(
   async (_req, _user, context) => {
     const { id } = await context.params;
 
-    await categoryService.deleteCategory(id);
-    return { message: "Category deleted successfully" };
+    return deleteCategoryAction(id);
   },
-  {  roles:USER_ROLES,}
-
+  { roles: USER_ROLES }
 );
