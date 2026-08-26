@@ -26,3 +26,28 @@ export function handleApiError(error: unknown) {
 
   return errorResponse(message, 500);
 }
+
+export class AppError extends Error {
+  constructor(public message: string, public statusCode: number = 400) {
+    super(message);
+    this.name = "AppError";
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(message = "Resource not found") {
+    super(message, 404);
+  }
+}
+
+export class UnauthorizedError extends AppError {
+  constructor(message = "Unauthorized access") {
+    super(message, 403);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message = "Operation conflict or already processed") {
+    super(message, 409);
+  }
+}
