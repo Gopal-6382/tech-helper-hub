@@ -1,12 +1,11 @@
 import { ServiceRequestService } from "../services/service-request.service";
-import { UpdateServiceRequestDto } from "../types/service-request.types";
-
+import { UpdateServiceRequestDto } from "../validations/service-request.validation";
 const serviceRequestService = new ServiceRequestService();
 
-export async function updateRequest(
+export async function updateRequestAction(
   userId: string,
   requestId: string,
-  data: UpdateServiceRequestDto,
+  dto: UpdateServiceRequestDto
 ) {
-  return await serviceRequestService.updateRequest(userId, requestId, data);
+  return serviceRequestService.updateRequest(userId, requestId, dto);
 }

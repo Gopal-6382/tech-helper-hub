@@ -21,6 +21,7 @@ export const createServiceRequestSchema = z.object({
   latitude: z.number().optional(),
 
   longitude: z.number().optional(),
+  targetProfessionalId: z.uuid().optional(),
 });
 
 export const updateServiceRequestSchema = createServiceRequestSchema
@@ -28,3 +29,6 @@ export const updateServiceRequestSchema = createServiceRequestSchema
   .extend({
     status: z.enum(RequestStatus).optional(),
   });
+
+export type CreateServiceRequestDto = z.infer<typeof createServiceRequestSchema>;
+export type UpdateServiceRequestDto = z.infer<typeof updateServiceRequestSchema>;

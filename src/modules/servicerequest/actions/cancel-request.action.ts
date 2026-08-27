@@ -1,7 +1,8 @@
+// src/modules/service-request/actions/cancel-request.action.ts
 import { ServiceRequestService } from "../services/service-request.service";
 
 const serviceRequestService = new ServiceRequestService();
 
-export async function cancelRequest(user: string, requestId: string) {
-  return await serviceRequestService.cancelRequest(user, requestId);
+export async function cancelRequestAction(userId: string, requestId: string) {
+  return serviceRequestService.cancelRequest(userId, requestId);
 }

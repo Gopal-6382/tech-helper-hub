@@ -1,11 +1,8 @@
 import { ServiceRequestService } from "../services/service-request.service";
-import { CreateServiceRequestDto } from "../types/service-request.types";
+import { CreateServiceRequestDto } from "../validations/service-request.validation";
 
 const serviceRequestService = new ServiceRequestService();
 
-export async function createRequest(
-  user: string,
-  data: CreateServiceRequestDto,
-) {
-  return await serviceRequestService.createRequest(user, data);
+export async function createRequestAction(userId: string, data: CreateServiceRequestDto) {
+  return serviceRequestService.createRequest(userId, data);
 }
