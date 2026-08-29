@@ -36,5 +36,3 @@ export const updateGroupSchema = z.object({
 
   image: z.url().optional(),
 });
-
-

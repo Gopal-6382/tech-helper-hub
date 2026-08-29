@@ -16,6 +16,3 @@ export const createCommentReplyDataSchema = z.object({
     .min(1, "Content is required")
     .max(1000, "Content must be less than 1000 characters"),
 });
-
-
-

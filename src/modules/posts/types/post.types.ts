@@ -51,5 +51,4 @@ export interface UpdatePostDto {
 
   longitude?: number;
   status?: PostStatus;
-
 }

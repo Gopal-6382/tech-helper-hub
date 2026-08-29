@@ -8,6 +8,6 @@ export const DELETE = routeHandler(
   },
   {
     roles: USER_ROLES,
-    skipActiveCheck: true
+    skipActiveCheck: true,
   },
 );

@@ -2,9 +2,7 @@ import { routeHandler } from "@/middleware/route.handler";
 import { getMeAction } from "@/modules/users/actions/get-me.action";
 import { updateMeAction } from "@/modules/users/actions/update-me.action";
 import { deactivateMeAction } from "@/modules/users/actions/deactivateMeAction.action";
-import {
-  updateMeSchema,
-} from "@/modules/users/validations/user.validation";
+import { updateMeSchema } from "@/modules/users/validations/user.validation";
 import { USER_ROLES } from "@/constant/role.constant";
 
 // GET /api/users/me
