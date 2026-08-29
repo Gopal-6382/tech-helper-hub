@@ -28,7 +28,10 @@ export function handleApiError(error: unknown) {
 }
 
 export class AppError extends Error {
-  constructor(public message: string, public statusCode: number = 400) {
+  constructor(
+    public message: string,
+    public statusCode: number = 400,
+  ) {
     super(message);
     this.name = "AppError";
   }

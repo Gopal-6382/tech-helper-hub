@@ -17,7 +17,7 @@ export const PATCH = routeHandler<CategoryParams>(
 
     return updateCategoryAction(id, parsed);
   },
-  { roles: USER_ROLES }
+  { roles: USER_ROLES },
 );
 
 // DELETE /api/categories/[id]
@@ -27,5 +27,5 @@ export const DELETE = routeHandler<CategoryParams>(
 
     return deleteCategoryAction(id);
   },
-  { roles: USER_ROLES }
+  { roles: USER_ROLES },
 );

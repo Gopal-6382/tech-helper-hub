@@ -1,11 +1,17 @@
 import { CategoryRepository } from "../repositories/categories.repository";
-import { CreateCategoryInput, UpdateCategoryInput } from "../validations/categories.validation";
+import {
+  CreateCategoryInput,
+  UpdateCategoryInput,
+} from "../validations/categories.validation";
 
 export class CategoryService {
   private categoryRepo = new CategoryRepository();
 
   async createCategory(input: CreateCategoryInput) {
-    const existing = await this.categoryRepo.findByNameOrSlug(input.name, input.slug);
+    const existing = await this.categoryRepo.findByNameOrSlug(
+      input.name,
+      input.slug,
+    );
     if (existing) {
       throw new Error("Category with this name or slug already exists");
     }
@@ -17,7 +23,7 @@ export class CategoryService {
     });
   }
 
-  async getCategories(includeInactive:boolean= true) {
+  async getCategories(includeInactive: boolean = true) {
     return this.categoryRepo.findAll(includeInactive);
   }
 
@@ -28,9 +34,14 @@ export class CategoryService {
     }
 
     if (input.name || input.slug) {
-      const duplicate = await this.categoryRepo.findByNameOrSlug(input.name, input.slug);
+      const duplicate = await this.categoryRepo.findByNameOrSlug(
+        input.name,
+        input.slug,
+      );
       if (duplicate && duplicate.id !== id) {
-        throw new Error("Another category with this name or slug already exists");
+        throw new Error(
+          "Another category with this name or slug already exists",
+        );
       }
     }
 
@@ -45,33 +56,35 @@ export class CategoryService {
 
     const isUsed = await this.categoryRepo.hasRelations(id);
     if (isUsed) {
-      throw new Error("Cannot delete category because it is linked to existing data. Disable it instead.");
+      throw new Error(
+        "Cannot delete category because it is linked to existing data. Disable it instead.",
+      );
     }
 
     return this.categoryRepo.delete(id);
   }
 
-// Category Service
+  // Category Service
 
-async deactivateCategory(id: string) {
-  const category = await this.categoryRepo.findById(id);
-  if (!category) {
-    throw new Error("Category not found");
-  } 
-  if (!category.isActive) {
-    throw new Error("Category is already deactivated");
+  async deactivateCategory(id: string) {
+    const category = await this.categoryRepo.findById(id);
+    if (!category) {
+      throw new Error("Category not found");
+    }
+    if (!category.isActive) {
+      throw new Error("Category is already deactivated");
+    }
+    return this.categoryRepo.deactivate(id);
   }
-  return this.categoryRepo.deactivate(id);
-}
 
-async activateCategory(id: string) {
-  const category = await this.categoryRepo.findById(id);
-  if (!category) {
-    throw new Error("Category not found");
-  } 
-  if (category.isActive) {
-    throw new Error("Category is already active");
+  async activateCategory(id: string) {
+    const category = await this.categoryRepo.findById(id);
+    if (!category) {
+      throw new Error("Category not found");
+    }
+    if (category.isActive) {
+      throw new Error("Category is already active");
+    }
+    return this.categoryRepo.activate(id);
   }
-  return this.categoryRepo.activate(id);
-}
 }

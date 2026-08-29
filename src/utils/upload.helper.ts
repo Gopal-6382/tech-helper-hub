@@ -15,5 +15,3 @@ export async function uploadImage(
     resourceType: options.resourceType ?? "image",
   });
 }
-
-

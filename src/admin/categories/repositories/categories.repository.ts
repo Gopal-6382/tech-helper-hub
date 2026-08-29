@@ -27,15 +27,15 @@ export class CategoryRepository {
       },
     });
   }
-  
-// category.repository.ts
 
-async findAll(includeInactive: boolean = true) {
-  return prisma.category.findMany({
-    where: { isActive: includeInactive }, 
-    orderBy: { name: "asc" },
-  });
-}
+  // category.repository.ts
+
+  async findAll(includeInactive: boolean = true) {
+    return prisma.category.findMany({
+      where: { isActive: includeInactive },
+      orderBy: { name: "asc" },
+    });
+  }
 
   async update(id: string, data: UpdateCategoryInput) {
     return prisma.category.update({
@@ -67,7 +67,7 @@ async findAll(includeInactive: boolean = true) {
   async delete(id: string) {
     return prisma.category.delete({ where: { id } });
   }
-// Deactivate Category (Soft Delete)
+  // Deactivate Category (Soft Delete)
   async deactivate(id: string) {
     return prisma.category.update({
       where: { id },

@@ -283,7 +283,7 @@ model Booking {
   professionalId   String
   status           BookingStatus @default(PENDING)
   amount           Decimal?      @db.Decimal(10, 2)
-  scheduledAt      DateTime? 
+  scheduledAt      DateTime?
   acceptedAt       DateTime?
   startedAt        DateTime?
   completedAt      DateTime?

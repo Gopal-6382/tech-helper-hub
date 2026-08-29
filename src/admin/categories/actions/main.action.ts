@@ -27,7 +27,7 @@ export async function deleteCategoryAction(id: string) {
   return { message: "Category deleted successfully" };
 }
 
-export async function getCategoriesAction(includeInactive :boolean = true) {
+export async function getCategoriesAction(includeInactive: boolean = true) {
   return categoryService.getCategories(includeInactive);
 }
 

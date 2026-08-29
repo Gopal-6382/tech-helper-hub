@@ -10,5 +10,5 @@ export const PATCH = routeHandler<RouteParams>(
     const { id } = await context.params;
     return deactivateCategoryAction(id);
   },
-  { roles: USER_ROLES }
+  { roles: USER_ROLES },
 );
