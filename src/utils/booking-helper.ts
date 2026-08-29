@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { NotFoundError } from "@/utils/api-response";
 
-export async function getProfessionalIdByUserId(userId: string): Promise<string> {
+export async function getProfessionalIdByUserId(
+  userId: string,
+): Promise<string> {
   const professional = await prisma.professionalProfile.findUnique({
     where: { userId },
     select: { id: true },
@@ -14,7 +16,9 @@ export async function getProfessionalIdByUserId(userId: string): Promise<string>
   return professional.id;
 }
 
-export async function getUserIdByServiceRequestId(serviceRequestId: string): Promise<string> {
+export async function getUserIdByServiceRequestId(
+  serviceRequestId: string,
+): Promise<string> {
   const serviceRequest = await prisma.serviceRequest.findUnique({
     where: { id: serviceRequestId },
     select: { requesterId: true },
