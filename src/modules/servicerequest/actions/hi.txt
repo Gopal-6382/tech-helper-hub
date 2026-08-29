@@ -1,0 +1,177 @@
+
+  // ACCEPT REQUEST & BOOKING
+  async acceptAtomic(requestId: string, bookingId: string, userId: string) {
+    return prisma.$transaction(async (tx) => {
+      const request = await tx.serviceRequest.findUnique({
+        where: { id: requestId },
+      });
+
+      if (
+        !request ||
+        request.status !== RequestStatus.OPEN ||
+        request.requesterId !== userId
+      ) {
+        return null;
+      }
+
+      const booking = await tx.booking.findUnique({
+        where: { id: bookingId },
+      });
+
+      if (
+        !booking ||
+        booking.serviceRequestId !== requestId ||
+        booking.status !== BookingStatus.PENDING
+      ) {
+        return null;
+      }
+
+      if (
+        request.targetProfessionalId &&
+        request.targetProfessionalId !== booking.professionalId
+      ) {
+        return null;
+      }
+
+      const acceptedBooking = await tx.booking.update({
+        where: { id: bookingId },
+        data: {
+          status: BookingStatus.ACCEPTED,
+          acceptedAt: new Date(),
+        },
+      });
+
+      await tx.booking.updateMany({
+        where: {
+          serviceRequestId: requestId,
+          id: { not: bookingId },
+          status: BookingStatus.PENDING,
+        },
+        data: { status: BookingStatus.REJECTED },
+      });
+
+      const acceptedRequest = await tx.serviceRequest.update({
+        where: { id: requestId },
+        data: {
+          status: RequestStatus.ACCEPTED,
+          targetProfessionalId: booking.professionalId,
+          budget: booking.amount,
+        },
+      });
+
+      return {
+        request: acceptedRequest,
+        booking: acceptedBooking,
+      };
+    });
+  }
+
+  // COMPLETE REQUEST & BOOKING
+  async completeAtomic(
+    requestId: string,
+    bookingId: string,
+    professionalId: string
+  ) {
+    return prisma.$transaction(async (tx) => {
+      const request = await tx.serviceRequest.findUnique({
+        where: { id: requestId },
+      });
+
+      if (
+        !request ||
+        request.status !== RequestStatus.ACCEPTED ||
+        request.targetProfessionalId !== professionalId
+      ) {
+        return null;
+      }
+
+      const booking = await tx.booking.findUnique({
+        where: { id: bookingId },
+      });
+
+      if (
+        !booking ||
+        booking.serviceRequestId !== requestId ||
+        booking.professionalId !== professionalId ||
+        booking.status !== BookingStatus.ACCEPTED
+      ) {
+        return null;
+      }
+
+      const completedBooking = await tx.booking.update({
+        where: { id: bookingId },
+        data: {
+          status: BookingStatus.COMPLETED,
+          completedAt: new Date(),
+        },
+      });
+
+      const completedRequest = await tx.serviceRequest.update({
+        where: { id: requestId },
+        data: { status: RequestStatus.COMPLETED },
+      });
+
+      return {
+        request: completedRequest,
+        booking: completedBooking,
+      };
+    });
+  }
+
+
+
+  
+  // ACCEPT REQUEST
+  //
+  // NOTE:
+  // This should eventually be handled through Booking.
+  // Keep it only if you currently need a direct
+  // request-accept flow.
+
+  async acceptRequest(
+    requestId: string,
+    professionalId: string,
+    bookingId: string,
+  ) {
+    const updated = await this.serviceRequestRepository.acceptAtomic(
+      requestId,
+      professionalId,
+      bookingId,
+    );
+
+    if (!updated) {
+      throw new ConflictError(
+        "Request is not open or is not available to this professional",
+      );
+    }
+
+    return updated;
+  }
+
+  // --------------------------------------------------
+  // COMPLETE REQUEST
+  //
+  // NOTE:
+  // Later this should normally happen through the
+  // Booking lifecycle.
+  // --------------------------------------------------
+
+  async completeRequest(
+    requestId: string,
+    professionalId: string,
+    bookingId: string,
+  ) {
+    const updated = await this.serviceRequestRepository.completeAtomic(
+      requestId,
+      professionalId,
+      bookingId,
+    );
+
+    if (!updated) {
+      throw new ConflictError(
+        "Request is not in ACCEPTED state or is not assigned to you",
+      );
+    }
+
+    return updated;
+  }

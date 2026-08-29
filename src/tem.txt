@@ -1,0 +1,25 @@
+npm run lint                                      
+npx tsc --noEmit
+npx prisma validate
+npx prisma generate
+npx knip
+npm run build
+{
+  "userId": "46d4a7f7-5073-4db1-a49b-1e26db6508b7",
+  "roles": [
+    "USER",
+    "PROFESSIONAL"
+  ],
+  "iat": 1787831378,
+  "exp": 1806148178
+}
+token 2
+{
+  "userId": "583d1998-d77a-4386-8c33-2f4a515e7219",
+  "roles": [
+    "USER",
+    "PROFESSIONAL"
+  ],
+  "iat": 1787831237,
+  "exp": 1806148037
+}

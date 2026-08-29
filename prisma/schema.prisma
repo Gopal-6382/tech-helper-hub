@@ -22,19 +22,19 @@ enum ServiceMode {
 
 enum RequestStatus {
   OPEN
-  ACCEPTED       // A pro is hired
-  IN_PROGRESS    // Work has started
+  ACCEPTED // A pro is hired
+  IN_PROGRESS // Work has started
   COMPLETED
-  CANCELLED      // User cancelled before hiring
+  CANCELLED // User cancelled before hiring
 }
 
 enum BookingStatus {
-  PENDING        // Pro submitted quote, waiting for user
-  ACCEPTED       // User hired this pro
-  REJECTED       // User hired someone else, so this quote is rejected (RECOMMENDED TO ADD)
-  STARTED        // Pro is working
+  PENDING // Pro submitted quote, waiting for user
+  ACCEPTED // User hired this pro
+  REJECTED // User hired someone else, so this quote is rejected (RECOMMENDED TO ADD)
+  STARTED // Pro is working
   COMPLETED
-  CANCELLED      // Pro or User backed out AFTER acceptance
+  CANCELLED // Pro or User backed out AFTER acceptance
 }
 
 enum VerificationStatus {
@@ -282,8 +282,8 @@ model Booking {
   userId           String
   professionalId   String
   status           BookingStatus @default(PENDING)
-  amount            Decimal?    @db.Decimal(10, 2)
-  scheduledAt      DateTime?
+  amount           Decimal?      @db.Decimal(10, 2)
+  scheduledAt      DateTime? 
   acceptedAt       DateTime?
   startedAt        DateTime?
   completedAt      DateTime?
@@ -295,6 +295,7 @@ model Booking {
   user           User                @relation("BookingUser", fields: [userId], references: [id])
   professional   ProfessionalProfile @relation("BookingProfessional", fields: [professionalId], references: [id])
   review         Review?
+
   @@unique([serviceRequestId, professionalId])
   @@index([userId])
   @@index([professionalId])
