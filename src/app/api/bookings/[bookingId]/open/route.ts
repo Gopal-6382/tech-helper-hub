@@ -4,6 +4,6 @@ import { getOpenRequestsAction } from "@/modules/bookings/actions/get-open-reque
 import { getProfessionalIdByUserId } from "@/utils/booking-helper";
 
 export const GET = routeHandler(async (_req, user) => {
-  const professionalId = getProfessionalIdByUserId(user.userId);
+  const professionalId =await getProfessionalIdByUserId(user.userId);
   return getOpenRequestsAction(professionalId);
 }, Professional);
