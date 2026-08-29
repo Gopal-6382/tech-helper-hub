@@ -4,11 +4,9 @@ import { UpdateCommentDto } from "../types/comment.types";
 const commentService = new CommentService();
 
 export async function updateComment(
-  user: string,
   id: string,
+  user: string,
   data: UpdateCommentDto,
 ) {
-  const result = await commentService.updateComment(id, user, data);
-
-  return result;
+  return await commentService.updateComment(id, user, data);
 }

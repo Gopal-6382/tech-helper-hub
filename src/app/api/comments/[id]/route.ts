@@ -15,6 +15,7 @@ type CommentParams = {
 export const GET = routeHandler<CommentParams>(
   async (_req, _user, { params }) => {
     const { id } = await params;
+    console.log(id);
 
     return getComment(id);
   },
@@ -27,11 +28,10 @@ export const GET = routeHandler<CommentParams>(
 export const PATCH = routeHandler<CommentParams>(
   async (req, user, { params }) => {
     const { id } = await params;
-
     const body = await req.json();
 
     const data = updateCommentSchema.parse(body);
-
+    console.log(id);
     return updateComment(id, user.userId, data);
   },
   {
@@ -43,6 +43,7 @@ export const PATCH = routeHandler<CommentParams>(
 export const DELETE = routeHandler<CommentParams>(
   async (_req, user, { params }) => {
     const { id } = await params;
+    console.log(id);
 
     return deleteComment(id, user.userId);
   },

@@ -1,12 +1,12 @@
 import { CommentRepository } from "../repositories/comment.repository";
 import { PostRepository } from "@/modules/posts/repositories/post.repository";
-
 import { CreateCommentDto, UpdateCommentDto } from "../types/comment.types";
 
 export class CommentService {
-  private commentRepository = new CommentRepository();
-
-  private postRepository = new PostRepository();
+  constructor(
+    private commentRepository = new CommentRepository(),
+    private postRepository = new PostRepository(),
+  ) {}
 
   async createComment(authorId: string, data: CreateCommentDto) {
     const post = await this.postRepository.findById(data.postId);
@@ -31,13 +31,29 @@ export class CommentService {
     return comment;
   }
 
-  async getComments(postId: string) {
+  async getComments(postId: string, page = 1, limit = 10) {
     const post = await this.postRepository.findById(postId);
 
     if (!post) {
       throw new Error("Post not found");
     }
-    return this.commentRepository.findByPostId(postId);
+
+    const skip = (page - 1) * limit;
+
+    const [comments, total] = await Promise.all([
+      this.commentRepository.findByPostId(postId, skip, limit),
+      this.commentRepository.countByPostId(postId),
+    ]);
+
+    return {
+      comments,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async updateComment(id: string, authorId: string, data: UpdateCommentDto) {
