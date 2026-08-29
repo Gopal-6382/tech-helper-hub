@@ -2,9 +2,9 @@ import { BookingService } from "../services/booking.service";
 
 const bookingService = new BookingService();
 
-export async function completeBookingAction(
+export async function startBookingAction(
   bookingId: string,
   professionalId: string,
 ) {
-  return bookingService.completeBooking(bookingId, professionalId);
+  return bookingService.startBooking(bookingId, professionalId);
 }

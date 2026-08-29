@@ -1,12 +1,9 @@
 import { z } from "zod";
 
 export const createBookingSchema = z.object({
-  serviceRequestId: z.uuid(),
-  professionalId: z.uuid(),
+  serviceRequestId: z.uuid("Invalid service request ID"),
+  amount: z.number().positive("Amount must be greater than 0"),
+  scheduledAt: z.coerce.date(),
 });
 
-export const updateBookingSchema = z.object({
-  scheduledAt: z.coerce.date().optional(),
-  amount: z.number().positive().optional(),
-  cancelReason: z.string().trim().optional(),
-});
+export type CreateBookingDto = z.infer<typeof createBookingSchema>;

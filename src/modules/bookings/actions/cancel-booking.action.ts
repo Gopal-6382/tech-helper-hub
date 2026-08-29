@@ -1,11 +1,17 @@
-import { NextResponse } from "next/server";
+"use server";
 
-import { BookingService } from "../services/booking.service";
+import { BookingService } from "@/modules/bookings/services/booking.service";
 
 const bookingService = new BookingService();
 
-export async function cancelBooking(id: string) {
-  const result = await bookingService.cancelBooking(id);
-
-  return NextResponse.json(result);
+export async function cancelOpenRequestAction(
+  bookingId: string,
+  professionalId: string,
+  cancelReason: string,
+) {
+  return await bookingService.cancelOpenRequest(
+    bookingId,
+    professionalId,
+    cancelReason,
+  );
 }

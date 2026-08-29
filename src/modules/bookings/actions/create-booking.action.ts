@@ -1,8 +1,11 @@
 import { BookingService } from "../services/booking.service";
-import { CreateBookingDto } from "../types/booking.types";
+import { CreateBookingDto } from "../validations/booking.validation";
 
 const bookingService = new BookingService();
 
-export async function createBooking(userId: string, data: CreateBookingDto) {
-  return bookingService.createBooking(userId, data);
+export async function createBookingAction(
+  currentUserId: string,
+  dto: CreateBookingDto,
+) {
+  return bookingService.createBooking(currentUserId, dto);
 }

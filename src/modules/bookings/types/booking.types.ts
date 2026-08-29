@@ -1,16 +1,4 @@
 import { BookingStatus } from "@prisma/client";
-
-export interface CreateBookingDto {
-  serviceRequestId: string;
-  professionalId: string;
-}
-
-export interface CreateBookingData {
-  serviceRequestId: string;
-  professionalId: string;
-  userId: string;
-}
-
 export interface UpdateBookingDto {
   scheduledAt?: Date;
   amount?: number;
@@ -19,4 +7,10 @@ export interface UpdateBookingDto {
   acceptedAt?: Date | null;
 }
 
-
+export type CreateBookingData = {
+  serviceRequestId: string;
+  userId: string;
+  professionalId: string;
+  amount: number;
+  scheduledAt: Date;
+};
