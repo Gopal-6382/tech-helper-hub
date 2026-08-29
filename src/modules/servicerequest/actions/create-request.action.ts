@@ -3,6 +3,9 @@ import { CreateServiceRequestDto } from "../validations/service-request.validati
 
 const serviceRequestService = new ServiceRequestService();
 
-export async function createRequestAction(userId: string, data: CreateServiceRequestDto) {
+export async function createRequestAction(
+  userId: string,
+  data: CreateServiceRequestDto,
+) {
   return serviceRequestService.createRequest(userId, data);
 }

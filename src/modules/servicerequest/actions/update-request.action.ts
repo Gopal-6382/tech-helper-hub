@@ -5,7 +5,7 @@ const serviceRequestService = new ServiceRequestService();
 export async function updateRequestAction(
   userId: string,
   requestId: string,
-  dto: UpdateServiceRequestDto
+  dto: UpdateServiceRequestDto,
 ) {
   return serviceRequestService.updateRequest(userId, requestId, dto);
 }

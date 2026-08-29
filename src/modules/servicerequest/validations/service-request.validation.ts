@@ -30,5 +30,9 @@ export const updateServiceRequestSchema = createServiceRequestSchema
     status: z.enum(RequestStatus).optional(),
   });
 
-export type CreateServiceRequestDto = z.infer<typeof createServiceRequestSchema>;
-export type UpdateServiceRequestDto = z.infer<typeof updateServiceRequestSchema>;
+export type CreateServiceRequestDto = z.infer<
+  typeof createServiceRequestSchema
+>;
+export type UpdateServiceRequestDto = z.infer<
+  typeof updateServiceRequestSchema
+>;

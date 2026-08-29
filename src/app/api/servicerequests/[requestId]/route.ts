@@ -4,35 +4,41 @@ import { getRequestAction } from "@/modules/servicerequest/actions/get-request.a
 import { updateRequestAction } from "@/modules/servicerequest/actions/update-request.action";
 import { cancelRequestAction } from "@/modules/servicerequest/actions/cancel-request.action";
 import { AppError } from "@/utils/api-response";
+import { User } from "@/constant/roles.route.const";
 
 export type ServiceRequestRouteParams = {
   requestId: string;
 };
 export const GET = routeHandler<ServiceRequestRouteParams>(
-  async (_req, _user, {params}) => {
+  async (_req, _user, { params }) => {
     const { requestId } = await params;
     return getRequestAction(requestId);
   },
+  User,
 );
 
 export const PATCH = routeHandler<ServiceRequestRouteParams>(
-  async (req, user,{params}) => {
+  async (req, user, { params }) => {
     const { requestId } = await params;
     const body = await req.json();
 
     const parsed = updateServiceRequestSchema.safeParse(body);
     if (!parsed.success) {
-      const errorMessage = parsed.error.issues.map((i:{message:string}) => i.message).join(", ");
+      const errorMessage = parsed.error.issues
+        .map((i: { message: string }) => i.message)
+        .join(", ");
       throw new AppError(`Invalid update payload: ${errorMessage}`, 400);
     }
 
     return updateRequestAction(user.userId, requestId, parsed.data);
   },
+  User,
 );
 
 export const DELETE = routeHandler<ServiceRequestRouteParams>(
-  async (_req, user, {params}) => {
+  async (_req, user, { params }) => {
     const { requestId } = await params;
     return cancelRequestAction(user.userId, requestId);
   },
+  User,
 );
