@@ -11,7 +11,7 @@ import {
 export class ReviewService {
   constructor(
     private reviewRepository: ReviewRepository,
-    private bookingRepository: BookingRepository
+    private bookingRepository: BookingRepository,
   ) {}
 
   /**
@@ -33,13 +33,19 @@ export class ReviewService {
 
     // 3. Authorization check: Only the customer who created the request can leave a review
     if (booking.userId !== authUserId) {
-      throw new UnauthorizedError("You are not authorized to review this booking");
+      throw new UnauthorizedError(
+        "You are not authorized to review this booking",
+      );
     }
 
     // 4. Duplicate Check: Ensure booking has not been reviewed already
-    const existingReview = await this.reviewRepository.findByBookingId(dto.bookingId);
+    const existingReview = await this.reviewRepository.findByBookingId(
+      dto.bookingId,
+    );
     if (existingReview) {
-      throw new ConflictError("A review has already been submitted for this booking");
+      throw new ConflictError(
+        "A review has already been submitted for this booking",
+      );
     }
 
     // 5. Construct full review payload using auto-derived IDs
@@ -69,7 +75,11 @@ export class ReviewService {
   /**
    * Updates an existing review written by the authenticated user
    */
-  async updateReview(reviewId: string, authUserId: string, dto: UpdateReviewDto) {
+  async updateReview(
+    reviewId: string,
+    authUserId: string,
+    dto: UpdateReviewDto,
+  ) {
     const review = await this.reviewRepository.findById(reviewId);
 
     if (!review) {
@@ -106,7 +116,11 @@ export class ReviewService {
   async getUserReviews(userId: string, page = 1, limit = 10) {
     const skip = (page - 1) * limit;
 
-    const reviews = await this.reviewRepository.findByUserId(userId, skip, limit);
+    const reviews = await this.reviewRepository.findByUserId(
+      userId,
+      skip,
+      limit,
+    );
 
     return {
       reviews,
@@ -120,29 +134,36 @@ export class ReviewService {
   /**
    * Fetches reviews for a professional profile along with calculated average ratings
    */
- async getProfessionalReviews(
-  professionalId: string,
-  page = 1,
-  limit = 10,
-  rating?: number
-) {
-  const skip = (page - 1) * limit;
+  async getProfessionalReviews(
+    professionalId: string,
+    page = 1,
+    limit = 10,
+    rating?: number,
+  ) {
+    const skip = (page - 1) * limit;
 
-  const [reviews, stats] = await Promise.all([
-    this.reviewRepository.findByProfessionalId(professionalId, skip, limit, rating),
-    this.reviewRepository.getProfessionalRatingStats(professionalId),
-  ]);
+    const [reviews, stats] = await Promise.all([
+      this.reviewRepository.findByProfessionalId(
+        professionalId,
+        skip,
+        limit,
+        rating,
+      ),
+      this.reviewRepository.getProfessionalRatingStats(professionalId),
+    ]);
 
-  return {
-    reviews,
-    stats: {
-      averageRating: stats._avg.rating ? Number(stats._avg.rating.toFixed(1)) : 0,
-      totalReviews: stats._count.rating,
-    },
-    pagination: {
-      page,
-      limit,
-    },
-  };
-}
+    return {
+      reviews,
+      stats: {
+        averageRating: stats._avg.rating
+          ? Number(stats._avg.rating.toFixed(1))
+          : 0,
+        totalReviews: stats._count.rating,
+      },
+      pagination: {
+        page,
+        limit,
+      },
+    };
+  }
 }

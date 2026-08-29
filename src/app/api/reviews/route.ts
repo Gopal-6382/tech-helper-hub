@@ -7,11 +7,11 @@ import { createReviewSchema } from "@/modules/reviews/validations/review.validat
 export const POST = routeHandler(
   async (req, user) => {
     const body = await req.json();
-  const validatedData = createReviewSchema.parse(body);
+    const validatedData = createReviewSchema.parse(body);
 
     return createReviewAction(user.userId, validatedData);
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

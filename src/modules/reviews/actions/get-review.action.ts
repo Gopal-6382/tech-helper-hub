@@ -8,7 +8,9 @@ const bookingRepository = new BookingRepository();
 const reviewService = new ReviewService(reviewRepository, bookingRepository);
 
 export async function getReviewAction(reviewId: string) {
-  const { reviewId: validatedReviewId } = reviewIdParamSchema.parse({ reviewId });
+  const { reviewId: validatedReviewId } = reviewIdParamSchema.parse({
+    reviewId,
+  });
 
   return reviewService.getReviewById(validatedReviewId);
 }

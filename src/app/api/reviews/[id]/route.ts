@@ -13,7 +13,7 @@ export const GET = routeHandler<RouteParams>(
   async (_req, _user, { params }) => {
     const { id } = await params;
     return getReviewAction(id);
-  }
+  },
 );
 
 // PATCH /api/reviews/[id]
@@ -25,7 +25,7 @@ export const PATCH = routeHandler<RouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );
 
 // DELETE /api/reviews/[id]
@@ -36,5 +36,5 @@ export const DELETE = routeHandler<RouteParams>(
   },
   {
     roles: USER_ROLES,
-  }
+  },
 );

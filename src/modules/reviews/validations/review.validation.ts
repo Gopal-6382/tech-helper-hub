@@ -74,7 +74,6 @@ export const reviewIdParamSchema = z.object({
   reviewId: z.uuid("Invalid review ID format"),
 });
 
-
 /**
  * Pagination & Filter Query Schema for fetching professional reviews
  */

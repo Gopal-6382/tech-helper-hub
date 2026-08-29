@@ -10,14 +10,16 @@ const reviewService = new ReviewService(reviewRepository, bookingRepository);
 
 export async function getProfessionalReviewsAction(
   professionalId: string,
-  queryParams?: GetProfessionalReviewsQuery
+  queryParams?: GetProfessionalReviewsQuery,
 ) {
-  const validatedQuery = getProfessionalReviewsQuerySchema.parse(queryParams || {});
+  const validatedQuery = getProfessionalReviewsQuerySchema.parse(
+    queryParams || {},
+  );
 
   return reviewService.getProfessionalReviews(
     professionalId,
     validatedQuery.page,
     validatedQuery.limit,
-    validatedQuery.rating
+    validatedQuery.rating,
   );
 }

@@ -85,45 +85,45 @@ export class ReviewRepository {
   /**
    * Get paginated reviews received by a professional
    */
- async findByProfessionalId(
-  professionalId: string,
-  skip = 0,
-  take = 10,
-  rating?: number
-) {
-  if (!professionalId) return [];
+  async findByProfessionalId(
+    professionalId: string,
+    skip = 0,
+    take = 10,
+    rating?: number,
+  ) {
+    if (!professionalId) return [];
 
-  return prisma.review.findMany({
-    where: {
-      professionalId,
-      ...(rating ? { rating } : {}),
-    },
-    skip,
-    take,
-    include: {
-      user: SAFE_USER_SELECT,
-      booking: {
-        select: {
-          id: true,
-          serviceRequest: {
-            select: {
-              title: true,
+    return prisma.review.findMany({
+      where: {
+        professionalId,
+        ...(rating ? { rating } : {}),
+      },
+      skip,
+      take,
+      include: {
+        user: SAFE_USER_SELECT,
+        booking: {
+          select: {
+            id: true,
+            serviceRequest: {
+              select: {
+                title: true,
+              },
             },
           },
         },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
-}
+      orderBy: { createdAt: "desc" },
+    });
+  }
 
-async getProfessionalRatingStats(professionalId: string) {
-  return prisma.review.aggregate({
-    where: { professionalId },
-    _avg: { rating: true },
-    _count: { rating: true },
-  });
-}
+  async getProfessionalRatingStats(professionalId: string) {
+    return prisma.review.aggregate({
+      where: { professionalId },
+      _avg: { rating: true },
+      _count: { rating: true },
+    });
+  }
 
   /**
    * Create a review record

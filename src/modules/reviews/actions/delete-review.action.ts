@@ -8,7 +8,9 @@ const bookingRepository = new BookingRepository();
 const reviewService = new ReviewService(reviewRepository, bookingRepository);
 
 export async function deleteReviewAction(reviewId: string, authUserId: string) {
-  const { reviewId: validatedReviewId } = reviewIdParamSchema.parse({ reviewId });
+  const { reviewId: validatedReviewId } = reviewIdParamSchema.parse({
+    reviewId,
+  });
 
   return reviewService.deleteReview(validatedReviewId, authUserId);
 }

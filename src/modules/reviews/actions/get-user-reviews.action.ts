@@ -6,6 +6,10 @@ const reviewRepository = new ReviewRepository();
 const bookingRepository = new BookingRepository();
 const reviewService = new ReviewService(reviewRepository, bookingRepository);
 
-export async function getUserReviewsAction(userId: string, page = 1, limit = 10) {
+export async function getUserReviewsAction(
+  userId: string,
+  page = 1,
+  limit = 10,
+) {
   return reviewService.getUserReviews(userId, page, limit);
 }
