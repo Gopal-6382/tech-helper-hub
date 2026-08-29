@@ -1,61 +1,40 @@
 import { routeHandler } from "@/middleware/route.handler";
-import { deleteReview } from "@/modules/reviews/actions/delete-review.action";
-import { getReview } from "@/modules/reviews/actions/get-review.action";
-import { updateReview } from "@/modules/reviews/actions/update-review.action";
-import { updateReviewSchema } from "@/modules/reviews/validations/review.validation";
+import { getReviewAction } from "@/modules/reviews/actions/get-review.action";
+import { updateReviewAction } from "@/modules/reviews/actions/update-review.action";
+import { deleteReviewAction } from "@/modules/reviews/actions/delete-review.action";
 import { USER_ROLES } from "@/constant/role.constant";
 
-type ReviewRouteParams = {
+type RouteParams = {
   id: string;
 };
 
 // GET /api/reviews/[id]
-export const GET = routeHandler<ReviewRouteParams>(
+export const GET = routeHandler<RouteParams>(
   async (_req, _user, { params }) => {
     const { id } = await params;
-
-    if (!id) {
-      throw new Error("Review ID is required");
-    }
-
-    return getReview(id);
-  },
-  {
-    roles: USER_ROLES,
-  },
+    return getReviewAction(id);
+  }
 );
 
 // PATCH /api/reviews/[id]
-export const PATCH = routeHandler<ReviewRouteParams>(
+export const PATCH = routeHandler<RouteParams>(
   async (req, user, { params }) => {
     const { id } = await params;
-
-    if (!id) {
-      throw new Error("Review ID is required");
-    }
-
     const body = await req.json();
-    const data = updateReviewSchema.parse(body);
-
-    return updateReview(id, user.userId, data);
+    return updateReviewAction(id, user.userId, body);
   },
   {
     roles: USER_ROLES,
-  },
+  }
 );
 
 // DELETE /api/reviews/[id]
-export const DELETE = routeHandler<ReviewRouteParams>(
+export const DELETE = routeHandler<RouteParams>(
   async (_req, user, { params }) => {
     const { id } = await params;
-
-    if (!id) {
-      throw new Error("Review ID is required");
-    }
-
-    return deleteReview(id, user.userId);
+    return deleteReviewAction(id, user.userId);
   },
   {
     roles: USER_ROLES,
-  },
+  }
 );

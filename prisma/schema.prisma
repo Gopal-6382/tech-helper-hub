@@ -318,6 +318,7 @@ model Review {
   user         User                @relation("ReviewUser", fields: [userId], references: [id])
   professional ProfessionalProfile @relation("ReviewProfessional", fields: [professionalId], references: [id])
 
+  @@index([id])
   @@map("reviews")
 }
 

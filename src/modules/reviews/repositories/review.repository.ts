@@ -1,38 +1,34 @@
 import { prisma } from "@/lib/prisma";
-
 import { CreateReviewData, UpdateReviewDto } from "../types/review.types";
+
+const SAFE_USER_SELECT = {
+  select: {
+    id: true,
+    name: true,
+    avatar: true,
+  },
+};
 
 export class ReviewRepository {
   /**
-   * Get one review by its ID.
+   * Find a single review by ID with full details
    */
   async findById(id: string) {
+    if (!id) return null;
+
     return prisma.review.findUnique({
-      where: {
-        id,
-      },
-
-      // Include related data so frontend
-      // gets everything in one request.
+      where: { id },
       include: {
-        // User who wrote this review.
-        user: true,
-
-        // Professional who received this review.
+        user: SAFE_USER_SELECT,
         professional: {
           include: {
-            // Professional's user account
-            user: true,
+            user: SAFE_USER_SELECT,
           },
         },
-
-        // Booking associated with this review.
         booking: {
           include: {
-            // Show original service request.
             serviceRequest: {
               include: {
-                // Category of that request.
                 category: true,
               },
             },
@@ -43,103 +39,120 @@ export class ReviewRepository {
   }
 
   /**
-   * Get review using booking.
-   * Used to prevent duplicate reviews.
+   * Find existing review for a booking to prevent duplicates
    */
   async findByBookingId(bookingId: string) {
+    if (!bookingId) return null;
+
     return prisma.review.findUnique({
-      where: {
-        bookingId,
-      },
+      where: { bookingId },
     });
   }
 
   /**
-   * Get all reviews written by one user.
+   * Get paginated reviews given by a user
    */
-  async findByUserId(userId: string) {
-    return prisma.review.findMany({
-      where: {
-        userId,
-      },
+  async findByUserId(userId: string, skip = 0, take = 10) {
+    if (!userId) return [];
 
+    return prisma.review.findMany({
+      where: { userId },
+      skip,
+      take,
       include: {
         professional: {
           include: {
-            user: true,
+            user: SAFE_USER_SELECT,
           },
         },
-
         booking: {
-          include: {
-            serviceRequest: true,
+          select: {
+            id: true,
+            scheduledAt: true,
+            serviceRequest: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
           },
         },
       },
-
-      // Latest review first.
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
   }
 
   /**
-   * Get reviews received by one professional.
+   * Get paginated reviews received by a professional
    */
-  async findByProfessionalId(professionalId: string) {
-    return prisma.review.findMany({
-      where: {
-        professionalId,
-      },
+ async findByProfessionalId(
+  professionalId: string,
+  skip = 0,
+  take = 10,
+  rating?: number
+) {
+  if (!professionalId) return [];
 
-      include: {
-        // Customer who gave review.
-        user: true,
-
-        booking: {
-          include: {
-            serviceRequest: true,
+  return prisma.review.findMany({
+    where: {
+      professionalId,
+      ...(rating ? { rating } : {}),
+    },
+    skip,
+    take,
+    include: {
+      user: SAFE_USER_SELECT,
+      booking: {
+        select: {
+          id: true,
+          serviceRequest: {
+            select: {
+              title: true,
+            },
           },
         },
       },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
 
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }
+async getProfessionalRatingStats(professionalId: string) {
+  return prisma.review.aggregate({
+    where: { professionalId },
+    _avg: { rating: true },
+    _count: { rating: true },
+  });
+}
 
   /**
-   * Create new review.
+   * Create a review record
    */
   async create(data: CreateReviewData) {
     return prisma.review.create({
       data,
+      include: {
+        user: SAFE_USER_SELECT,
+      },
     });
   }
 
   /**
-   * Update review.
+   * Update review content or rating
    */
   async update(id: string, data: UpdateReviewDto) {
     return prisma.review.update({
-      where: {
-        id,
-      },
-
+      where: { id },
       data,
     });
   }
 
   /**
-   * Delete review.
+   * Delete review
    */
   async delete(id: string) {
     return prisma.review.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 }
