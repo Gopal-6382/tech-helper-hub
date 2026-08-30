@@ -1,6 +1,6 @@
+import { User } from "@/constant/roles.route.const";
 import { routeHandler } from "@/middleware/route.handler";
 import { getParticipants } from "@/modules/directchat/actions/get-getParticipants";
-import { USER_ROLES } from "@/constant/role.constant";
 
 type ParticipantParams = {
   chatId: string;
@@ -16,7 +16,5 @@ export const GET = routeHandler<ParticipantParams>(
 
     return getParticipants(chatId);
   },
-  {
-    roles: USER_ROLES,
-  },
+ User
 );

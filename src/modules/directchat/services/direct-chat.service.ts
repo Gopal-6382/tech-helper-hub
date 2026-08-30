@@ -10,39 +10,60 @@ import {
 
 export class DirectChatService {
   private directchat = new DirectChatRepository();
+
   // 🔹 Conversations
 
   async createConversation(data: CreateConversationData) {
-    if (data.senderId === data.receiverId) {
+    const { senderId, receiverId } = data || {};
+
+    if (!senderId || !receiverId) {
+      throw new Error("Both senderId and receiverId are required");
+    }
+
+    if (senderId === receiverId) {
       throw new Error("You cannot create a conversation with yourself");
     }
-    // validate receiverId
-    createConversationSchema.parse({
-      receiverId: data.receiverId,
-      senderId: data.senderId,
-    });
-    const conversation = await this.directchat.findConversationBetweenUsers(
-      data.senderId,
-      data.receiverId,
-    );
-    // already exists
-    if (conversation) {
-      return conversation;
+
+    // Validate payload against Zod schema
+    createConversationSchema.parse({ receiverId, senderId });
+
+    // 1. Validate both users exist in the database
+    const [senderExists, receiverExists] = await Promise.all([
+      this.directchat.userExists(senderId),
+      this.directchat.userExists(receiverId),
+    ]);
+
+    if (!senderExists) {
+      throw new Error(`Sender user with ID '${senderId}' does not exist`);
     }
-    const newConversation = await this.directchat.createConversation();
 
-    // add both participants
-    await this.directchat.addParticipant(newConversation.id, data.senderId);
-    await this.directchat.addParticipant(newConversation.id, data.receiverId);
+    if (!receiverExists) {
+      throw new Error(`Receiver user with ID '${receiverId}' does not exist`);
+    }
 
-    return newConversation;
+    // 2. Check if a conversation already exists
+    const existingConversation =
+      await this.directchat.findConversationBetweenUsers(senderId, receiverId);
+
+    if (existingConversation) {
+      return existingConversation;
+    }
+
+    // 3. Create conversation and participants atomically in a transaction
+    return this.directchat.createConversationWithParticipants(
+      senderId,
+      receiverId
+    );
   }
 
   async getUserConversations(userId: string) {
+    if (!userId) throw new Error("userId is required");
     return this.directchat.findUserConversations(userId);
   }
 
   async getConversationById(conversationId: string) {
+    if (!conversationId) throw new Error("conversationId is required");
+
     const conversation =
       await this.directchat.findConversationById(conversationId);
 
@@ -56,10 +77,14 @@ export class DirectChatService {
   // 🔹 Messages
 
   async sendMessage(data: CreateMessageData) {
+    if (!data?.conversationId || !data?.senderId) {
+      throw new Error("conversationId and senderId are required");
+    }
+
     sendMessageSchema.parse({ content: data.content });
 
     const conversation = await this.directchat.findConversationById(
-      data.conversationId,
+      data.conversationId
     );
 
     if (!conversation) {
@@ -68,7 +93,7 @@ export class DirectChatService {
 
     const participant = await this.directchat.isParticipant(
       data.conversationId,
-      data.senderId,
+      data.senderId
     );
 
     if (!participant) {
@@ -76,19 +101,20 @@ export class DirectChatService {
     }
 
     const message = await this.directchat.createMessage(data);
-
     await this.directchat.updateLastMessage(data.conversationId);
 
     return message;
   }
 
   async getMessages(conversationId: string) {
+    if (!conversationId) throw new Error("conversationId is required");
     return this.directchat.findMessages(conversationId);
   }
 
   async markMessageRead(messageId: string) {
-    const message = await this.directchat.findMessageById(messageId);
+    if (!messageId) throw new Error("messageId is required");
 
+    const message = await this.directchat.findMessageById(messageId);
     if (!message) {
       throw new Error("Message not found");
     }
@@ -97,21 +123,25 @@ export class DirectChatService {
   }
 
   async deleteMessage(messageId: string) {
-    const message = await this.directchat.findMessageById(messageId);
+    if (!messageId) throw new Error("messageId is required");
 
+    const message = await this.directchat.findMessageById(messageId);
     if (!message) {
       throw new Error("Message not found");
     }
+
     return this.directchat.deleteMessage(messageId);
   }
 
   // 🔹 Participants
 
   async getParticipants(conversationId: string) {
+    if (!conversationId) throw new Error("conversationId is required");
     return this.directchat.getParticipants(conversationId);
   }
 
   async isParticipant(conversationId: string, userId: string) {
+    if (!conversationId || !userId) return false;
     return this.directchat.isParticipant(conversationId, userId);
   }
 }

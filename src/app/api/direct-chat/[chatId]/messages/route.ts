@@ -2,7 +2,7 @@ import { routeHandler } from "@/middleware/route.handler";
 import { getMessages } from "@/modules/directchat/actions/get-messages.action";
 import { sendMessage } from "@/modules/directchat/actions/send-message.action";
 import { SendMessageDto } from "@/modules/directchat/types/direct-chat.types";
-import { USER_ROLES } from "@/constant/role.constant";
+import { User } from "@/constant/roles.route.const";
 
 type MessageRouteParams = {
   chatId: string;
@@ -18,9 +18,7 @@ export const GET = routeHandler<MessageRouteParams>(
 
     return getMessages(chatId);
   },
-  {
-    roles: USER_ROLES,
-  },
+User
 );
 
 export const POST = routeHandler<MessageRouteParams>(
@@ -37,7 +35,5 @@ export const POST = routeHandler<MessageRouteParams>(
       content: body.content,
     });
   },
-  {
-    roles: USER_ROLES,
-  },
+User
 );

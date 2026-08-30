@@ -1,7 +1,7 @@
+import { User } from "@/constant/roles.route.const";
 import { routeHandler } from "@/middleware/route.handler";
 import { deleteMessage } from "@/modules/directchat/actions/delete-message.action";
 import { markMessageRead } from "@/modules/directchat/actions/mark-as-read.action";
-import { USER_ROLES } from "@/constant/role.constant";
 
 type MessageParams = {
   messageId: string;
@@ -16,9 +16,7 @@ export const PATCH = routeHandler<MessageParams>(
 
     return markMessageRead(messageId);
   },
-  {
-    roles: USER_ROLES,
-  },
+User
 );
 
 export const DELETE = routeHandler<MessageParams>(
@@ -31,7 +29,5 @@ export const DELETE = routeHandler<MessageParams>(
 
     return deleteMessage(messageId);
   },
-  {
-    roles: USER_ROLES,
-  },
+  User
 );
