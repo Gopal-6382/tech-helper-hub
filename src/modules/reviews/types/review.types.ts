@@ -22,15 +22,3 @@ export interface CreateReviewData extends CreateReviewDto {
   professionalId: string;
 }
 
-/* Professional rating stats summary */
-export interface ProfessionalReviewStats {
-  averageRating: number;
-  totalReviews: number;
-  ratingDistribution: {
-    1: number;
-    2: number;
-    3: number;
-    4: number;
-    5: number;
-  };
-}
