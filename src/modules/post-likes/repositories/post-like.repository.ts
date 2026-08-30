@@ -1,45 +1,40 @@
 import { prisma } from "@/lib/prisma";
-
 import { CreatePostLikeData } from "../types/post-like.types";
 
 export class PostLikeRepository {
-  // Check whether user already liked
-  async findLike(postId: string, userId: string) {
-    return prisma.postLike.findUnique({
-      where: {
-        postId_userId: {
-          postId,
-          userId,
-        },
-      },
-    });
-  }
-
-  // Like post
+  // Direct insert using database unique constraint
   async create(data: CreatePostLikeData) {
     return prisma.postLike.create({
       data,
     });
   }
 
-  // Unlike post
+  // Direct delete by composite key
   async delete(postId: string, userId: string) {
     return prisma.postLike.delete({
       where: {
-        postId_userId: {
-          postId,
-          userId,
-        },
+        postId_userId: { postId, userId },
       },
     });
   }
 
-  // Get all likes of a post
+  // Find single record to check if user liked
+  async findLike(postId: string, userId: string) {
+    return prisma.postLike.findUnique({
+      where: {
+        postId_userId: { postId, userId },
+      },
+      select: {
+        postId: true,
+        userId: true,
+      },
+    });
+  }
+
+  // Get all likes for a post with public user details
   async findByPost(postId: string) {
     return prisma.postLike.findMany({
-      where: {
-        postId,
-      },
+      where: { postId },
       include: {
         user: {
           select: {
@@ -49,18 +44,7 @@ export class PostLikeRepository {
           },
         },
       },
-      orderBy: {
-        id: "desc",
-      },
-    });
-  }
-
-  // Count likes
-  async count(postId: string) {
-    return prisma.postLike.count({
-      where: {
-        postId,
-      },
+      orderBy: { id: "desc" },
     });
   }
 }

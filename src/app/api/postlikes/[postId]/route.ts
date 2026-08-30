@@ -1,8 +1,8 @@
 import { routeHandler } from "@/middleware/route.handler";
 import { getPostLikes } from "@/modules/post-likes/actions/get-post-likes.action";
 import { unlikePost } from "@/modules/post-likes/actions/unlike-post.action";
-import { USER_ROLES } from "@/constant/role.constant";
 import { likePost } from "@/modules/post-likes/actions/like-post.action";
+import { User } from "@/constant/roles.route.const";
 
 type PostLikeRouteParams = {
   postId: string;
@@ -17,9 +17,7 @@ export const POST = routeHandler<PostLikeRouteParams>(
 
     return likePost({ postId: postId, userId: user.userId });
   },
-  {
-    roles: USER_ROLES,
-  },
+  User,
 );
 
 // GET /api/post-likes/[postId]
@@ -30,9 +28,7 @@ export const GET = routeHandler<PostLikeRouteParams>(
     // Pass as CreatePostLikeDto object
     return getPostLikes({ postId });
   },
-  {
-    roles: USER_ROLES,
-  },
+  User,
 );
 
 // DELETE /api/post-likes/[postId]
@@ -43,7 +39,5 @@ export const DELETE = routeHandler<PostLikeRouteParams>(
     // Pass as CreatePostLikeData object
     return unlikePost({ postId, userId: user.userId });
   },
-  {
-    roles: USER_ROLES,
-  },
+  User,
 );
