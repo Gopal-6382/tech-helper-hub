@@ -3,8 +3,8 @@ import { UpdateCommentReplyData } from "../types/comment-reply.types";
 const commentReplyService = new CommentReplyService();
 
 export async function updateCommentReply(
-  user: string,
   id: string,
+  user: string,
   data: UpdateCommentReplyData,
 ) {
   const result = await commentReplyService.updateReply(id, user, data);

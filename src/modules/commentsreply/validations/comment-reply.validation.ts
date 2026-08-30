@@ -9,7 +9,6 @@ export const updateCommentReplySchema = z.object({
 });
 export const createCommentReplyDataSchema = z.object({
   commentId: z.uuid(),
-  authorId: z.uuid(),
   content: z
     .string()
     .trim()
