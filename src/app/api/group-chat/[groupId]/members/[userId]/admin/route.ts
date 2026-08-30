@@ -7,7 +7,7 @@ type GroupAdminParams = {
   userId: string;
 };
 
-export const DELETE = routeHandler<GroupAdminParams>(
+export const PATCH = routeHandler<GroupAdminParams>(
   async (_req, user, { params }) => {
     const { groupId, userId } = await params;
 

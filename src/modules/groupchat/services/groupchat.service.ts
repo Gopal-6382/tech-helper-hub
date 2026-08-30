@@ -149,15 +149,15 @@ export class GroupChatService {
 
   async addMember(groupId: string, requesterId: string, userId: string) {
     // MVP: owner/admin can add members.
-    await this.requireOwner(groupId, requesterId);
+    await this.requireOwner(groupId, userId);
 
-    const existingMember = await this.groupChat.isMember(groupId, userId);
+    const existingMember = await this.groupChat.isMember(groupId, requesterId);
 
     if (existingMember) {
       throw new Error("User is already a member");
     }
 
-    return this.groupChat.addMember(groupId, userId);
+    return this.groupChat.addMember(groupId, requesterId);
   }
 
   async removeMember(groupId: string, requesterId: string, userId: string) {
