@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/prisma";
-
-import { CreateFollowData } from "../types/follow.types";
+import { CreateFollowData } from "../validations/follow.validation";
 
 export class FollowRepository {
   // Check if already following
   async findFollow(followerId: string, followingId: string) {
+    if (!followerId || !followingId) return null;
+
     return prisma.follow.findUnique({
       where: {
         followerId_followingId: {
@@ -17,6 +18,8 @@ export class FollowRepository {
 
   // Check target user exists
   async userExists(userId: string) {
+    if (!userId) return null;
+
     return prisma.user.findUnique({
       where: {
         id: userId,
@@ -36,6 +39,8 @@ export class FollowRepository {
 
   // Unfollow user
   async delete(followerId: string, followingId: string) {
+    if (!followerId || !followingId) return null;
+
     return prisma.follow.delete({
       where: {
         followerId_followingId: {
@@ -46,8 +51,10 @@ export class FollowRepository {
     });
   }
 
-  // Followers
+  // Followers list
   async findFollowers(userId: string) {
+    if (!userId) return [];
+
     return prisma.follow.findMany({
       where: {
         followingId: userId,
@@ -67,8 +74,10 @@ export class FollowRepository {
     });
   }
 
-  // Following
+  // Following list
   async findFollowing(userId: string) {
+    if (!userId) return [];
+
     return prisma.follow.findMany({
       where: {
         followerId: userId,
@@ -90,6 +99,8 @@ export class FollowRepository {
 
   // Followers count
   async followersCount(userId: string) {
+    if (!userId) return 0;
+
     return prisma.follow.count({
       where: {
         followingId: userId,
@@ -99,6 +110,8 @@ export class FollowRepository {
 
   // Following count
   async followingCount(userId: string) {
+    if (!userId) return 0;
+
     return prisma.follow.count({
       where: {
         followerId: userId,

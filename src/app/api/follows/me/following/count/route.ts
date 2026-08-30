@@ -1,12 +1,7 @@
 import { routeHandler } from "@/middleware/route.handler";
 import { getFollowingCount } from "@/modules/follows/actions/get-following-count.action";
-import { USER_ROLES } from "@/constant/role.constant";
+import { User } from "@/constant/roles.route.const";
 
-export const GET = routeHandler(
-  async (_req, user) => {
-    return getFollowingCount(user.userId);
-  },
-  {
-    roles: USER_ROLES,
-  },
-);
+export const GET = routeHandler(async (_req, user) => {
+  return getFollowingCount(user.userId);
+}, User);
