@@ -16,7 +16,7 @@ export const PATCH = routeHandler<MessageParams>(
 
     return markMessageRead(messageId);
   },
-User
+  User,
 );
 
 export const DELETE = routeHandler<MessageParams>(
@@ -29,5 +29,5 @@ export const DELETE = routeHandler<MessageParams>(
 
     return deleteMessage(messageId);
   },
-  User
+  User,
 );

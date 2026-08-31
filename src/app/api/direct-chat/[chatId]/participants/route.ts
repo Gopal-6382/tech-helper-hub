@@ -16,5 +16,5 @@ export const GET = routeHandler<ParticipantParams>(
 
     return getParticipants(chatId);
   },
- User
+  User,
 );

@@ -52,7 +52,7 @@ export class DirectChatService {
     // 3. Create conversation and participants atomically in a transaction
     return this.directchat.createConversationWithParticipants(
       senderId,
-      receiverId
+      receiverId,
     );
   }
 
@@ -84,7 +84,7 @@ export class DirectChatService {
     sendMessageSchema.parse({ content: data.content });
 
     const conversation = await this.directchat.findConversationById(
-      data.conversationId
+      data.conversationId,
     );
 
     if (!conversation) {
@@ -93,7 +93,7 @@ export class DirectChatService {
 
     const participant = await this.directchat.isParticipant(
       data.conversationId,
-      data.senderId
+      data.senderId,
     );
 
     if (!participant) {

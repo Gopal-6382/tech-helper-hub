@@ -20,7 +20,7 @@ export class DirectChatRepository {
   // Create conversation and participants in a single atomic database operation
   async createConversationWithParticipants(
     senderId: string,
-    receiverId: string
+    receiverId: string,
   ) {
     return prisma.directConversation.create({
       data: {

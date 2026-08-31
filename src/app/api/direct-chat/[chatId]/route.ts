@@ -23,6 +23,7 @@ export const POST = routeHandler<ChatParams>(async (_req, user, { params }) => {
     throw new Error("chatId is required");
   }
   const data: CreateConversationDto = createConversationSchema.parse({
-    receiverId:chatId});
+    receiverId: chatId,
+  });
   return createConversation(user.userId, data);
 }, User);

@@ -18,7 +18,7 @@ export const GET = routeHandler<MessageRouteParams>(
 
     return getMessages(chatId);
   },
-User
+  User,
 );
 
 export const POST = routeHandler<MessageRouteParams>(
@@ -35,5 +35,5 @@ export const POST = routeHandler<MessageRouteParams>(
       content: body.content,
     });
   },
-User
+  User,
 );
