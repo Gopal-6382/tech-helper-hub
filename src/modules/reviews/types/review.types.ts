@@ -21,4 +21,3 @@ export interface CreateReviewData extends CreateReviewDto {
   userId: string;
   professionalId: string;
 }
-
