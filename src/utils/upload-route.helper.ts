@@ -1,112 +1,110 @@
-import { NextRequest } from "next/server";
-
 import { uploadImage } from "@/utils/upload.helper";
 import { FILE_TYPES } from "@/constant/uploadfiles.types";
-
-interface UploadOptions {
+interface UnifiedUploadOptions {
   folder: string;
-  field?: string;
-  errorMessage?: string;
+  fieldNames?: string[];
   allowedTypes?: readonly string[];
+  maxFiles?: number;
+  maxSizeMB?: number;
 }
 
-/**
- * Single File Upload Helper
- *
- * Used for:
- * - Avatar
- * - Group Image
- * - Verification Front
- * - Verification Back
- * - Verification Selfie
- * - Verification Certificate
- */
-export async function handleSingleUpload(
-  req: NextRequest,
-  options: UploadOptions,
+export async function processUploads(
+  formData: FormData, // <-- Changed this from NextRequest
+  options: UnifiedUploadOptions,
 ) {
-  const fieldName = options.field || "file";
+  const rawFiles: { file: File; fieldName: string }[] = [];
 
-  const formData = await req.formData();
+  const targetFields = options.fieldNames || [
+    "file",
+    "files",
+    "image",
+    "document",
+  ];
 
-  const file = formData.get(fieldName);
-
-  if (!(file instanceof File)) {
-    throw new Error(options.errorMessage || `${fieldName} is required`);
-  }
-
-  const allowedTypes = options.allowedTypes || FILE_TYPES.IMAGE;
-
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error("Invalid file type");
-  }
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const result = await uploadImage(buffer, {
-    folder: options.folder,
-  });
-
-  return {
-    publicId: result.publicId,
-    secureUrl: result.secureUrl,
-  };
-}
-
-/**
- * Multiple File Upload Helper
- *
- * Used for:
- * - Post Images
- * - Review Images
- */
-export async function handleMultiUpload(
-  req: NextRequest,
-  options: UploadOptions,
-) {
-  const fieldName = options.field || "files";
-
-  const formData = await req.formData();
-
-  const files = formData.getAll(fieldName);
-
-  if (files.length === 0) {
-    throw new Error(options.errorMessage || "At least one file is required");
-  }
-
-  const allowedTypes = options.allowedTypes || FILE_TYPES.IMAGE;
-
-  const results: {
-    publicId: string;
-    secureUrl: string;
-  }[] = [];
-
-  for (const file of files) {
-    if (!(file instanceof File)) {
-      continue;
+  // Extract from specific target fields
+  for (const field of targetFields) {
+    const values = formData.getAll(field);
+    for (const val of values) {
+      if (
+        val &&
+        typeof val === "object" &&
+        "arrayBuffer" in val &&
+        (val as File).size > 0
+      ) {
+        rawFiles.push({ file: val as File, fieldName: field });
+      }
     }
+  }
+
+  // Fallback: If target fields weren't used, check all fields
+  if (rawFiles.length === 0) {
+    formData.forEach((value, key) => {
+      if (
+        value &&
+        typeof value === "object" &&
+        "arrayBuffer" in value &&
+        (value as File).size > 0
+      ) {
+        rawFiles.push({ file: value as File, fieldName: key });
+      }
+    });
+  }
+
+  if (rawFiles.length === 0) {
+    throw new Error("No valid files were uploaded in the request.");
+  }
+
+  // VALIDATION: Max Files
+  if (options.maxFiles && rawFiles.length > options.maxFiles) {
+    throw new Error(
+      `You can only upload a maximum of ${options.maxFiles} file(s).`,
+    );
+  }
+
+  const allowedTypes = options.allowedTypes || [
+    ...FILE_TYPES.IMAGE,
+    ...FILE_TYPES.DOCUMENT,
+  ];
+
+  const MAX_BYTES = (options.maxSizeMB || 5) * 1024 * 1024;
+  const processedResults = [];
+
+  for (const item of rawFiles) {
+    const { file, fieldName } = item;
+
+    if (!file.type || file.type.startsWith("multipart/")) continue;
 
     if (!allowedTypes.includes(file.type)) {
-      continue;
+      throw new Error(`File type '${file.type}' is not supported.`);
+    }
+
+    // VALIDATION: File Size
+    if (file.size > MAX_BYTES) {
+      throw new Error(
+        `File '${file.name}' exceeds the maximum size of ${options.maxSizeMB || 5}MB.`,
+      );
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const isDocument = FILE_TYPES.DOCUMENT.includes(file.type as any);
 
     const result = await uploadImage(buffer, {
       folder: options.folder,
+      resourceType: isDocument ? "raw" : "image",
     });
 
-    results.push({
+    processedResults.push({
+      fieldName,
       publicId: result.publicId,
       secureUrl: result.secureUrl,
+      resourceType: result.resourceType,
+      format: result.format,
     });
   }
 
-  if (results.length === 0) {
-    throw new Error("No valid files were processed.");
+  if (processedResults.length === 0) {
+    throw new Error("No valid file objects were processed.");
   }
 
-  return {
-    images: results,
-  };
+  return processedResults;
 }

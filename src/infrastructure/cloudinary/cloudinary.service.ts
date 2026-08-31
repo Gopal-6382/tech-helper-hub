@@ -4,6 +4,7 @@ import {
   CloudinaryUploadOptions,
 } from "./cloudinary.types";
 
+// cloudinary.service.ts
 export class CloudinaryService {
   async uploadBuffer(
     buffer: Buffer,
@@ -14,18 +15,13 @@ export class CloudinaryService {
         {
           folder: options.folder,
           public_id: options.publicId,
-          resource_type: options.resourceType ?? "image",
+          // Auto-detect or default based on options
+          resource_type: options.resourceType || "auto",
         },
         (error, result) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-
-          if (!result) {
-            reject(new Error("Cloudinary returned no result"));
-            return;
-          }
+          if (error) return reject(error);
+          if (!result)
+            return reject(new Error("Cloudinary returned no result"));
 
           resolve({
             publicId: result.public_id,
@@ -38,24 +34,6 @@ export class CloudinaryService {
       );
 
       stream.end(buffer);
-    });
-  }
-
-  async deleteImage(publicId: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      cloudinary.uploader.destroy(publicId, (error, result) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-
-        if (result.result !== "ok" && result.result !== "not found") {
-          reject(new Error(`Cloudinary delete failed: ${result.result}`));
-          return;
-        }
-
-        resolve();
-      });
     });
   }
 }
