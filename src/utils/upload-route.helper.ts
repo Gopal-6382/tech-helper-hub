@@ -86,8 +86,9 @@ export async function processUploads(
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const isDocument = FILE_TYPES.DOCUMENT.includes(file.type as any);
-
+    const isDocument = (FILE_TYPES.DOCUMENT as readonly string[]).includes(
+      file.type,
+    );
     const result = await uploadImage(buffer, {
       folder: options.folder,
       resourceType: isDocument ? "raw" : "image",
