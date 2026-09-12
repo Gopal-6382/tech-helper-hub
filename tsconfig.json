@@ -22,7 +22,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/modules/*": ["./src/backend/modules/*"],
+      "@/lib/*": ["./src/backend/lib/*"],
+      "@/middleware/*": ["./src/backend/middleware/*"],
+      "@/infrastructure/*": ["./src/backend/infrastructure/*"],
+      "@/constant/*": ["./src/backend/constant/*"],
+      "@/utils/*": ["./src/backend/utils/*"],
+      "@/admin/*": ["./src/backend/admin/*"]
     }
   },
   "include": [

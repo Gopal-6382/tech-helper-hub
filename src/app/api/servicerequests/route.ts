@@ -3,7 +3,7 @@ import { createServiceRequestSchema } from "@/modules/servicerequest/validations
 import { createRequestAction } from "@/modules/servicerequest/actions/create-request.action";
 import { getMyRequestsAction } from "@/modules/servicerequest/actions/get-my-requests.action";
 import { AppError } from "@/utils/api-response";
-import { User } from "./../../../constant/roles.route.const";
+import { User } from "@/constant/roles.route.const";
 export const POST = routeHandler(async (req, user) => {
   const body = await req.json();
 
