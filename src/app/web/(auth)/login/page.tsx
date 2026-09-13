@@ -1,5 +1,5 @@
 // src/app/web/auth/login/page.tsx
-import WebLayout from '../../layout';
+import WebLayout from "../../layout";
 export default function LoginPage() {
   return (
     <WebLayout>
