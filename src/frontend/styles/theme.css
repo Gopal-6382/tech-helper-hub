@@ -1,0 +1,131 @@
+/* src/frontend/styles/theme.css */
+
+:root {
+  /* Colors */
+  --background: 0 0% 100%;
+  --foreground: 240 10% 4%;
+
+  --surface: 0 0% 100%;
+  --surface-muted: 240 5% 96%;
+
+  --primary: 240 6% 10%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 240 5% 96%;
+  --secondary-foreground: 240 6% 10%;
+
+  --muted: 240 4% 46%;
+  --muted-foreground: 240 5% 35%;
+
+  --border: 240 6% 85%;
+  --input: 240 6% 85%;
+
+  --success: 142 71% 45%;
+  --warning: 38 92% 50%;
+  --danger: 0 72% 51%;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Layout */
+  --container-width: 1280px;
+  --page-padding: 1rem;
+}
+
+.dark {
+  --background: 240 6% 10%;
+  --foreground: 0 0% 98%;
+
+  --surface: 240 5% 14%;
+  --surface-muted: 240 4% 18%;
+
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 6% 10%;
+
+  --secondary: 240 4% 20%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 4% 65%;
+  --muted-foreground: 240 5% 78%;
+
+  --border: 240 4% 25%;
+  --input: 240 4% 25%;
+
+  --success: 142 71% 45%;
+  --warning: 38 92% 50%;
+  --danger: 0 72% 55%;
+}
+
+/* ================= Alternate brand themes ================= */
+
+/* Blue — trust, most common for booking/marketplace primaries */
+[data-theme="blue"] {
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 214 95% 93%;
+  --secondary-foreground: 221 83% 30%;
+}
+
+/* Green — growth, "available/active" feel */
+[data-theme="green"] {
+  --primary: 152 60% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 152 60% 93%;
+  --secondary-foreground: 152 60% 22%;
+}
+
+/* Orange — energetic, urgency */
+[data-theme="orange"] {
+  --primary: 24 95% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 24 95% 94%;
+  --secondary-foreground: 24 80% 30%;
+}
+
+/* Purple — premium/professional feel */
+[data-theme="purple"] {
+  --primary: 262 83% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 262 83% 95%;
+  --secondary-foreground: 262 70% 35%;
+}
+
+/* Teal — calm + modern */
+[data-theme="teal"] {
+  --primary: 173 80% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 173 60% 92%;
+  --secondary-foreground: 173 80% 22%;
+}
+
+/* ============================================================ */
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-surface: hsl(var(--surface));
+  --color-surface-muted: hsl(var(--surface-muted));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+
+  --color-success: hsl(var(--success));
+  --color-warning: hsl(var(--warning));
+  --color-danger: hsl(var(--danger));
+}

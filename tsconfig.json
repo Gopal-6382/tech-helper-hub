@@ -29,7 +29,8 @@
       "@/infrastructure/*": ["./src/backend/infrastructure/*"],
       "@/constant/*": ["./src/backend/constant/*"],
       "@/utils/*": ["./src/backend/utils/*"],
-      "@/admin/*": ["./src/backend/admin/*"]
+      "@/admin/*": ["./src/backend/admin/*"],
+      "@/styles/*": ["./src/frontend/styles/*"]
     }
   },
   "include": [
