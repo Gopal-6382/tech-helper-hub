@@ -39,7 +39,11 @@ export function ThemeSwitcher() {
 
       <select
         value={colorTheme}
-        onChange={(e) => setColorTheme(e.target.value as (typeof colorOptions)[number]["value"])}
+        onChange={(e) =>
+          setColorTheme(
+            e.target.value as (typeof colorOptions)[number]["value"],
+          )
+        }
         className="h-9 rounded-md border border-border bg-background px-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary"
       >
         {colorOptions.map((opt) => (

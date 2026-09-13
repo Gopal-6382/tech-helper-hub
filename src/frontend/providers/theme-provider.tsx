@@ -9,8 +9,17 @@ import {
   useSyncExternalStore,
 } from "react";
 
-type ColorTheme = "default" | "blue" | "green" | "orange" | "purple" | "teal" | "red";
-const COLOR_THEMES: ColorTheme[] = ["default", "blue", "green", "orange", "purple", "teal", "red"];
+type ColorTheme =
+  "default" | "blue" | "green" | "orange" | "purple" | "teal" | "red";
+const COLOR_THEMES: ColorTheme[] = [
+  "default",
+  "blue",
+  "green",
+  "orange",
+  "purple",
+  "teal",
+  "red",
+];
 const STORAGE_KEY = "color-theme";
 const CHANGE_EVENT = "color-theme-change";
 

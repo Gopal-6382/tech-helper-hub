@@ -7,6 +7,7 @@
 @import "../frontend/styles/utilities.css";
 
 @custom-variant dark (&:is(.dark *));
+
 :root {
   --background: 0 0% 100%;
   --foreground: 0 0% 15%;
@@ -52,7 +53,7 @@
 
 /* Red theme */
 [data-theme="red"] {
-  --background: 0 0% 100%;   /* was 0 0% 10% — fixed, that made it unreadable */
+  --background: 0 0% 100%;
   --foreground: 0 0% 9%;
   --surface: 0 0% 100%;
   --surface-muted: 0 20% 97%;
@@ -129,6 +130,7 @@
   --muted: 173 15% 46%;
   --muted-foreground: 173 15% 30%;
 }
+
 /* Dark mode */
 .dark {
   --background: 0 0% 15%;
@@ -184,7 +186,10 @@
   --color-warning: hsl(var(--warning));
   --color-danger: hsl(var(--danger));
 
-  --font-sans: var(--font-sans);
+  /* Registered both dynamic fonts for Tailwind v4 */
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-heading: var(--font-heading), system-ui, sans-serif;
+
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
   --color-popover: hsl(var(--popover));
@@ -210,7 +215,8 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 }
-/* Base */
+
+/* Base resets & layer overrides */
 * {
   border-color: hsl(var(--border));
 }
@@ -219,19 +225,34 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
-  html {
-    @apply font-sans;
+
+  /* Dynamic heading rules */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    @apply font-bold tracking-tight;
+    overflow-wrap: break-word;
+  }
+
+  h1 { @apply text-4xl md:text-5xl; }
+  h2 { @apply text-3xl md:text-4xl; }
+  h3 { @apply text-2xl md:text-3xl; }
+  h4 { @apply text-xl md:text-2xl; }
+
+  /* Dynamic paragraph rules */
+  p {
+    font-family: var(--font-sans);
+    @apply text-muted-foreground leading-relaxed;
   }
 }

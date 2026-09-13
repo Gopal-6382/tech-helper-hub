@@ -52,8 +52,14 @@ export function CreateRequestForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md space-y-5">
       <div className="space-y-2">
         <Label htmlFor="title">Title</Label>
-        <Input id="title" placeholder="e.g. Fix leaking kitchen tap" {...register("title")} />
-        {errors.title && <p className="text-sm text-danger">{errors.title.message}</p>}
+        <Input
+          id="title"
+          placeholder="e.g. Fix leaking kitchen tap"
+          {...register("title")}
+        />
+        {errors.title && (
+          <p className="text-sm text-danger">{errors.title.message}</p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -76,7 +82,9 @@ export function CreateRequestForm() {
             </Select>
           )}
         />
-        {errors.category && <p className="text-sm text-danger">{errors.category.message}</p>}
+        {errors.category && (
+          <p className="text-sm text-danger">{errors.category.message}</p>
+        )}
       </div>
 
       <div className="space-y-2">
@@ -88,10 +96,16 @@ export function CreateRequestForm() {
           className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
           {...register("description")}
         />
-        {errors.description && <p className="text-sm text-danger">{errors.description.message}</p>}
+        {errors.description && (
+          <p className="text-sm text-danger">{errors.description.message}</p>
+        )}
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="flex items-center gap-2">
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="flex items-center gap-2"
+      >
         <Send className="h-4 w-4" />
         {isSubmitting ? "Submitting..." : "Submit Request"}
       </Button>

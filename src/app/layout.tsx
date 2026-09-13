@@ -1,18 +1,22 @@
-import "./globals.css";
+import "@/app/globals.css";
+import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
+import { constructMetadata } from "@/frontend/lib/seo";
 import { Providers } from "./providers";
-import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+export const metadata = constructMetadata();
 
-export const metadata = {
-  title: { default: "Tech Helper Hub", template: "%s | Tech Helper Hub" },
-  description: "Find and book verified local service professionals.",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html
+      lang="en"
+      className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
