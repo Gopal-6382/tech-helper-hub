@@ -1,7 +1,4 @@
-/* src/frontend/styles/theme.css */
-
 :root {
-  /* Colors */
   --background: 0 0% 100%;
   --foreground: 240 10% 4%;
 
@@ -62,7 +59,6 @@
   --danger: 0 72% 55%;
 }
 
-/* ================= Alternate brand themes ================= */
 
 /* Blue — trust, most common for booking/marketplace primaries */
 [data-theme="blue"] {
@@ -104,7 +100,6 @@
   --secondary-foreground: 173 80% 22%;
 }
 
-/* ============================================================ */
 
 @theme inline {
   --color-background: hsl(var(--background));

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@import "../../frontend/styles/theme.css";
-@import "../../frontend/styles/base.css";
-@import "../../frontend/styles/animations.css";
-@import "../../frontend/styles/utilities.css";
+@import "../frontend/styles/theme.css";
+@import "../frontend/styles/base.css";
+@import "../frontend/styles/animations.css";
+@import "../frontend/styles/utilities.css";
 
 @custom-variant dark (&:is(.dark *));
 :root {
