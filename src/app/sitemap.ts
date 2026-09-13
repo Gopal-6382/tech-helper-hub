@@ -1,7 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/frontend/config/site";
 
-// Optional: Fetch dynamic database routes (e.g., public profiles, articles, categories)
 async function getDynamicRoutes() {
   try {
     const res = await fetch(
