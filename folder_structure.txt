@@ -188,6 +188,7 @@ tech-helper-hub/
 │   │   ├── sitemap.ts
 │   │   └── web
 │   │       ├── (auth)
+│   │       │   ├── authlayout.tsx
 │   │       │   ├── forgot-password
 │   │       │   │   └── page.tsx
 │   │       │   ├── login
@@ -200,12 +201,13 @@ tech-helper-hub/
 │   │           │   └── page.tsx
 │   │           ├── categories
 │   │           │   └── page.tsx
-│   │           ├── direct-chat
-│   │           │   ├── [chatId]
-│   │           │   └── page.tsx
-│   │           ├── group-chat
-│   │           │   ├── [groupId]
-│   │           │   └── page.tsx
+│   │           ├── chat
+│   │           │   ├── direct-chat
+│   │           │   │   ├── [chatId]
+│   │           │   │   └── page.tsx
+│   │           │   └── group-chat
+│   │           │       ├── [groupId]
+│   │           │       └── page.tsx
 │   │           ├── layout.tsx
 │   │           ├── page.tsx
 │   │           ├── posts
@@ -220,8 +222,11 @@ tech-helper-hub/
 │   │           │   └── page.tsx
 │   │           ├── reviews
 │   │           │   └── page.tsx
-│   │           └── servicerequests
-│   │               ├── [requestId]
+│   │           ├── servicerequests
+│   │           │   ├── [requestId]
+│   │           │   └── page.tsx
+│   │           └── settings
+│   │               ├── [chatId]
 │   │               └── page.tsx
 │   ├── backend
 │   │   ├── admin
@@ -558,6 +563,7 @@ tech-helper-hub/
 │       │   │   └── textarea-field.tsx
 │       │   ├── layout
 │       │   │   ├── container.tsx
+│       │   │   ├── dashboard-layout.tsx
 │       │   │   ├── header.tsx
 │       │   │   ├── nav-links.tsx
 │       │   │   ├── page-header.tsx
@@ -587,8 +593,13 @@ tech-helper-hub/
 │       ├── features
 │       │   ├── auth
 │       │   │   ├── components
+│       │   │   │   ├── ForgotPasswordForm.tsx
+│       │   │   │   ├── LoginForm.tsx
+│       │   │   │   ├── RegisterForm.tsx
+│       │   │   │   └── ResetPasswordForm.tsx
 │       │   │   ├── hooks
 │       │   │   ├── services
+│       │   │   │   └── auth.service.ts
 │       │   │   ├── types
 │       │   │   └── validations
 │       │   ├── bookings

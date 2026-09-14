@@ -1,46 +1,64 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bell, Menu, Search } from "lucide-react";
+import { DynamicIcon } from "@/frontend/components/common/icon";
+import { dashboardRoutes } from "@/frontend/config/navigation";
 
-import { Button } from "@/frontend/components/ui/button";
+interface HeaderProps {
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
+}
 
-type HeaderProps = {
-  onMenuClick?: () => void;
-};
+export function Header({ sidebarOpen, onToggleSidebar }: HeaderProps) {
+  const pathname = usePathname();
 
-export function Header({ onMenuClick }: HeaderProps) {
+  // Dynamic Breadcrumb Resolver
+  const pathSegments = pathname?.split("/").filter(Boolean) || [];
+  const matchedRoute = dashboardRoutes.find((r) => pathname?.startsWith(r.href));
+
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="flex h-16 w-full items-center gap-3 px-4 sm:px-6">
-        <div className="flex shrink-0 items-center">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground lg:hidden"
-            aria-label="Open navigation menu"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
-        </div>
+    <header className="flex h-16 shrink-0 items-center justify-between border-b bg-background px-6">
+      {/* Sidebar Controls & Route Breadcrumbs */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onToggleSidebar}
+          className="rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+          aria-label="Toggle Navigation Sidebar"
+        >
+          <DynamicIcon name={sidebarOpen ? "close" : "menu"} size={20} />
+        </button>
 
-        <div className="min-w-0 flex-1">
-          <Link
-            href="/web"
-            className="block truncate text-lg font-bold tracking-tight text-foreground"
-          >
-            Tech Helper Hub
+        <nav className="hidden items-center gap-2 text-sm md:flex text-muted-foreground">
+          <Link href="/web" className="hover:text-foreground transition-colors">
+            Home
           </Link>
-        </div>
+          {pathSegments.map((segment, index) => {
+            const url = `/${pathSegments.slice(0, index + 1).join("/")}`;
+            const isLast = index === pathSegments.length - 1;
 
-        <div className="flex shrink-0 items-center gap-1">
-          <Button variant="ghost" size="icon" aria-label="Search">
-            <Search className="h-5 w-5" />
-          </Button>
+            return (
+              <span key={url} className="flex items-center gap-2 capitalize">
+                <span className="text-muted-foreground/60">/</span>
+                {isLast ? (
+                  <span className="font-semibold text-foreground">
+                    {matchedRoute?.title || segment}
+                  </span>
+                ) : (
+                  <Link href={url} className="hover:text-foreground transition-colors">
+                    {segment}
+                  </Link>
+                )}
+              </span>
+            );
+          })}
+        </nav>
+      </div>
 
-          <Button variant="ghost" size="icon" aria-label="Notifications">
-            <Bell className="h-5 w-5" />
-          </Button>
+      {/* User Context Area */}
+      <div className="flex items-center gap-3">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-xs border border-primary/20">
+          U
         </div>
       </div>
     </header>

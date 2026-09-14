@@ -2,51 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Bell,
-  Briefcase,
-  Home,
-  MessageCircle,
-  Settings,
-  User,
-} from "lucide-react";
+import { dashboardRoutes } from "@/frontend/config/navigation";
+import { DynamicIcon } from "@/frontend/components/common/icon";
+import { cn } from "@/frontend/lib/utils";
 
-export const navigation = [
-  { label: "Home", href: "/web", icon: Home },
-  { label: "Messages", href: "/web/chat", icon: MessageCircle },
-  { label: "Bookings", href: "/web/bookings", icon: Briefcase },
-  { label: "Notifications", href: "/web/notifications", icon: Bell },
-  { label: "Profile", href: "/web/profile", icon: User },
-  { label: "Settings", href: "/web/settings", icon: Settings },
-];
-
-export function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+export function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-1">
-      {navigation.map((item) => {
-        const Icon = item.icon;
+    <nav className="flex flex-col gap-1 px-3 py-4">
+      {dashboardRoutes.map((item) => {
         const isActive =
           pathname === item.href ||
-          (item.href !== "/web" && pathname.startsWith(`${item.href}/`));
+          (item.href !== "/web" && pathname?.startsWith(item.href));
 
         return (
           <Link
             key={item.href}
             href={item.href}
-            onClick={onNavigate}
-            className={`flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            className={cn(
+              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
               isActive
-                ? "bg-secondary text-foreground"
-                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-            }`}
+                ? "bg-primary text-primary-foreground font-semibold"
+                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+            )}
           >
-            <Icon className="h-5 w-5 shrink-0" />
-            <span className="truncate">{item.label}</span>
+            <DynamicIcon name={item.icon} className="h-4 w-4" />
+            <span>{item.title}</span>
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }

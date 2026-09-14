@@ -15,6 +15,7 @@ export default function RootLayout({
       lang="en"
       className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable}`}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>

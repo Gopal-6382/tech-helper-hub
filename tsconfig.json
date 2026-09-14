@@ -30,7 +30,12 @@
       "@/constant/*": ["./src/backend/constant/*"],
       "@/utils/*": ["./src/backend/utils/*"],
       "@/admin/*": ["./src/backend/admin/*"],
-      "@/styles/*": ["./src/frontend/styles/*"]
+      "@/styles/*": ["./src/frontend/styles/*"],
+      "@/components/*": ["./src/frontend/components/*"],
+      "@/services/*": ["./src/frontend/services/*"],
+      "@/hooks/*": ["./src/frontend/hooks/*"],
+      "@/context/*": ["./src/frontend/context/*"],
+      "@/types/*": ["./src/frontend/types/*"]
     }
   },
   "include": [
