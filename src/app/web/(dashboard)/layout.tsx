@@ -1,10 +1,6 @@
-import { PageHeader } from "@/frontend/components/layout/page-header";
+// src/app/web/(dashboard)/layout.tsx
+import { DashboardLayout } from "@/frontend/components/layout/dashboard-layout";
 
-export default function DashboardPage() {
-  return (
-      <PageHeader
-        title="Dashboard"
-        description="Overview of your Tech Helper Hub activity."
-      />
-  );
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

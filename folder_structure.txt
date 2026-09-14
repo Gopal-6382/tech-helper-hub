@@ -557,9 +557,9 @@ tech-helper-hub/
 │       │   │   ├── text-field.tsx
 │       │   │   └── textarea-field.tsx
 │       │   ├── layout
-│       │   │   ├── app-shell.tsx
 │       │   │   ├── container.tsx
 │       │   │   ├── header.tsx
+│       │   │   ├── nav-links.tsx
 │       │   │   ├── page-header.tsx
 │       │   │   └── sidebar.tsx
 │       │   ├── typography
