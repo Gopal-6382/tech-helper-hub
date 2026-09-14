@@ -36,7 +36,10 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           />
           <aside className="relative h-full w-[min(20rem,85vw)] max-w-full overflow-y-auto border-r border-border bg-background shadow-xl">
             <div className="flex h-16 items-center justify-between border-b border-border px-4">
-              <Link href="/web" className="truncate text-lg font-bold text-primary">
+              <Link
+                href="/web"
+                className="truncate text-lg font-bold text-primary"
+              >
                 Tech Helper Hub
               </Link>
               <button

@@ -1,4 +1,3 @@
-// src/app/web/(dashboard)/layout.tsx
 import { DashboardLayout } from "@/frontend/components/layout/dashboard-layout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
