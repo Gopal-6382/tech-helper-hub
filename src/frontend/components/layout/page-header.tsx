@@ -19,7 +19,7 @@ export function PageHeader({
       
     >
       <div className="min-w-0">
-        <h1 className="break-words text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        <h1 className="wrap-break-word text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           {title}
         </h1>
 

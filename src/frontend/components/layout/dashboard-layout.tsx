@@ -1,4 +1,3 @@
-// src/frontend/components/layout/
 "use client";
 
 import { useState, type ReactNode } from "react";

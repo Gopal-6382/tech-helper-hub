@@ -1,4 +1,3 @@
-// src/frontend/components/layout/sidebar.tsx — now just lays out the desktop wrapper, delegates links to NavLinks
 "use client";
 
 import { NavLinks } from "./nav-links";
