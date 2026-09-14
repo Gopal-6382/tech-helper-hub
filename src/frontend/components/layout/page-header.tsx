@@ -1,14 +1,40 @@
+import type { ReactNode } from "react";
+
+type PageHeaderProps = {
+  title: string;
+  description?: string;
+  action?: ReactNode;
+  className?: string;
+};
+
 export function PageHeader({
   title,
+  description,
   action,
-}: {
-  title: string;
-  action?: React.ReactNode;
-}) {
+  className = "",
+}: PageHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 py-4">
-      <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-      {action}
-    </div>
+    <header
+      className={`mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-end sm:justify-between ${className}`}
+      
+    >
+      <div className="min-w-0">
+        <h1 className="break-words text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          {title}
+        </h1>
+
+        {description ? (
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+            {description}
+          </p>
+        ) : null}
+      </div>
+
+      {action ? (
+        <div className="flex w-full shrink-0 sm:w-auto">
+          {action}
+        </div>
+      ) : null}
+    </header>
   );
 }

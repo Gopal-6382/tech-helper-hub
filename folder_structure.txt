@@ -20,7 +20,6 @@ tech-helper-hub/
 ├── prisma.config.ts
 ├── src
 │   ├── app
-│   │   ├── (global)
 │   │   ├── api
 │   │   │   ├── auth
 │   │   │   │   ├── forgot-password
@@ -188,7 +187,42 @@ tech-helper-hub/
 │   │   ├── robots.ts
 │   │   ├── sitemap.ts
 │   │   └── web
-│   │       └── (auth)
+│   │       ├── (auth)
+│   │       │   ├── forgot-password
+│   │       │   │   └── page.tsx
+│   │       │   ├── login
+│   │       │   │   └── page.tsx
+│   │       │   └── register
+│   │       │       └── page.tsx
+│   │       └── (dashboard)
+│   │           ├── bookings
+│   │           │   ├── [bookingId]
+│   │           │   └── page.tsx
+│   │           ├── categories
+│   │           │   └── page.tsx
+│   │           ├── direct-chat
+│   │           │   ├── [chatId]
+│   │           │   └── page.tsx
+│   │           ├── group-chat
+│   │           │   ├── [groupId]
+│   │           │   └── page.tsx
+│   │           ├── layout.tsx
+│   │           ├── page.tsx
+│   │           ├── posts
+│   │           │   ├── [id]
+│   │           │   └── page.tsx
+│   │           ├── professionals
+│   │           │   ├── [professionalId]
+│   │           │   └── page.tsx
+│   │           ├── profile
+│   │           │   └── page.tsx
+│   │           ├── reports
+│   │           │   └── page.tsx
+│   │           ├── reviews
+│   │           │   └── page.tsx
+│   │           └── servicerequests
+│   │               ├── [requestId]
+│   │               └── page.tsx
 │   ├── backend
 │   │   ├── admin
 │   │   │   └── categories
@@ -539,15 +573,14 @@ tech-helper-hub/
 │       │       ├── dropdown-menu.tsx
 │       │       ├── input.tsx
 │       │       ├── label.tsx
-│       │       └── select.tsx
+│       │       ├── select.tsx
+│       │       └── toast.tsx
 │       ├── config
 │       │   ├── fonts.ts
-│       │   ├── routes.ts
+│       │   ├── navigation.ts
 │       │   └── site.ts
 │       ├── constants
 │       │   ├── animations.ts
-│       │   ├── navigation.ts
-│       │   ├── routes.ts
 │       │   └── ui.ts
 │       ├── context
 │       │   └── auth-context.tsx
@@ -574,6 +607,13 @@ tech-helper-hub/
 │       │   │   ├── hooks
 │       │   │   ├── services
 │       │   │   └── types
+│       │   ├── dashboard
+│       │   │   ├── components
+│       │   │   │   └── dashboard.tsx
+│       │   │   ├── hooks
+│       │   │   ├── services
+│       │   │   ├── types
+│       │   │   └── validations
 │       │   ├── follows
 │       │   ├── groups
 │       │   │   ├── components
@@ -603,7 +643,6 @@ tech-helper-hub/
 │       │   └── users
 │       ├── hooks
 │       ├── lib
-│       │   ├── api-client.ts
 │       │   ├── query-client.ts
 │       │   ├── seo.ts
 │       │   ├── storage.ts
@@ -622,6 +661,7 @@ tech-helper-hub/
 │           ├── api.ts
 │           ├── common.ts
 │           └── ui.ts
+├── tailwind.config.ts
 ├── tem.txt
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
