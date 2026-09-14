@@ -22,7 +22,9 @@ export function Sidebar({ isOpen }: SidebarProps) {
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r bg-background transition-all duration-300 md:static ${
-        isOpen ? "w-64 translate-x-0" : "-translate-x-full md:w-20 md:translate-x-0"
+        isOpen
+          ? "w-64 translate-x-0"
+          : "-translate-x-full md:w-20 md:translate-x-0"
       }`}
     >
       {/* Brand Section */}
@@ -30,7 +32,11 @@ export function Sidebar({ isOpen }: SidebarProps) {
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold shrink-0">
           TH
         </div>
-        {isOpen && <span className="font-semibold text-foreground text-lg truncate">Tech Helper</span>}
+        {isOpen && (
+          <span className="font-semibold text-foreground text-lg truncate">
+            Tech Helper
+          </span>
+        )}
       </div>
 
       {/* Navigation List */}
@@ -56,7 +62,9 @@ export function Sidebar({ isOpen }: SidebarProps) {
                   <div className="flex items-center gap-3 min-w-0">
                     <DynamicIcon
                       name={item.icon}
-                      className={isActive ? "text-primary" : "text-muted-foreground"}
+                      className={
+                        isActive ? "text-primary" : "text-muted-foreground"
+                      }
                     />
                     {isOpen && <span className="truncate">{item.title}</span>}
                   </div>

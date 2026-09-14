@@ -15,7 +15,9 @@ export function Header({ sidebarOpen, onToggleSidebar }: HeaderProps) {
 
   // Dynamic Breadcrumb Resolver
   const pathSegments = pathname?.split("/").filter(Boolean) || [];
-  const matchedRoute = dashboardRoutes.find((r) => pathname?.startsWith(r.href));
+  const matchedRoute = dashboardRoutes.find((r) =>
+    pathname?.startsWith(r.href),
+  );
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-background px-6">
@@ -45,7 +47,10 @@ export function Header({ sidebarOpen, onToggleSidebar }: HeaderProps) {
                     {matchedRoute?.title || segment}
                   </span>
                 ) : (
-                  <Link href={url} className="hover:text-foreground transition-colors">
+                  <Link
+                    href={url}
+                    className="hover:text-foreground transition-colors"
+                  >
                     {segment}
                   </Link>
                 )}

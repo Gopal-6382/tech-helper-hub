@@ -8,7 +8,11 @@ export const dashboardRoutes: NavItem[] = [
   bookingsNavRoutes,
   chatNavRoutes,
   professionalsNavRoutes,
-  { title: "Service Requests", href: "/web/servicerequests", icon: "servicerequests" },
+  {
+    title: "Service Requests",
+    href: "/web/servicerequests",
+    icon: "servicerequests",
+  },
   { title: "Categories", href: "/web/categories", icon: "categories" },
   { title: "Reports", href: "/web/reports", icon: "reports" },
   {
