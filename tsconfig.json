@@ -24,6 +24,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/modules/*": ["./src/backend/modules/*"],
+      "@/features/*": ["./src/frontend/features/*"],
       "@/lib/*": ["./src/backend/lib/*"],
       "@/middleware/*": ["./src/backend/middleware/*"],
       "@/infrastructure/*": ["./src/backend/infrastructure/*"],

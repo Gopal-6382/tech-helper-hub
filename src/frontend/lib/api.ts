@@ -10,10 +10,22 @@ export async function apiRequest<T = unknown>(
   url: string,
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
+  const accessToken =
+    typeof window !== "undefined"
+      ? localStorage.getItem("accessToken")
+      : null;
+
   const response = await fetch(url, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+
+      ...(accessToken
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        : {}),
+
       ...(options.headers || {}),
     },
   });
@@ -21,8 +33,10 @@ export async function apiRequest<T = unknown>(
   const result = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(result?.message || "Something went wrong");
+    throw new Error(
+      result?.message || "Something went wrong",
+    );
   }
 
-  return result;
+  return result as ApiResponse<T>;
 }
