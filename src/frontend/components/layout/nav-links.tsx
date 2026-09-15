@@ -2,16 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { dashboardRoutes } from "@/frontend/config/navigation";
-import { DynamicIcon } from "@/frontend/components/common/icon";
+import { userNavigation } from "@/frontend/config/navigation";
 import { cn } from "@/frontend/lib/utils";
-
 export function NavLinks() {
   const pathname = usePathname();
 
   return (
     <nav className="flex flex-col gap-1 px-3 py-4">
-      {dashboardRoutes.map((item) => {
+      {userNavigation.map((item) => {
         const isActive =
           pathname === item.href ||
           (item.href !== "/web" && pathname?.startsWith(item.href));
@@ -27,7 +25,7 @@ export function NavLinks() {
                 : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
             )}
           >
-            <DynamicIcon name={item.icon} className="h-4 w-4" />
+            <item.icon className="h-4 w-4" />
             <span>{item.title}</span>
           </Link>
         );

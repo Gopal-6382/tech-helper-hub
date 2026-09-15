@@ -3,18 +3,18 @@
 import React, { createContext, useContext, useState } from "react";
 
 interface AuthContextType {
-  user: any | null;
+  user: unknown | null;
   isAuthenticated: boolean;
-  login: (userData: any) => void;
+  login: (userData: unknown) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<unknown | null>(null);
 
-  const login = (userData: any) => setUser(userData);
+  const login = (userData: unknown) => setUser(userData);
   const logout = () => setUser(null);
 
   return (
