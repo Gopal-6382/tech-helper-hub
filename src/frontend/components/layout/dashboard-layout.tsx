@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }: Props) {
 
       <div className="md:ml-64">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-<PageHeader title="hi" />
+        <PageHeader title="hi" />
         <main className="p-4 sm:p-6">{children}</main>
       </div>
     </div>

@@ -18,8 +18,6 @@ export function Header({ onMenuClick }: Props) {
       >
         <Menu size={22} />
       </button>
-
-      
     </header>
   );
 }

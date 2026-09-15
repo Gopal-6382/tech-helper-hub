@@ -8,7 +8,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
-} from "../../../lib/jwt";
+} from "@/lib/jwt";
 
 import { generateResetToken, hashResetToken } from "../util/reset-token";
 
@@ -155,7 +155,7 @@ export class AuthService {
     await this.emailService.sendPasswordResetEmail({
       userEmail: user.email,
       userName: user.name,
-      resetUrl: `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}`,
+      resetUrl: `${process.env.FRONTEND_URL}/web/reset-password?token=${rawToken}`,
     });
 
     return {

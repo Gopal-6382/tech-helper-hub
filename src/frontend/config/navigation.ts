@@ -67,7 +67,7 @@ export const userNavigation: NavItem[] = [
     href: "/web/profile",
     icon: User,
   },
-   {
+  {
     title: "Settings",
     href: "/web/professional",
     icon: Settings,
@@ -95,5 +95,4 @@ export const professionalNavigation: NavItem[] = [
     href: "/web/professional/profile",
     icon: User,
   },
-   
 ];

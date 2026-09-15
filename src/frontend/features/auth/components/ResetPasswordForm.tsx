@@ -1,92 +1,107 @@
+// src/frontend/components/auth/reset-password-form.tsx
+
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { authService } from "@/services/auth.service";
-import { Container } from "@/components/Container";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { FormEvent, useState } from "react";
 
-export function RegisterForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+import { apiRequest } from "@/frontend/lib/api";
+
+export function ResetPasswordForm() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     setError("");
+    setMessage("");
+
+    if (!token) {
+      setError("Reset token is missing.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await authService.register({ name, email, password });
-      window.location.href = "/login";
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      await apiRequest("/api/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({
+          token,
+          password,
+        }),
+      });
+
+      setMessage("Password reset successfully. You can now login.");
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Password reset failed",
+      );
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <Container className="flex min-h-screen items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md space-y-4 rounded-xl border border-slate-200 p-8 shadow-sm bg-white"
-      >
-        <h1 className="text-2xl font-bold text-slate-900">Create Account</h1>
+    <div className="w-full max-w-md rounded-xl border bg-background p-6 shadow-sm">
+      <h1 className="text-2xl font-semibold">Reset password</h1>
 
-        {error && (
-          <div className="rounded bg-red-50 p-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
+      <p className="mt-1 mb-6 text-sm text-muted-foreground">
+        Create a new password.
+      </p>
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700">
-            Name
-          </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:outline-none"
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="New password"
+          required
+          className="w-full rounded-md border px-3 py-2"
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700">
-            Email
-          </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:outline-none"
-          />
-        </div>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Confirm password"
+          required
+          className="w-full rounded-md border px-3 py-2"
+        />
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700">
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-indigo-500 focus:outline-none"
-          />
-        </div>
+        {message && <p className="text-sm text-green-600">{message}</p>}
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-indigo-600 py-2 text-white font-medium hover:bg-indigo-700 disabled:opacity-50"
+          className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
         >
-          {loading ? "Registering..." : "Register"}
+          {loading ? "Resetting..." : "Reset password"}
         </button>
       </form>
-    </Container>
+
+      <Link
+        href="/web/login"
+        className="mt-4 block text-center text-sm text-primary hover:underline"
+      >
+        Go to login
+      </Link>
+    </div>
   );
 }
