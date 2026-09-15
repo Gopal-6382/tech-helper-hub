@@ -55,7 +55,7 @@ const iconMap: Record<IconName, React.ComponentType<LucideProps>> = {
 
 interface DynamicIconProps extends Omit<LucideProps, "ref"> {
   name: IconName;
-  size?: number | string;
+  size?: number;
   className?: string;
 }
 
@@ -69,8 +69,10 @@ export function DynamicIcon({
 
   return (
     <IconComponent
-      size={size}
+      width={size}
+      height={size}
       className={`shrink-0 transition-colors duration-200 ${className}`}
+      style={{ width: size, height: size }}
       {...props}
     />
   );
