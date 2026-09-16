@@ -1,6 +1,11 @@
-import "@/app/globals.css";
+import type { ReactNode } from "react";
+import Script from "next/script";
 import { Inter } from "next/font/google";
+
+import "@/app/globals.css";
+
 import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
+
 import { constructMetadata } from "@/frontend/lib/seo";
 import { Providers } from "./providers";
 
@@ -12,36 +17,48 @@ const inter = Inter({
 
 export const metadata = constructMetadata();
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const sidebarInitScript = `
+(function () {
+  try {
+    var collapsed =
+      localStorage.getItem("sidebar_collapsed") === "true";
+
+    document.documentElement.setAttribute(
+      "data-sidebar-collapsed",
+      collapsed ? "true" : "false"
+    );
+  } catch (error) {
+    document.documentElement.setAttribute(
+      "data-sidebar-collapsed",
+      "false"
+    );
+  }
+})();
+`;
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable} ${inter.variable}`}
+      className={[
+        fontSans.variable,
+        fontHeading.variable,
+        fontMono.variable,
+        inter.variable,
+      ].join(" ")}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >
       <head>
-        <script
+        <Script
+          id="sidebar-state-script"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var collapsed = localStorage.getItem('sidebar_collapsed') === 'true';
-                  if (collapsed) {
-                    document.documentElement.setAttribute('data-sidebar-collapsed', 'true');
-                  } else {
-                    document.documentElement.setAttribute('data-sidebar-collapsed', 'false');
-                  }
-                } catch (e) {}
-              })();
-            `,
+            __html: sidebarInitScript,
           }}
         />
       </head>
+
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>

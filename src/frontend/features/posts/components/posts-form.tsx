@@ -31,7 +31,7 @@ export function PostForm() {
     try {
       const post = await createMutation.mutateAsync(data as CreatePostData);
 
-      router.push(`/web/community/${post.id}`);
+      router.push(`/web/posts/${post.id}`);
     } catch {
       // Mutation error is displayed below.
     }

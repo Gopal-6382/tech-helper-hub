@@ -25,7 +25,7 @@ export function NavLinks() {
               "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
               isActive
                 ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
             )}
           >
             <DynamicIcon name={item.icon} size={16} />
