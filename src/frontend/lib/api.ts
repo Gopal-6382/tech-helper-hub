@@ -11,9 +11,7 @@ export async function apiRequest<T = unknown>(
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
   const accessToken =
-    typeof window !== "undefined"
-      ? localStorage.getItem("accessToken")
-      : null;
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
   const response = await fetch(url, {
     ...options,
@@ -33,9 +31,7 @@ export async function apiRequest<T = unknown>(
   const result = await response.json().catch(() => null);
 
   if (!response.ok) {
-    throw new Error(
-      result?.message || "Something went wrong",
-    );
+    throw new Error(result?.message || "Something went wrong");
   }
 
   return result as ApiResponse<T>;

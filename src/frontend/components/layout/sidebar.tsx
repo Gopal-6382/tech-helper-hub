@@ -1,11 +1,8 @@
-// src/frontend/components/layout/sidebar.tsx
-
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X } from "lucide-react";
-
+import { DynamicIcon } from "@/frontend/components/common/icon";
 import {
   userNavigation,
   professionalNavigation,
@@ -55,31 +52,30 @@ export function Sidebar({ open, onClose }: Props) {
             className="rounded-md p-2 hover:bg-muted md:hidden"
             aria-label="Close sidebar"
           >
-            <X size={20} />
+            <DynamicIcon name="close" size={20} />
           </button>
         </div>
 
         <nav className="space-y-1 p-3">
           {navigation.map((item) => {
-            const Icon = item.icon;
-
             const active =
-              pathname === item.href || pathname.startsWith(item.href + "/");
+              pathname === item.href ||
+              (item.href !== "/web" && pathname.startsWith(item.href + "/"));
 
             return (
               <Link
-                key={item.href}
+                key={`${item.title}-${item.href}`}
                 href={item.href}
                 onClick={onClose}
                 className={[
                   "flex items-center gap-3 rounded-md px-3 py-2",
-                  "text-sm font-medium",
+                  "text-sm font-medium transition-colors",
                   active
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 ].join(" ")}
               >
-                <Icon size={18} />
+                <DynamicIcon name={item.icon} size={18} />
                 <span>{item.title}</span>
               </Link>
             );

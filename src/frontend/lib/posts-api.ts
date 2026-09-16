@@ -13,12 +13,8 @@ export async function getPosts(): Promise<Post[]> {
   return response.data ?? [];
 }
 
-export async function getPost(
-  postId: string,
-): Promise<Post> {
-  const response = await apiRequest<Post>(
-    `/api/posts/${postId}`,
-  );
+export async function getPost(postId: string): Promise<Post> {
+  const response = await apiRequest<Post>(`/api/posts/${postId}`);
 
   if (!response.data) {
     throw new Error("Post not found");
@@ -27,9 +23,7 @@ export async function getPost(
   return response.data;
 }
 
-export async function createPost(
-  data: CreatePostData,
-): Promise<Post> {
+export async function createPost(data: CreatePostData): Promise<Post> {
   const response = await apiRequest<Post>("/api/posts", {
     method: "POST",
     body: JSON.stringify(data),
@@ -46,13 +40,10 @@ export async function updatePost(
   postId: string,
   data: UpdatePostDto,
 ): Promise<Post> {
-  const response = await apiRequest<Post>(
-    `/api/posts/${postId}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    },
-  );
+  const response = await apiRequest<Post>(`/api/posts/${postId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
 
   if (!response.data) {
     throw new Error("Failed to update post");
@@ -61,9 +52,7 @@ export async function updatePost(
   return response.data;
 }
 
-export async function deletePost(
-  postId: string,
-): Promise<void> {
+export async function deletePost(postId: string): Promise<void> {
   await apiRequest(`/api/posts/${postId}`, {
     method: "DELETE",
   });

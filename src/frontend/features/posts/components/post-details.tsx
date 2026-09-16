@@ -3,11 +3,7 @@
 "use client";
 
 import Image from "next/image";
-import {
-  Bookmark,
-  Heart,
-  MessageCircle,
-} from "lucide-react";
+import { Bookmark, Heart, MessageCircle } from "lucide-react";
 
 import { usePost } from "../hooks/use-posts";
 
@@ -16,11 +12,7 @@ type Props = {
 };
 
 export function PostDetail({ postId }: Props) {
-  const {
-    data: post,
-    isPending,
-    isError,
-  } = usePost(postId);
+  const { data: post, isPending, isError } = usePost(postId);
 
   if (isPending) {
     return (
@@ -47,15 +39,11 @@ export function PostDetail({ postId }: Props) {
           </div>
 
           <div>
-            <p className="text-sm font-medium">
-              {post.author.name}
-            </p>
+            <p className="text-sm font-medium">{post.author.name}</p>
 
             <p className="text-xs text-muted-foreground">
               {post.category.name}
-              {post.city
-                ? ` · ${post.city}`
-                : ""}
+              {post.city ? ` · ${post.city}` : ""}
             </p>
           </div>
         </div>
@@ -108,11 +96,7 @@ export function PostDetail({ postId }: Props) {
 
           <span>{post.viewCount} views</span>
 
-          <button
-            type="button"
-            className="ml-auto"
-            aria-label="Save post"
-          >
+          <button type="button" className="ml-auto" aria-label="Save post">
             <Bookmark size={18} />
           </button>
         </div>

@@ -2,11 +2,7 @@
 
 "use client";
 
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   createPost,
@@ -26,8 +22,7 @@ export const postKeys = {
 
   list: () => [...postKeys.all, "list"] as const,
 
-  detail: (postId: string) =>
-    [...postKeys.all, "detail", postId] as const,
+  detail: (postId: string) => [...postKeys.all, "detail", postId] as const,
 };
 
 export function usePosts() {
@@ -60,18 +55,14 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreatePostData) =>
-      createPost(data),
+    mutationFn: (data: CreatePostData) => createPost(data),
 
     onSuccess: (post) => {
       queryClient.invalidateQueries({
         queryKey: postKeys.list(),
       });
 
-      queryClient.setQueryData(
-        postKeys.detail(post.id),
-        post,
-      );
+      queryClient.setQueryData(postKeys.detail(post.id), post);
     },
   });
 }
@@ -80,23 +71,15 @@ export function useUpdatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      postId,
-      data,
-    }: {
-      postId: string;
-      data: UpdatePostDto;
-    }) => updatePost(postId, data),
+    mutationFn: ({ postId, data }: { postId: string; data: UpdatePostDto }) =>
+      updatePost(postId, data),
 
     onSuccess: (post) => {
       queryClient.invalidateQueries({
         queryKey: postKeys.list(),
       });
 
-      queryClient.setQueryData(
-        postKeys.detail(post.id),
-        post,
-      );
+      queryClient.setQueryData(postKeys.detail(post.id), post);
     },
   });
 }

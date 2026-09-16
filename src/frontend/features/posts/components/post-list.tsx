@@ -6,12 +6,7 @@ import { PostCard } from "./post-card";
 import { usePosts } from "../hooks/use-posts";
 
 export function PostList() {
-  const {
-    data: posts,
-    isPending,
-    isError,
-    refetch,
-  } = usePosts();
+  const { data: posts, isPending, isError, refetch } = usePosts();
 
   if (isPending) {
     return (
@@ -29,9 +24,7 @@ export function PostList() {
   if (isError) {
     return (
       <div className="rounded-xl border p-8 text-center">
-        <p className="text-sm text-muted-foreground">
-          Unable to load posts.
-        </p>
+        <p className="text-sm text-muted-foreground">Unable to load posts.</p>
 
         <button
           type="button"
@@ -47,9 +40,7 @@ export function PostList() {
   if (!posts?.length) {
     return (
       <div className="rounded-xl border p-10 text-center">
-        <h2 className="font-semibold">
-          No posts yet
-        </h2>
+        <h2 className="font-semibold">No posts yet</h2>
 
         <p className="mt-1 text-sm text-muted-foreground">
           Be the first to share a problem.

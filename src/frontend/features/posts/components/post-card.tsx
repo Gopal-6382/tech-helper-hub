@@ -2,11 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Bookmark,
-  Heart,
-  MessageCircle,
-} from "lucide-react";
+import { Bookmark, Heart, MessageCircle } from "lucide-react";
 
 import type { Post } from "../types/post";
 
@@ -37,9 +33,7 @@ export function PostCard({ post }: Props) {
           )}
 
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium">
-              {post.author.name}
-            </p>
+            <p className="truncate text-sm font-medium">{post.author.name}</p>
 
             <p className="truncate text-xs text-muted-foreground">
               {post.category.name}
@@ -52,13 +46,8 @@ export function PostCard({ post }: Props) {
           </span>
         </div>
 
-        <Link
-          href={`/web/posts/${post.id}`}
-          className="mt-4 block"
-        >
-          <h2 className="text-base font-semibold">
-            {post.title}
-          </h2>
+        <Link href={`/web/posts/${post.id}`} className="mt-4 block">
+          <h2 className="text-base font-semibold">{post.title}</h2>
 
           <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
             {post.content}

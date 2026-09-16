@@ -15,42 +15,57 @@ import {
   ChevronRight,
   Menu,
   X,
+  Home,
+  Bookmark,
+  Search,
+  Bell,
+  Plus,
   LucideProps,
 } from "lucide-react";
 
 export type IconName =
-  | "dashboard"
-  | "bookings"
-  | "categories"
+  | "home"
+  | "community"
+  | "saved"
   | "servicerequests"
-  | "posts"
-  | "chat"
+  | "bookings"
   | "professionals"
-  | "reviews"
+  | "messages"
+  | "notifications"
   | "profile"
   | "settings"
+  | "posts"
   | "reports"
+  | "dashboard"
+  | "categories"
+  | "reviews"
   | "chevronDown"
   | "chevronRight"
   | "menu"
-  | "close";
+  | "close"
+  | "plus";
 
 const iconMap: Record<IconName, React.ComponentType<LucideProps>> = {
-  dashboard: LayoutDashboard,
-  bookings: CalendarCheck,
-  categories: FolderTree,
+  home: Home,
+  community: Users,
+  saved: Bookmark,
   servicerequests: Wrench,
-  posts: FileText,
-  chat: MessageSquare,
-  professionals: Users,
-  reviews: Star,
+  bookings: CalendarCheck,
+  professionals: Search,
+  messages: MessageSquare,
+  notifications: Bell,
   profile: User,
   settings: Settings,
+  posts: FileText,
   reports: AlertCircle,
+  dashboard: LayoutDashboard,
+  categories: FolderTree,
+  reviews: Star,
   chevronDown: ChevronDown,
   chevronRight: ChevronRight,
   menu: Menu,
   close: X,
+  plus: Plus,
 };
 
 interface DynamicIconProps extends Omit<LucideProps, "ref"> {

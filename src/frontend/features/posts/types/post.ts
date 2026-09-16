@@ -1,9 +1,6 @@
 // src/frontend/types/post.ts
 
-export type PostStatus =
-  | "OPEN"
-  | "SOLVED"
-  | "CLOSED";
+export type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
 
 export type Post = {
   id: string;

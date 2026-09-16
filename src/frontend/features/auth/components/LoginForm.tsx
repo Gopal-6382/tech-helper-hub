@@ -107,7 +107,10 @@ export function LoginForm() {
       </form>
 
       <div className="mt-4 flex justify-between text-sm">
-        <Link href="/web/forgot-password" className="text-primary hover:underline">
+        <Link
+          href="/web/forgot-password"
+          className="text-primary hover:underline"
+        >
           Forgot password?
         </Link>
 
