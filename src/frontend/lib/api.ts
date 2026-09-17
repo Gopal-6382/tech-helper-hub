@@ -1,5 +1,3 @@
-// src/frontend/lib/api.ts
-
 type ApiResponse<T = unknown> = {
   success: boolean;
   message?: string;

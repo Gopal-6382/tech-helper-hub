@@ -8,6 +8,7 @@ import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
 
 import { constructMetadata } from "@/frontend/lib/seo";
 import { Providers } from "./providers";
+import { TooltipProvider } from "@/frontend/components/ui/tooltip"; 
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,7 +61,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
 
       <body className="min-h-screen bg-background font-sans antialiased">
-        <Providers>{children}</Providers>
+        <TooltipProvider>
+          <Providers>{children}</Providers>
+        </TooltipProvider>
       </body>
     </html>
   );
