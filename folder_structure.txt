@@ -2,6 +2,7 @@ tech-helper-hub/
 ├── .env
 ├── .gitignore
 ├── README.md
+├── combine.py
 ├── components.json
 ├── eslint.config.mjs
 ├── folder.py
@@ -180,8 +181,12 @@ tech-helper-hub/
 │   │   │   │   └── route.ts
 │   │   │   └── verifications
 │   │   │       └── route.ts
+│   │   ├── error.tsx
+│   │   ├── global-error.tsx
 │   │   ├── globals.css
 │   │   ├── layout.tsx
+│   │   ├── loading.tsx
+│   │   ├── not-found.tsx
 │   │   ├── page.tsx
 │   │   ├── providers.tsx
 │   │   ├── robots.ts
@@ -193,41 +198,46 @@ tech-helper-hub/
 │   │       │   │   └── page.tsx
 │   │       │   ├── login
 │   │       │   │   └── page.tsx
-│   │       │   └── register
+│   │       │   ├── register
+│   │       │   │   └── page.tsx
+│   │       │   └── reset-password
 │   │       │       └── page.tsx
-│   │       └── (dashboard)
-│   │           ├── bookings
-│   │           │   ├── [bookingId]
-│   │           │   └── page.tsx
-│   │           ├── categories
-│   │           │   └── page.tsx
-│   │           ├── chat
-│   │           │   ├── direct-chat
-│   │           │   │   ├── [chatId]
-│   │           │   │   └── page.tsx
-│   │           │   └── group-chat
-│   │           │       ├── [groupId]
-│   │           │       └── page.tsx
-│   │           ├── layout.tsx
-│   │           ├── page.tsx
-│   │           ├── posts
-│   │           │   ├── [id]
-│   │           │   └── page.tsx
-│   │           ├── professionals
-│   │           │   ├── [professionalId]
-│   │           │   └── page.tsx
-│   │           ├── profile
-│   │           │   └── page.tsx
-│   │           ├── reports
-│   │           │   └── page.tsx
-│   │           ├── reviews
-│   │           │   └── page.tsx
-│   │           ├── servicerequests
-│   │           │   ├── [requestId]
-│   │           │   └── page.tsx
-│   │           └── settings
-│   │               ├── [chatId]
-│   │               └── page.tsx
+│   │       ├── (dashboard)
+│   │       │   ├── bookings
+│   │       │   │   ├── [bookingId]
+│   │       │   │   └── page.tsx
+│   │       │   ├── categories
+│   │       │   │   └── page.tsx
+│   │       │   ├── direct-chat
+│   │       │   │   ├── [chatId]
+│   │       │   │   └── page.tsx
+│   │       │   ├── group-chat
+│   │       │   │   ├── [groupId]
+│   │       │   │   └── page.tsx
+│   │       │   ├── layout.tsx
+│   │       │   ├── page.tsx
+│   │       │   ├── posts
+│   │       │   │   ├── [id]
+│   │       │   │   ├── create
+│   │       │   │   │   └── page.tsx
+│   │       │   │   └── page.tsx
+│   │       │   ├── professionals
+│   │       │   │   ├── [professionalId]
+│   │       │   │   └── page.tsx
+│   │       │   ├── profile
+│   │       │   │   └── page.tsx
+│   │       │   ├── reports
+│   │       │   │   └── page.tsx
+│   │       │   ├── reviews
+│   │       │   │   └── page.tsx
+│   │       │   ├── servicerequests
+│   │       │   │   ├── [requestId]
+│   │       │   │   └── page.tsx
+│   │       │   └── settings
+│   │       │       ├── [chatId]
+│   │       │       └── page.tsx
+│   │       └── success
+│   │           └── page.tsx
 │   ├── backend
 │   │   ├── admin
 │   │   │   └── categories
@@ -545,6 +555,7 @@ tech-helper-hub/
 │   └── frontend
 │       ├── components
 │       │   ├── common
+│       │   │   ├── ThemeSelect.tsx
 │       │   │   ├── empty-state.tsx
 │       │   │   ├── icon.tsx
 │       │   │   ├── loading-spinner.tsx
@@ -575,15 +586,71 @@ tech-helper-hub/
 │       │   │   ├── link.tsx
 │       │   │   └── text.tsx
 │       │   └── ui
+│       │       ├── accordion.tsx
+│       │       ├── alert-dialog.tsx
+│       │       ├── alert.tsx
+│       │       ├── aspect-ratio.tsx
+│       │       ├── attachment.tsx
+│       │       ├── avatar.tsx
+│       │       ├── badge.tsx
+│       │       ├── breadcrumb.tsx
+│       │       ├── bubble.tsx
+│       │       ├── button-group.tsx
 │       │       ├── button.tsx
+│       │       ├── calendar.tsx
+│       │       ├── card.tsx
+│       │       ├── carousel.tsx
+│       │       ├── chart.tsx
+│       │       ├── checkbox.tsx
+│       │       ├── collapsible.tsx
+│       │       ├── combobox.tsx
+│       │       ├── command.tsx
+│       │       ├── context-menu.tsx
+│       │       ├── dialog.tsx
+│       │       ├── direction.tsx
+│       │       ├── drawer.tsx
 │       │       ├── dropdown-menu.tsx
+│       │       ├── empty.tsx
+│       │       ├── field.tsx
+│       │       ├── hover-card.tsx
+│       │       ├── input-group.tsx
+│       │       ├── input-otp.tsx
 │       │       ├── input.tsx
+│       │       ├── item.tsx
+│       │       ├── kbd.tsx
 │       │       ├── label.tsx
+│       │       ├── marker.tsx
+│       │       ├── menubar.tsx
+│       │       ├── message-scroller.tsx
+│       │       ├── message.tsx
+│       │       ├── native-select.tsx
+│       │       ├── navigation-menu.tsx
+│       │       ├── pagination.tsx
+│       │       ├── popover.tsx
+│       │       ├── progress.tsx
+│       │       ├── questionnaire.tsx
+│       │       ├── radio-group.tsx
+│       │       ├── resizable.tsx
+│       │       ├── scroll-area.tsx
 │       │       ├── select.tsx
-│       │       └── toast.tsx
+│       │       ├── separator.tsx
+│       │       ├── sheet.tsx
+│       │       ├── sidebar.tsx
+│       │       ├── skeleton.tsx
+│       │       ├── slider.tsx
+│       │       ├── spinner.tsx
+│       │       ├── switch.tsx
+│       │       ├── table.tsx
+│       │       ├── tabs.tsx
+│       │       ├── textarea.tsx
+│       │       ├── toast.tsx
+│       │       ├── toggle-group.tsx
+│       │       ├── toggle.tsx
+│       │       └── tooltip.tsx
 │       ├── config
 │       │   ├── fonts.ts
 │       │   ├── navigation.ts
+│       │   ├── navigation.types.ts
 │       │   └── site.ts
 │       ├── constants
 │       │   ├── animations.ts
@@ -596,7 +663,8 @@ tech-helper-hub/
 │       │   │   │   ├── ForgotPasswordForm.tsx
 │       │   │   │   ├── LoginForm.tsx
 │       │   │   │   ├── RegisterForm.tsx
-│       │   │   │   └── ResetPasswordForm.tsx
+│       │   │   │   ├── ResetPasswordForm.tsx
+│       │   │   │   └── logout.jsx
 │       │   │   ├── hooks
 │       │   │   ├── services
 │       │   │   │   └── auth.service.ts
@@ -604,12 +672,15 @@ tech-helper-hub/
 │       │   │   └── validations
 │       │   ├── bookings
 │       │   │   ├── components
+│       │   │   ├── config
+│       │   │   │   └── nav.ts
 │       │   │   ├── hooks
 │       │   │   ├── services
 │       │   │   ├── types
 │       │   │   └── validations
 │       │   ├── chat
 │       │   │   ├── components
+│       │   │   ├── config
 │       │   │   ├── hooks
 │       │   │   ├── services
 │       │   │   └── types
@@ -633,11 +704,19 @@ tech-helper-hub/
 │       │   │   └── types
 │       │   ├── posts
 │       │   │   ├── components
+│       │   │   │   ├── post-card.tsx
+│       │   │   │   ├── post-details.tsx
+│       │   │   │   ├── post-list.tsx
+│       │   │   │   └── posts-form.tsx
 │       │   │   ├── hooks
+│       │   │   │   └── use-posts.ts
 │       │   │   ├── services
 │       │   │   └── types
+│       │   │       └── post.ts
 │       │   ├── professionals
 │       │   │   ├── components
+│       │   │   ├── config
+│       │   │   │   └── nav.ts
 │       │   │   ├── hooks
 │       │   │   ├── services
 │       │   │   ├── types
@@ -653,7 +732,11 @@ tech-helper-hub/
 │       │   │   └── validations
 │       │   └── users
 │       ├── hooks
+│       │   └── use-mobile.ts
 │       ├── lib
+│       │   ├── api.ts
+│       │   ├── auth.ts
+│       │   ├── posts-api.ts
 │       │   ├── query-client.ts
 │       │   ├── seo.ts
 │       │   ├── storage.ts
