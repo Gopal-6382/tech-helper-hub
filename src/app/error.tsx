@@ -1,7 +1,7 @@
 // src/app/error.tsx
 "use client";
 
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/frontend/components/ui/button";
 

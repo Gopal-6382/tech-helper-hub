@@ -29,8 +29,7 @@ export default function DashboardLayout({ children }: Props) {
       type: "action",
       label: "Create Post",
       icon: FilePlus,
-      onClick: () => {
-      },
+      onClick: () => {},
     },
     {
       type: "link",

@@ -25,7 +25,7 @@ export default function SuccessPage() {
           </p>
         </CardContent>
         <CardFooter className="flex justify-center gap-3">
-          <Button >
+          <Button>
             <Link href="/web/dashboard">Return to Dashboard</Link>
           </Button>
         </CardFooter>

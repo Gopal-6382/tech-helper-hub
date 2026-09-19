@@ -1,6 +1,6 @@
 "use client";
 
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Plus,
   Pencil,
@@ -41,7 +41,8 @@ export function CategoryManager() {
   const [includeInactive, setIncludeInactive] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<SelectedCategory | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<SelectedCategory | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
   const {
@@ -50,7 +51,7 @@ export function CategoryManager() {
     isError,
     error,
   } = useCategories(includeInactive);
-  
+
   const toggleStatusMutation = useToggleCategoryStatus();
   const deleteMutation = useDeleteCategory();
 
@@ -86,7 +87,9 @@ export function CategoryManager() {
     try {
       await deleteMutation.mutateAsync(id);
     } catch (err: unknown) {
-      setActionError(err instanceof Error ? err.message : "Cannot delete category");
+      setActionError(
+        err instanceof Error ? err.message : "Cannot delete category",
+      );
     }
   };
 
