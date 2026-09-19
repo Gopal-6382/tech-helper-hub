@@ -1,6 +1,4 @@
 // src/app/loading.tsx
-import React from "react";
-
 export default function Loading() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">

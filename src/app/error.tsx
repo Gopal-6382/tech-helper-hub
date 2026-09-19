@@ -1,7 +1,7 @@
 // src/app/error.tsx
 "use client";
 
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/frontend/components/ui/button";
 
@@ -29,7 +29,7 @@ export default function Error({
           <Button onClick={() => reset()} variant="default">
             Try Again
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline">
             <Link href="/web/dashboard">Go to Dashboard</Link>
           </Button>
         </div>

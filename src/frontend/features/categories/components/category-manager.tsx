@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import  { useState } from "react";
 import {
   Plus,
   Pencil,
@@ -22,19 +22,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-type SelectedCategory = {
+interface Category {
+  id: string;
+  name: string;
+  slug?: string;
+  isActive: boolean;
+  icon?: string | null;
+}
+
+interface SelectedCategory {
   id: string;
   name: string;
   slug: string;
   icon?: string | null;
-};
+}
 
 export function CategoryManager() {
   const [includeInactive, setIncludeInactive] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] =
-    useState<SelectedCategory | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<SelectedCategory | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
   const {
@@ -43,6 +50,7 @@ export function CategoryManager() {
     isError,
     error,
   } = useCategories(includeInactive);
+  
   const toggleStatusMutation = useToggleCategoryStatus();
   const deleteMutation = useDeleteCategory();
 
@@ -51,8 +59,13 @@ export function CategoryManager() {
     setIsModalOpen(true);
   };
 
-  const handleOpenEdit = (category: SelectedCategory) => {
-    setSelectedCategory(category);
+  const handleOpenEdit = (category: Category) => {
+    setSelectedCategory({
+      id: category.id,
+      name: category.name,
+      slug: category.slug ?? "",
+      icon: category.icon,
+    });
     setIsModalOpen(true);
   };
 
@@ -72,15 +85,15 @@ export function CategoryManager() {
     setActionError(null);
     try {
       await deleteMutation.mutateAsync(id);
-    } catch (err: any) {
-      setActionError(err.message || "Cannot delete category");
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : "Cannot delete category");
     }
   };
 
   const filteredCategories = categories.filter(
     (cat) =>
       cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.slug.toLowerCase().includes(searchQuery.toLowerCase()),
+      (cat.slug?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false),
   );
 
   return (

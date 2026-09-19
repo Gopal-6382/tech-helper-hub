@@ -1,5 +1,4 @@
 // src/app/web/success/page.tsx
-import React from "react";
 import Link from "next/link";
 import { Button } from "@/frontend/components/ui/button";
 import {
@@ -26,7 +25,7 @@ export default function SuccessPage() {
           </p>
         </CardContent>
         <CardFooter className="flex justify-center gap-3">
-          <Button asChild>
+          <Button >
             <Link href="/web/dashboard">Return to Dashboard</Link>
           </Button>
         </CardFooter>
