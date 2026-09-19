@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Bookmark, Heart, MessageCircle } from "lucide-react";
 
-import type { Post } from "../types/post";
+import type { Post } from "../types/post.types";
 
 type Props = {
   post: Post;

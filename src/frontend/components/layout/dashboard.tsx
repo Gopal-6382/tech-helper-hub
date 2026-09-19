@@ -30,7 +30,6 @@ export default function DashboardLayout({ children }: Props) {
       label: "Create Post",
       icon: FilePlus,
       onClick: () => {
-        // Trigger post creation modal or function
       },
     },
     {
@@ -50,17 +49,12 @@ export default function DashboardLayout({ children }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
       <div className="md:ml-64">
         <Header onMenuClick={() => setSidebarOpen(true)} />
         <PageHeader title="Dashboard" />
-        {/* Horizontal Quick Bar directly below Header */}
         <HorizontalQuickBar items={headerActions} />
-
         <main className="p-4 sm:p-6">{children}</main>
       </div>
-
-      {/* Global Form Modals */}
       <CategoryFormDialog
         isOpen={isCategoryDialogOpen}
         onClose={() => setIsCategoryDialogOpen(false)}

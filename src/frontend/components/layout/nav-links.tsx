@@ -12,11 +12,9 @@ export function NavLinks() {
   return (
     <nav className="flex flex-col gap-1 px-3 py-4">
       {userNavigation.map((item) => {
-        // Precise active path check preventing false positive prefix matches
         const isActive =
           pathname === item.href ||
           (item.href !== "/web" && pathname?.startsWith(`${item.href}/`));
-
         return (
           <Link
             key={`${item.title}-${item.href}`}

@@ -1,7 +1,7 @@
 // src/frontend/lib/posts-api.ts
 
 import { apiRequest } from "@/frontend/lib/api";
-import type { Post } from "@/features/posts/types/post";
+import type { Post } from "@/frontend/features/posts/types/post.types";
 import type {
   CreatePostData,
   UpdatePostDto,
