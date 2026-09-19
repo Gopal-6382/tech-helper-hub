@@ -7,7 +7,7 @@ import {
   userNavigation,
   professionalNavigation,
 } from "@/frontend/config/navigation";
-
+import { cn } from "@/frontend/lib/utils";
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -34,13 +34,12 @@ export function Sidebar({ open, onClose }: Props) {
       )}
 
       <aside
-        className={[
-          "fixed left-0 top-0 z-50 h-screen w-64",
-          "border-r bg-background",
+        className={cn(
+          "fixed left-0 top-0 z-50 h-screen w-64 border-r bg-background",
           "transition-transform duration-200",
           open ? "translate-x-0" : "-translate-x-full",
           "md:translate-x-0",
-        ].join(" ")}
+        )}
       >
         <div className="flex h-16 items-center justify-between border-b px-4">
           <Link href="/web" className="font-semibold">

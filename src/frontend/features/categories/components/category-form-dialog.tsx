@@ -3,10 +3,7 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Loader2, X } from "lucide-react";
-import {
-  useCreateCategory,
-  useUpdateCategory,
-} from "../hooks/use-categories";
+import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -50,7 +47,6 @@ export function CategoryFormDialog({
       icon: "",
     },
   });
-
 
   // Reset form state when modal state or edit targets change
   useEffect(() => {
@@ -100,7 +96,8 @@ export function CategoryFormDialog({
   if (!isOpen) return null;
 
   const isPending = createMutation.isPending || updateMutation.isPending;
-  const errorMsg = createMutation.error?.message || updateMutation.error?.message;
+  const errorMsg =
+    createMutation.error?.message || updateMutation.error?.message;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">

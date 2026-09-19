@@ -26,18 +26,18 @@ export async function apiRequest<T = unknown>(
 
   const result = await response.json().catch(() => null);
 
-if (!response.ok) {
-  // Pass objects as separate arguments to inspect full details in the browser console
-  console.error("API Error Response:", {
-    status: response.status,
-    url: response.url,
-    payload: result,
-  });
+  if (!response.ok) {
+    // Pass objects as separate arguments to inspect full details in the browser console
+    console.error("API Error Response:", {
+      status: response.status,
+      url: response.url,
+      payload: result,
+    });
 
-  throw new Error(
-    result?.message || `Request failed with status ${response.status}`
-  );
-}
+    throw new Error(
+      result?.message || `Request failed with status ${response.status}`,
+    );
+  }
 
   return result as ApiResponse<T>;
 }

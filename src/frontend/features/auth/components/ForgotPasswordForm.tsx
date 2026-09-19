@@ -66,7 +66,7 @@ export function ForgotPasswordForm() {
       </form>
 
       <Link
-        href="/login"
+        href="/web/login"
         className="mt-4 block text-center text-sm text-primary hover:underline"
       >
         Back to login

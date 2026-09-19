@@ -1,8 +1,14 @@
 // src/app/web/success/page.tsx
-import React from 'react';
-import Link from 'next/link';
-import { Button } from '@/frontend/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/frontend/components/ui/card';
+import React from "react";
+import Link from "next/link";
+import { Button } from "@/frontend/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/frontend/components/ui/card";
 
 export default function SuccessPage() {
   return (

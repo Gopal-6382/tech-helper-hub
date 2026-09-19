@@ -14,17 +14,17 @@ export interface Category {
 }
 
 export async function getCategories(
-  includeInactive: boolean = true
+  includeInactive: boolean = true,
 ): Promise<Category[]> {
   const response = await apiRequest<Category[]>(
-    `/api/categories?includeInactive=${includeInactive}`
+    `/api/categories?includeInactive=${includeInactive}`,
   );
 
   return response.data ?? [];
 }
 
 export async function createCategory(
-  data: CreateCategoryInput
+  data: CreateCategoryInput,
 ): Promise<Category> {
   const response = await apiRequest<Category>("/api/categories", {
     method: "POST",
@@ -40,7 +40,7 @@ export async function createCategory(
 
 export async function updateCategory(
   id: string,
-  data: UpdateCategoryInput
+  data: UpdateCategoryInput,
 ): Promise<Category> {
   const response = await apiRequest<Category>(`/api/categories/${id}`, {
     method: "PATCH",
@@ -77,7 +77,7 @@ export async function deactivateCategory(id: string): Promise<Category> {
     `/api/categories/${id}/deactive`,
     {
       method: "PATCH",
-    }
+    },
   );
 
   if (!response.data) {

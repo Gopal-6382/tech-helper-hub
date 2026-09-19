@@ -1,7 +1,7 @@
 // src/app/global-error.tsx
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 export default function GlobalError({
   reset,
@@ -13,7 +13,9 @@ export default function GlobalError({
     <html lang="en">
       <body className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <div className="p-6 text-center max-w-md">
-          <h2 className="text-2xl font-bold text-destructive mb-2">Critical System Error</h2>
+          <h2 className="text-2xl font-bold text-destructive mb-2">
+            Critical System Error
+          </h2>
           <p className="text-sm text-muted-foreground mb-4">
             A fatal error occurred at the root level.
           </p>

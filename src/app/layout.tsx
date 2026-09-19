@@ -8,7 +8,7 @@ import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
 
 import { constructMetadata } from "@/frontend/lib/seo";
 import { Providers } from "./providers";
-import { TooltipProvider } from "@/frontend/components/ui/tooltip"; 
+import { TooltipProvider } from "@/frontend/components/ui/tooltip";
 
 const inter = Inter({
   subsets: ["latin"],

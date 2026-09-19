@@ -37,7 +37,12 @@ export function CategoryManager() {
     useState<SelectedCategory | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
-  const { data: categories = [], isLoading, isError, error } = useCategories(includeInactive);
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    error,
+  } = useCategories(includeInactive);
   const toggleStatusMutation = useToggleCategoryStatus();
   const deleteMutation = useDeleteCategory();
 
@@ -57,7 +62,7 @@ export function CategoryManager() {
       await toggleStatusMutation.mutateAsync({ id, isActive: currentStatus });
     } catch (err: unknown) {
       setActionError(
-        err instanceof Error ? err.message : "Failed to update category status"
+        err instanceof Error ? err.message : "Failed to update category status",
       );
     }
   };
@@ -75,7 +80,7 @@ export function CategoryManager() {
   const filteredCategories = categories.filter(
     (cat) =>
       cat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      cat.slug.toLowerCase().includes(searchQuery.toLowerCase())
+      cat.slug.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -151,7 +156,10 @@ export function CategoryManager() {
               </thead>
               <tbody className="divide-y">
                 {filteredCategories.map((category) => (
-                  <tr key={category.id} className="hover:bg-muted/30 transition-colors">
+                  <tr
+                    key={category.id}
+                    className="hover:bg-muted/30 transition-colors"
+                  >
                     <td className="px-6 py-4 font-medium flex items-center gap-2">
                       <Folder className="h-4 w-4 text-primary" />
                       {category.name}
@@ -161,7 +169,10 @@ export function CategoryManager() {
                     </td>
                     <td className="px-6 py-4">
                       {category.isActive ? (
-                        <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-700">
+                        <Badge
+                          variant="default"
+                          className="bg-emerald-600 hover:bg-emerald-700"
+                        >
                           Active
                         </Badge>
                       ) : (
@@ -172,10 +183,14 @@ export function CategoryManager() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleToggleActive(category.id, category.isActive)}
+                        onClick={() =>
+                          handleToggleActive(category.id, category.isActive)
+                        }
                         title={category.isActive ? "Deactivate" : "Activate"}
                       >
-                        <Power className={`h-4 w-4 ${category.isActive ? "text-emerald-600" : "text-muted-foreground"}`} />
+                        <Power
+                          className={`h-4 w-4 ${category.isActive ? "text-emerald-600" : "text-muted-foreground"}`}
+                        />
                       </Button>
                       <Button
                         variant="ghost"
