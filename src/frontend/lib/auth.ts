@@ -1,6 +1,6 @@
 // src/frontend/lib/auth.ts
 
-import { apiRequest } from "./api";
+import { apiRequest } from "../features/posts/services/api";
 
 export async function logout() {
   const refreshToken = localStorage.getItem("refreshToken");

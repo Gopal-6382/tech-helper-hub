@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 
-import { apiRequest } from "@/frontend/lib/api";
+import { apiRequest } from "@/frontend/features/posts/services/api";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");

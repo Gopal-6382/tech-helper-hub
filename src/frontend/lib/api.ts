@@ -8,8 +8,8 @@ export async function apiRequest<T = unknown>(
   url: string,
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
-  const accessToken =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+
+  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
   const response = await fetch(url, {
     ...options,
@@ -27,7 +27,6 @@ export async function apiRequest<T = unknown>(
   const result = await response.json().catch(() => null);
 
   if (!response.ok) {
-    // Pass objects as separate arguments to inspect full details in the browser console
     console.error("API Error Response:", {
       status: response.status,
       url: response.url,

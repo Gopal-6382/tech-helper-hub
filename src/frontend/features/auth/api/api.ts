@@ -1,4 +1,4 @@
-import { apiRequest } from "@/frontend/lib/api";
+import { apiRequest } from "@/frontend/features/posts/services/api";
 
 type AuthResponse<T> = T | undefined;
 

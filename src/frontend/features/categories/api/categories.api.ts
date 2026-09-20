@@ -1,4 +1,4 @@
-import { apiRequest } from "@/frontend/lib/api";
+import { apiRequest } from "@/frontend/features/posts/services/api";
 import type {
   CreateCategoryInput,
   UpdateCategoryInput,

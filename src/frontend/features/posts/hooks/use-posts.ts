@@ -1,5 +1,3 @@
-// src/frontend/hooks/posts/use-posts.ts
-
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,7 +8,7 @@ import {
   getPost,
   getPosts,
   updatePost,
-} from "@/frontend/lib/posts-api";
+} from "@/frontend/features/posts/api/posts-api";
 
 import type {
   CreatePostData,
