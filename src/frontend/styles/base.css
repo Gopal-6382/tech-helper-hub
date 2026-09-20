@@ -76,10 +76,7 @@ ol {
   body {
     min-height: 100vh;
     overflow-x: hidden;
-    background: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: var(--font-sans);
-    text-rendering: optimizeLegibility;
+    @apply bg-background text-foreground font-sans antialiased;
   }
 
   h1,
@@ -88,8 +85,8 @@ ol {
   h4,
   h5,
   h6 {
+    @apply font-heading font-semibold tracking-tight text-foreground;
     overflow-wrap: break-word;
-    @apply font-heading font-bold tracking-tight text-gray-900;
   }
 
   h1 {
@@ -108,11 +105,18 @@ ol {
     @apply text-xl md:text-2xl;
   }
 
+  h5 {
+    @apply text-lg md:text-xl;
+  }
+
+  h6 {
+    @apply text-base md:text-lg;
+  }
+
   p {
-    @apply font-sans leading-relaxed text-gray-600;
+    @apply font-sans text-base leading-relaxed text-muted-foreground;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
