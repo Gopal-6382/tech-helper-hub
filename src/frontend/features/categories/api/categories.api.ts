@@ -16,11 +16,16 @@ export interface Category {
 export async function getCategories(
   includeInactive: boolean = true,
 ): Promise<Category[]> {
-  const response = await apiRequest<Category[]>(
-    `/api/categories?includeInactive=${includeInactive}`,
-  );
+  const url = `/api/categories?includeInactive=${includeInactive}`;
 
-  return response.data ?? [];
+  try {
+    const response = await apiRequest<Category[]>(url);
+    const result = response.data ?? [];
+    return result;
+  } catch (err) {
+    console.error("[categories.api] Error fetching categories:", err);
+    throw err;
+  }
 }
 
 export async function createCategory(
