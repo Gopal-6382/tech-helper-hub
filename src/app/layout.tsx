@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import Script from "next/script";
-import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 
 import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
@@ -8,12 +7,6 @@ import { fontSans, fontHeading, fontMono } from "@/frontend/config/fonts";
 import { constructMetadata } from "@/frontend/lib/seo";
 import { Providers } from "./providers";
 import { TooltipProvider } from "@/frontend/components/ui/tooltip";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
 
 export const metadata = constructMetadata();
 
@@ -40,12 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
-      className={[
-        fontSans.variable,
-        fontHeading.variable,
-        fontMono.variable,
-        inter.variable,
-      ].join(" ")}
+      className={`${fontSans.variable} ${fontHeading.variable} ${fontMono.variable}`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >

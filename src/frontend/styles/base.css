@@ -1,3 +1,7 @@
+/*
+  Global reset
+*/
+
 *,
 *::before,
 *::after {
@@ -10,7 +14,11 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-/* Prevent common media overflow */
+body {
+  min-height: 100vh;
+  margin: 0;
+}
+
 img,
 picture,
 video,
@@ -20,7 +28,6 @@ svg {
   max-width: 100%;
 }
 
-/* Form consistency & mobile tap behavior */
 button,
 input,
 textarea,
@@ -31,75 +38,81 @@ select {
 
 button {
   border: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 textarea {
   resize: vertical;
 }
 
-/* Prevent link color inheritance */
 a {
   color: inherit;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Accessible keyboard focus */
-:focus-visible {
-  outline: 2px solid hsl(var(--primary));
-  outline-offset: 2px;
-}
-
-/* List reset */
 ul,
 ol {
   margin: 0;
   padding: 0;
 }
 
-/* TAILWIND BASE LAYER OVERRIDES */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
 @layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
   body {
     min-height: 100vh;
-    margin: 0;
+    overflow-x: hidden;
     background: hsl(var(--background));
     color: hsl(var(--foreground));
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
   }
 
-  /* All headings automatically use Plus Jakarta Sans */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-heading font-bold text-gray-900 tracking-tight;
     overflow-wrap: break-word;
+    @apply font-heading font-bold tracking-tight text-gray-900;
   }
 
   h1 {
     @apply text-4xl md:text-5xl;
   }
+
   h2 {
     @apply text-3xl md:text-4xl;
   }
+
   h3 {
     @apply text-2xl md:text-3xl;
   }
+
   h4 {
     @apply text-xl md:text-2xl;
   }
 
-  /* Paragraph default styling */
   p {
-    @apply font-sans text-gray-600 leading-relaxed;
+    @apply font-sans leading-relaxed text-gray-600;
   }
 }
 
-/* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -110,18 +123,7 @@ ol {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-sans);
+    transition-duration: 0.01ms !important;
   }
 }
