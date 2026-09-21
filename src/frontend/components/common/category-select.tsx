@@ -1,4 +1,3 @@
-// frontend/components/common/category-select.tsx
 "use client";
 
 import { useCategories } from "@/features/categories/hooks/use-categories";
@@ -33,6 +32,11 @@ export function CategorySelect({
 }: CategorySelectProps) {
   const { data: categories = [], isLoading } = useCategories(includeInactive);
 
+  const selectedName =
+    value == null || value === ""
+      ? placeholder
+      : (categories.find((c) => c.id === value)?.name ?? placeholder);
+
   return (
     <div className="w-full">
       {label && (
@@ -60,7 +64,8 @@ export function CategorySelect({
             className || "",
           ].join(" ")}
         >
-          <SelectValue placeholder={placeholder} />
+          {/* Explicitly show the name, not the ID */}
+          <SelectValue>{selectedName}</SelectValue>
         </SelectTrigger>
 
         <SelectContent
@@ -75,7 +80,7 @@ export function CategorySelect({
             categories.map((cat) => (
               <SelectItem
                 key={cat.id}
-                value={cat.name}
+                value={cat.id}
                 className="cursor-pointer px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground"
               >
                 {cat.name}

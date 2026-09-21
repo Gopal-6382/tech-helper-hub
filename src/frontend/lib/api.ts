@@ -8,8 +8,8 @@ export async function apiRequest<T = unknown>(
   url: string,
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
-
-  const accessToken = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const accessToken =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
   const response = await fetch(url, {
     ...options,
