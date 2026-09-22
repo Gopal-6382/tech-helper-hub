@@ -1,13 +1,13 @@
 import { PostService } from "../services/post.service";
 
-import type { UpdatePostDto } from "../types/post.types";
+import type { UpdatePostInput } from "../validations/post.validation";
 
 const postService = new PostService();
 
 export async function updatePost(
   id: string,
   authorId: string,
-  body: UpdatePostDto,
+  body: UpdatePostInput,
 ) {
   return postService.updatePost(
     id,

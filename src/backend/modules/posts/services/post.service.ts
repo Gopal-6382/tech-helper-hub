@@ -4,22 +4,16 @@ import { PostRepository } from "../repositories/post.repository";
 
 import type {
   CreatePostData,
-  UpdatePostDto,
-} from "../types/post.types";
+  UpdatePostInput,
+} from "../validations/post.validation";
 
 export class PostService {
   private postRepository = new PostRepository();
 
   // --------------------------------------------------
   // Create post
-  //
-  // Business rule:
-  // Logged-in user becomes the author.
-  // Client does not provide authorId.
-  // Location comes from user's profile in the API layer/service flow.
-  // status defaults to OPEN.
-  // viewCount defaults to 0.
   // --------------------------------------------------
+
   async createPost(data: CreatePostData) {
     return this.postRepository.create({
       authorId: data.authorId,
@@ -32,10 +26,8 @@ export class PostService {
 
   // --------------------------------------------------
   // Get one post
-  //
-  // Business rule:
-  // Post must exist.
   // --------------------------------------------------
+
   async getPost(id: string) {
     const post = await this.postRepository.findById(id);
 
@@ -48,10 +40,8 @@ export class PostService {
 
   // --------------------------------------------------
   // Get all posts
-  //
-  // Public feed.
-  // Latest posts first.
   // --------------------------------------------------
+
   async getPosts() {
     return this.postRepository.findAll();
   }
@@ -59,21 +49,19 @@ export class PostService {
   // --------------------------------------------------
   // Get logged-in user's posts
   // --------------------------------------------------
+
   async getMyPosts(authorId: string) {
     return this.postRepository.findByAuthorId(authorId);
   }
 
   // --------------------------------------------------
   // Update post
-  //
-  // Business rule:
-  // Only the author can edit.
-  // Only editable fields are accepted by UpdatePostDto.
   // --------------------------------------------------
+
   async updatePost(
     id: string,
     authorId: string,
-    data: UpdatePostDto,
+    data: UpdatePostInput,
   ) {
     const post = await this.getPost(id);
 
@@ -88,10 +76,8 @@ export class PostService {
 
   // --------------------------------------------------
   // Delete post
-  //
-  // Business rule:
-  // Only the author can delete.
   // --------------------------------------------------
+
   async deletePost(
     id: string,
     authorId: string,
@@ -109,10 +95,8 @@ export class PostService {
 
   // --------------------------------------------------
   // Update status
-  //
-  // Business rule:
-  // Only the author can change post status.
   // --------------------------------------------------
+
   async updateStatus(
     id: string,
     authorId: string,
@@ -134,10 +118,8 @@ export class PostService {
 
   // --------------------------------------------------
   // Increase view count
-  //
-  // Business rule:
-  // Post must exist.
   // --------------------------------------------------
+
   async increaseView(id: string) {
     await this.getPost(id);
 

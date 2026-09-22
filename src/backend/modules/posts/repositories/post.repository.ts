@@ -1,11 +1,11 @@
-import { PostStatus } from "@prisma/client";
-
 import { prisma } from "@/lib/prisma";
 
 import type {
   CreatePostData,
-  UpdatePostDto,
-} from "../types/post.types";
+  UpdatePostInput,
+} from "../validations/post.validation";
+
+import type { PostStatus } from "@prisma/client";
 
 const postRelations = {
   author: {
@@ -51,7 +51,6 @@ export class PostRepository {
       where: {
         id,
       },
-
       include: postRelations,
     });
   }
@@ -110,7 +109,10 @@ export class PostRepository {
   // Update
   // --------------------------------------------------
 
-  async update(id: string, data: UpdatePostDto) {
+  async update(
+    id: string,
+    data: UpdatePostInput,
+  ) {
     return prisma.problemPost.update({
       where: {
         id,
@@ -126,49 +128,23 @@ export class PostRepository {
   // Update only status
   // --------------------------------------------------
 
-async updateStatus(
-  id: string,
-  status: PostStatus,
-) {
-  return prisma.problemPost.update({
-    where: {
-      id,
-    },
-    data: {
-      status,
-    },
-    include: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true,
-          profile: {
-            select: {
-              city: true,
-              state: true,
-              latitude: true,
-              longitude: true,
-            },
-          },
-        },
+  async updateStatus(
+    id: string,
+    status: PostStatus,
+  ) {
+    return prisma.problemPost.update({
+      where: {
+        id,
       },
-      category: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
+
+      data: {
+        status,
       },
-      _count: {
-        select: {
-          comments: true,
-          likes: true,
-        },
-      },
-    },
-  });
-}
+
+      include: postRelations,
+    });
+  }
+
   // --------------------------------------------------
   // Delete
   // --------------------------------------------------

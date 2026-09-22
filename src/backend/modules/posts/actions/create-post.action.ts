@@ -1,6 +1,6 @@
 import { PostService } from "../services/post.service";
 
-import type { CreatePostData } from "../types/post.types";
+import type { CreatePostData } from "../validations/post.validation";
 
 const postService = new PostService();
 
