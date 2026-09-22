@@ -1,6 +1,6 @@
 import { IconName } from "@/frontend/components/common/icon";
 
-export interface NavSubItem {
+interface NavSubItem {
   title: string;
   href: string;
 }

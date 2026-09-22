@@ -1,13 +1,13 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { ColorThemeProvider } from "@/frontend/providers/theme-provider";
+import { queryClient } from "@/frontend/lib/query-client";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
-
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
@@ -18,6 +18,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       >
         <ColorThemeProvider>{children}</ColorThemeProvider>
       </ThemeProvider>
+
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-import { apiRequest } from "@/frontend/features/posts/services/api";
+import { apiRequest } from "@/frontend/lib/api";
 
 export function ResetPasswordForm() {
   const searchParams = useSearchParams();

@@ -1,100 +1,159 @@
-// src/frontend/components/posts/post-card.tsx
+"use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Bookmark, Heart, MessageCircle } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
-import type { Post } from "../types/post.types";
+import { Card, CardContent } from "@/frontend/components/ui/card";
 
-type Props = {
+import type { Post } from "@/frontend/features/posts/types/post.types";
+
+import { PostActions } from "./post-actions";
+import { PostImages } from "./post-images";
+import { PostMenu } from "./post-menu";
+import { PostStatusBadge } from "./post-status-badge";
+import { PostViewTrigger } from "./post-view-trigger";
+import { DeletePostDialog } from "./delete-post-dialog";
+
+type PostCardProps = {
   post: Post;
+  currentUserId?: string;
+  onReport?: (postId: string) => void;
 };
 
-export function PostCard({ post }: Props) {
+export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const postWithExtras = post as Post & {
+    isLiked?: boolean;
+    isSaved?: boolean;
+    author?: {
+      id: string;
+      name?: string | null;
+      avatar?: string | null;
+    } | null;
+    category?: {
+      id: string;
+      name: string;
+    } | null;
+    _count?: {
+      likes?: number;
+      comments?: number;
+    };
+  };
+
+  const isOwner = Boolean(currentUserId) && currentUserId === post.authorId;
+
+  const likeCount = postWithExtras._count?.likes ?? 0;
+
+  const commentCount = postWithExtras._count?.comments ?? 0;
+
+  const createdDate = new Date(post.createdAt);
+
   return (
-    <article className="overflow-hidden rounded-xl border bg-background">
-      <div className="p-4">
-        <div className="flex items-center gap-3">
-          {post.author.avatar ? (
-            <Image
-              src={post.author.avatar}
-              alt={post.author.name}
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full object-cover"
-            />
-          ) : (
-            <div
-              aria-hidden="true"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-semibold"
-            >
-              {post.author.name.charAt(0).toUpperCase()}
+    <>
+      <Card>
+        <CardContent className="space-y-4 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-muted">
+                {postWithExtras.author?.avatar ? (
+                  <Image
+                    src={postWithExtras.author.avatar}
+                    alt={postWithExtras.author.name ?? "User"}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-sm font-semibold">
+                    {(postWithExtras.author?.name ?? "U")
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold">
+                  {postWithExtras.author?.name ?? "Unknown user"}
+                </p>
+
+                <p className="text-xs text-muted-foreground">
+                  {formatDistanceToNow(createdDate, {
+                    addSuffix: true,
+                  })}
+                </p>
+              </div>
             </div>
-          )}
 
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium">{post.author.name}</p>
-
-            <p className="truncate text-xs text-muted-foreground">
-              {post.category.name}
-              {post.city ? ` · ${post.city}` : ""}
-            </p>
+            <PostMenu
+              canEdit={isOwner}
+              canDelete={isOwner}
+              onEdit={() => {
+                window.location.href = `/posts/${post.id}/edit`;
+              }}
+              onDelete={() => setDeleteOpen(true)}
+              onReport={onReport ? () => onReport(post.id) : undefined}
+            />
           </div>
 
-          <span className="ml-auto rounded-full bg-muted px-2 py-1 text-xs">
-            {post.status}
-          </span>
-        </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <PostStatusBadge status={post.status} />
 
-        <Link href={`/web/posts/${post.id}`} className="mt-4 block">
-          <h2 className="text-base font-semibold">{post.title}</h2>
+            {postWithExtras.category?.name && (
+              <span className="rounded-full bg-muted px-2.5 py-1 text-xs">
+                {postWithExtras.category.name}
+              </span>
+            )}
+          </div>
 
-          <p className="mt-2 line-clamp-3 text-sm leading-6 text-muted-foreground">
+          <Link href={`/posts/${post.id}`}>
+            <h3 className="text-xl font-semibold tracking-tight hover:underline">
+              {post.title}
+            </h3>
+          </Link>
+
+          <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
             {post.content}
           </p>
-        </Link>
 
-        {post.images.length > 0 && (
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            {post.images.slice(0, 4).map((image) => (
-              <div
-                key={image}
-                className="relative aspect-video overflow-hidden rounded-lg bg-muted"
-              >
-                <Image
-                  src={image}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 50vw, 320px"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+          <PostImages images={post.images} title={post.title} />
+
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            {post.city ? (
+              <span className="flex items-center gap-1">
+                <MapPin className="h-3.5 w-3.5" />
+                {post.city}
+              </span>
+            ) : (
+              <span />
+            )}
+
+            <span>{post.viewCount} views</span>
           </div>
-        )}
 
-        <div className="mt-4 flex items-center gap-5 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <Heart size={17} />
-            {post._count.likes}
-          </span>
+          <PostActions
+            postId={post.id}
+            likeCount={likeCount}
+            commentCount={commentCount}
+            isLiked={postWithExtras.isLiked}
+            isSaved={postWithExtras.isSaved}
+            onComment={() => {
+              window.location.href = `/posts/${post.id}`;
+            }}
+          />
 
-          <span className="flex items-center gap-1.5">
-            <MessageCircle size={17} />
-            {post._count.comments}
-          </span>
+          <PostViewTrigger postId={post.id} />
+        </CardContent>
+      </Card>
 
-          <span>{post.viewCount} views</span>
-
-          <button
-            type="button"
-            aria-label="Save post"
-            className="ml-auto rounded-md p-1.5 hover:bg-muted"
-          >
-            <Bookmark size={17} />
-          </button>
-        </div>
-      </div>
-    </article>
+      <DeletePostDialog
+        postId={post.id}
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+      />
+    </>
   );
 }

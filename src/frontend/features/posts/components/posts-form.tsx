@@ -10,7 +10,7 @@ import { createPostSchema } from "@/backend/modules/posts/validations/post.valid
 
 import type { CreatePostData } from "@/modules/posts/types/post.types";
 
-import { useCreatePost } from "../hooks/use-posts";
+import { useCreatePost } from "../hooks/use-create-post";
 
 export function PostForm() {
   const router = useRouter();

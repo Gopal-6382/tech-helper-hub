@@ -1,4 +1,4 @@
-import { apiRequest } from "@/frontend/features/posts/services/api";
+import { apiRequest } from "@/frontend/lib/api";
 
 type AuthResponse<T> = T | undefined;
 
@@ -72,14 +72,19 @@ export const authService = {
   },
 
   async logout() {
-    const response = await apiRequest<AuthResponse<{ message?: string }>>(
-      "/api/auth/logout",
-      {
-        method: "POST",
-      },
-    );
+    const refreshToken = localStorage.getItem("refreshToken");
 
-    return response.data;
+    try {
+      await apiRequest("/api/auth/logout", {
+        method: "POST",
+        body: JSON.stringify({
+          refreshToken,
+        }),
+      });
+    } finally {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    }
   },
 
   async refreshToken() {
