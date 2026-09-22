@@ -9,9 +9,5 @@ export async function updatePost(
   authorId: string,
   body: UpdatePostInput,
 ) {
-  return postService.updatePost(
-    id,
-    authorId,
-    body,
-  );
+  return postService.updatePost(id, authorId, body);
 }

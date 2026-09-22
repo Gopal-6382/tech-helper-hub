@@ -89,10 +89,10 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             </div>
 
             <PostMenu
-              canEdit={isOwner}
-              canDelete={isOwner}
+              canEdit={true}
+              canDelete={true}
               onEdit={() => {
-                window.location.href = `/posts/${post.id}/edit`;
+                window.location.href = `/web/posts/${post.id}/edit`;
               }}
               onDelete={() => setDeleteOpen(true)}
               onReport={onReport ? () => onReport(post.id) : undefined}

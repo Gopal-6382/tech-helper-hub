@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { createPostSchema } from "@/backend/modules/posts/validations/post.validation";
+import { createPostSchema } from "@/modules/posts/validations/post.validation";
 
-import type { CreatePostData } from "@/modules/posts/types/post.types";
+import type { CreatePostData } from "@/modules/posts/validations/post.validation";
 
 import { useCreatePost } from "../hooks/use-create-post";
 
@@ -16,7 +16,9 @@ export function PostForm() {
   const router = useRouter();
   const createMutation = useCreatePost();
 
-  type CreatePostFormData = Omit<CreatePostData, "authorId">;
+  type CreatePostFormData = Omit<CreatePostData, "authorId"> & {
+    images: string[];
+  };
 
   const form = useForm<CreatePostFormData>({
     resolver: zodResolver(createPostSchema),

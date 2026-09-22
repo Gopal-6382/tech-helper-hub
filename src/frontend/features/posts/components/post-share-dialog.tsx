@@ -72,16 +72,18 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Share post"
-        >
-          <Share2 className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Share post"
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
+        }
+      />
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

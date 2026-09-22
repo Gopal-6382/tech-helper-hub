@@ -58,17 +58,11 @@ export class PostService {
   // Update post
   // --------------------------------------------------
 
-  async updatePost(
-    id: string,
-    authorId: string,
-    data: UpdatePostInput,
-  ) {
+  async updatePost(id: string, authorId: string, data: UpdatePostInput) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only update your own post",
-      );
+      throw new Error("You can only update your own post");
     }
 
     return this.postRepository.update(id, data);
@@ -78,16 +72,11 @@ export class PostService {
   // Delete post
   // --------------------------------------------------
 
-  async deletePost(
-    id: string,
-    authorId: string,
-  ) {
+  async deletePost(id: string, authorId: string) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only delete your own post",
-      );
+      throw new Error("You can only delete your own post");
     }
 
     return this.postRepository.delete(id);
@@ -97,23 +86,14 @@ export class PostService {
   // Update status
   // --------------------------------------------------
 
-  async updateStatus(
-    id: string,
-    authorId: string,
-    status: PostStatus,
-  ) {
+  async updateStatus(id: string, authorId: string, status: PostStatus) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error(
-        "You can only update your own post",
-      );
+      throw new Error("You can only update your own post");
     }
 
-    return this.postRepository.updateStatus(
-      id,
-      status,
-    );
+    return this.postRepository.updateStatus(id, status);
   }
 
   // --------------------------------------------------

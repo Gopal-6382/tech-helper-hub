@@ -12,17 +12,11 @@ export const PATCH = routeHandler<PostRouteParams>(
   async (req, user, { params }) => {
     const { id } = await params;
 
-    const body:UpdatePostStatusInput = await req.json();
+    const body: UpdatePostStatusInput = await req.json();
 
     console.log("STATUS BODY:", body);
 
-
-
-    return updatePostStatus(
-      id,
-      user.userId,
-      { status: body.status },
-    );
+    return updatePostStatus(id, user.userId, { status: body.status });
   },
   {
     roles: USER_ROLES,

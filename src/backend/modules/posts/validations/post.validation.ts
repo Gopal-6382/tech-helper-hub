@@ -6,10 +6,7 @@ import { z } from "zod";
 // --------------------------------------------------
 
 export const createPostSchema = z.object({
-  categoryId: z
-    .uuid("Invalid category ID")
-    .nullable()
-    .optional(),
+  categoryId: z.uuid("Invalid category ID").nullable().optional(),
 
   title: z
     .string()
@@ -23,17 +20,14 @@ export const createPostSchema = z.object({
     .min(10, "Content must be at least 10 characters")
     .max(5000, "Content is too long"),
 
-  images: z
-    .array(z.string())
-    .default([]),
+  images: z.array(z.string()).default([]),
 });
 
 // --------------------------------------------------
 // Update post
 // --------------------------------------------------
 
-export const updatePostSchema =
-  createPostSchema.partial();
+export const updatePostSchema = createPostSchema.partial();
 
 // --------------------------------------------------
 // Update only post status
@@ -47,14 +41,11 @@ export const updatePostStatusSchema = z.object({
 // Types
 // --------------------------------------------------
 
-export type CreatePostInput =
-  z.infer<typeof createPostSchema>;
+export type CreatePostInput = z.infer<typeof createPostSchema>;
 
-export type UpdatePostInput =
-  z.infer<typeof updatePostSchema>;
+export type UpdatePostInput = z.infer<typeof updatePostSchema>;
 
-export type UpdatePostStatusInput =
-  z.infer<typeof updatePostStatusSchema>;
+export type UpdatePostStatusInput = z.infer<typeof updatePostStatusSchema>;
 
 export interface CreatePostData extends CreatePostInput {
   authorId: string;

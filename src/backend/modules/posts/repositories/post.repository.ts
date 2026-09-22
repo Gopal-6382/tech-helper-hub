@@ -109,10 +109,7 @@ export class PostRepository {
   // Update
   // --------------------------------------------------
 
-  async update(
-    id: string,
-    data: UpdatePostInput,
-  ) {
+  async update(id: string, data: UpdatePostInput) {
     return prisma.problemPost.update({
       where: {
         id,
@@ -128,10 +125,7 @@ export class PostRepository {
   // Update only status
   // --------------------------------------------------
 
-  async updateStatus(
-    id: string,
-    status: PostStatus,
-  ) {
+  async updateStatus(id: string, status: PostStatus) {
     return prisma.problemPost.update({
       where: {
         id,

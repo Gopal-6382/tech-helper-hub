@@ -2,7 +2,6 @@
 
 import { Flag, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
-import { Button } from "@/frontend/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,49 +19,55 @@ type PostMenuProps = {
 };
 
 export function PostMenu({
-  canEdit = false,
-  canDelete = false,
+  canEdit = true,
+  canDelete = true,
   onEdit,
   onDelete,
   onReport,
 }: PostMenuProps) {
+  const hasEditAction = canEdit && !!onEdit;
+  const hasDeleteAction = canDelete && !!onDelete;
+  const hasReportAction = !!onReport;
+
+  const hasAnyAction = hasEditAction || hasDeleteAction || hasReportAction;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label="Post menu"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        }
-      />
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-input bg-background text-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="Post menu"
+      >
+        <MoreHorizontal className="h-4 w-4" />
+      </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end">
-        {canEdit && onEdit && (
+      <DropdownMenuContent align="end" className="w-40">
+        {hasEditAction && (
           <DropdownMenuItem onClick={onEdit}>
             <Pencil className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
         )}
 
-        {canDelete && onDelete && (
+        {hasDeleteAction && (
           <DropdownMenuItem onClick={onDelete}>
             <Trash2 className="mr-2 h-4 w-4" />
             Delete
           </DropdownMenuItem>
         )}
 
-        {(canEdit || canDelete) && onReport && <DropdownMenuSeparator />}
+        {(hasEditAction || hasDeleteAction) && hasReportAction && (
+          <DropdownMenuSeparator />
+        )}
 
-        {onReport && (
+        {hasReportAction && (
           <DropdownMenuItem onClick={onReport}>
             <Flag className="mr-2 h-4 w-4" />
             Report
           </DropdownMenuItem>
+        )}
+
+        {!hasAnyAction && (
+          <DropdownMenuItem disabled>No actions available</DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

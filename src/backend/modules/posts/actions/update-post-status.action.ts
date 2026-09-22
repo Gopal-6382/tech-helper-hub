@@ -1,7 +1,6 @@
 import { PostService } from "../services/post.service";
 import { UpdatePostStatusInput } from "../validations/post.validation";
 
-
 const postService = new PostService();
 
 export async function updatePostStatus(
@@ -9,9 +8,5 @@ export async function updatePostStatus(
   authorId: string,
   status: UpdatePostStatusInput,
 ) {
-  return postService.updateStatus(
-    id,
-    authorId,
-    status.status,
-  );
+  return postService.updateStatus(id, authorId, status.status);
 }

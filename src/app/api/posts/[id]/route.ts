@@ -28,11 +28,7 @@ export const PATCH = routeHandler<PostRouteParams>(
 
     const data = updatePostSchema.parse(body);
 
-    return updatePost(
-      id,
-      user.userId,
-      data,
-    );
+    return updatePost(id, user.userId, data);
   },
   {
     roles: USER_ROLES,
@@ -43,10 +39,7 @@ export const DELETE = routeHandler<PostRouteParams>(
   async (_req, user, { params }) => {
     const { id } = await params;
 
-    return deletePost(
-      id,
-      user.userId,
-    );
+    return deletePost(id, user.userId);
   },
   {
     roles: USER_ROLES,
