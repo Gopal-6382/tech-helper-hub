@@ -5,7 +5,7 @@ import type { Post } from "@/frontend/features/posts/types/post.types";
 import type {
   CreatePostInput,
   UpdatePostInput,
-} from "@/frontend/features/posts/schema/post.validation";
+} from "@/modules/posts/validations/post.validation";
 
 export const postService = {
   async getPosts(): Promise<Post[]> {
