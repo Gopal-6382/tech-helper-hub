@@ -1,17 +1,17 @@
 import { PostService } from "../services/post.service";
 
-import type { UpdatePostDto } from "../types/post.types";
+import type { PostStatus } from "@prisma/client";
 
 const postService = new PostService();
 
-export async function updatePost(
+export async function updatePostStatus(
   id: string,
   authorId: string,
-  body: UpdatePostDto,
+  status: PostStatus,
 ) {
-  return postService.updatePost(
+  return postService.updateStatus(
     id,
     authorId,
-    body,
+    status,
   );
 }

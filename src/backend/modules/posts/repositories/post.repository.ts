@@ -1,54 +1,68 @@
 import { PostStatus } from "@prisma/client";
+
 import { prisma } from "@/lib/prisma";
 
-import { CreatePostData, UpdatePostDto } from "../types/post.types";
+import type {
+  CreatePostData,
+  UpdatePostDto,
+} from "../types/post.types";
+
+const postRelations = {
+  author: {
+    select: {
+      id: true,
+      name: true,
+      avatar: true,
+
+      profile: {
+        select: {
+          city: true,
+          state: true,
+          latitude: true,
+          longitude: true,
+        },
+      },
+    },
+  },
+
+  category: {
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    },
+  },
+
+  _count: {
+    select: {
+      comments: true,
+      likes: true,
+    },
+  },
+} as const;
 
 export class PostRepository {
-  // Get one post by id.
-  // Includes:
-  // - Author
-  // - Category
-  // - Comment count
-  // - Like count
+  // --------------------------------------------------
+  // Get one post
+  // --------------------------------------------------
+
   async findById(id: string) {
     return prisma.problemPost.findUnique({
       where: {
         id,
       },
-      include: {
-        author: true,
 
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
-        },
-      },
+      include: postRelations,
     });
   }
 
   // --------------------------------------------------
-  // Feed
-  //
-  // Latest posts first.
+  // Get all posts
   // --------------------------------------------------
+
   async findAll() {
     return prisma.problemPost.findMany({
-      include: {
-        author: true,
-
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
-        },
-      },
+      include: postRelations,
 
       orderBy: {
         createdAt: "desc",
@@ -57,24 +71,16 @@ export class PostRepository {
   }
 
   // --------------------------------------------------
-  // Logged in user's posts.
+  // Get posts by author
   // --------------------------------------------------
+
   async findByAuthorId(authorId: string) {
     return prisma.problemPost.findMany({
       where: {
         authorId,
       },
 
-      include: {
-        category: true,
-
-        _count: {
-          select: {
-            comments: true,
-            likes: true,
-          },
-        },
-      },
+      include: postRelations,
 
       orderBy: {
         createdAt: "desc",
@@ -83,17 +89,27 @@ export class PostRepository {
   }
 
   // --------------------------------------------------
-  // Create new post.
+  // Create
   // --------------------------------------------------
+
   async create(data: CreatePostData) {
     return prisma.problemPost.create({
-      data,
+      data: {
+        authorId: data.authorId,
+        categoryId: data.categoryId,
+        title: data.title,
+        content: data.content,
+        images: data.images ?? [],
+      },
+
+      include: postRelations,
     });
   }
 
   // --------------------------------------------------
-  // Update post.
+  // Update
   // --------------------------------------------------
+
   async update(id: string, data: UpdatePostDto) {
     return prisma.problemPost.update({
       where: {
@@ -101,27 +117,62 @@ export class PostRepository {
       },
 
       data,
+
+      include: postRelations,
     });
   }
 
   // --------------------------------------------------
-  // Change only status.
+  // Update only status
   // --------------------------------------------------
-  async updateStatus(id: string, status: PostStatus) {
-    return prisma.problemPost.update({
-      where: {
-        id,
-      },
 
-      data: {
-        status,
+async updateStatus(
+  id: string,
+  status: PostStatus,
+) {
+  return prisma.problemPost.update({
+    where: {
+      id,
+    },
+    data: {
+      status,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+          profile: {
+            select: {
+              city: true,
+              state: true,
+              latitude: true,
+              longitude: true,
+            },
+          },
+        },
       },
-    });
-  }
+      category: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+      _count: {
+        select: {
+          comments: true,
+          likes: true,
+        },
+      },
+    },
+  });
+}
+  // --------------------------------------------------
+  // Delete
+  // --------------------------------------------------
 
-  // --------------------------------------------------
-  // Delete post.
-  // --------------------------------------------------
   async delete(id: string) {
     return prisma.problemPost.delete({
       where: {
@@ -131,10 +182,9 @@ export class PostRepository {
   }
 
   // --------------------------------------------------
-  // Increase view count.
-  //
-  // Atomic increment avoids race conditions.
+  // Increase view count
   // --------------------------------------------------
+
   async incrementView(id: string) {
     return prisma.problemPost.update({
       where: {
@@ -146,6 +196,8 @@ export class PostRepository {
           increment: 1,
         },
       },
+
+      include: postRelations,
     });
   }
 }

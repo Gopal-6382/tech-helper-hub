@@ -2,13 +2,14 @@ import { PostStatus } from "@prisma/client";
 import { z } from "zod";
 
 // --------------------------------------------------
-// Validation for creating a new problem post.
-//
-// AuthorId is NOT validated here.
-// It comes from JWT.
+// Create post
 // --------------------------------------------------
+
 export const createPostSchema = z.object({
-  categoryId: z.uuid().optional(),
+  categoryId: z
+    .uuid("Invalid category ID")
+    .nullable()
+    .optional(),
 
   title: z
     .string()
@@ -22,34 +23,53 @@ export const createPostSchema = z.object({
     .min(10, "Content must be at least 10 characters")
     .max(5000, "Content is too long"),
 
-  images: z.array(z.string()).default([]),
-
-  city: z.string().trim().optional(),
-
-  latitude: z.number().optional(),
-
-  longitude: z.number().optional(),
+  images: z
+    .array(z.string())
+    .default([]),
 });
 
 // --------------------------------------------------
-// Validation for updating a post.
-//
-// Every field is optional because user
-// may update only one field.
+// Update post
 // --------------------------------------------------
+
 export const updatePostSchema = z.object({
-  categoryId: z.uuid().optional(),
+  categoryId: z
+    .uuid("Invalid category ID")
+    .nullable()
+    .optional(),
 
-  title: z.string().trim().min(5).max(150).optional(),
+  title: z
+    .string()
+    .trim()
+    .min(5, "Title must be at least 5 characters")
+    .max(150, "Title is too long")
+    .optional(),
 
-  content: z.string().trim().min(10).max(5000).optional(),
+  content: z
+    .string()
+    .trim()
+    .min(10, "Content must be at least 10 characters")
+    .max(5000, "Content is too long")
+    .optional(),
 
-  images: z.array(z.string()).optional(),
-
-  city: z.string().trim().optional(),
-
-  latitude: z.number().optional(),
-
-  longitude: z.number().optional(),
-  status: z.enum(PostStatus).optional(),
+  images: z
+    .array(z.string())
+    .optional(),
 });
+
+// --------------------------------------------------
+// Update only post status
+// --------------------------------------------------
+
+export const updatePostStatusSchema = z.object({
+  status: z.enum(PostStatus),
+});
+
+export type CreatePostInput =
+  z.infer<typeof createPostSchema>;
+
+export type UpdatePostInput =
+  z.infer<typeof updatePostSchema>;
+
+export type UpdatePostStatusInput =
+  z.infer<typeof updatePostStatusSchema>;

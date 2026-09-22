@@ -2,22 +2,38 @@ import { PostStatus } from "@prisma/client";
 
 import { PostRepository } from "../repositories/post.repository";
 
-import { CreatePostData, UpdatePostDto } from "../types/post.types";
+import type {
+  CreatePostData,
+  UpdatePostDto,
+} from "../types/post.types";
 
 export class PostService {
   private postRepository = new PostRepository();
 
-  // Business Rule:
+  // --------------------------------------------------
+  // Create post
+  //
+  // Business rule:
   // Logged-in user becomes the author.
-  // Client cannot send authorId.
+  // Client does not provide authorId.
+  // Location comes from user's profile in the API layer/service flow.
+  // status defaults to OPEN.
+  // viewCount defaults to 0.
+  // --------------------------------------------------
   async createPost(data: CreatePostData) {
     return this.postRepository.create({
-      ...data,
+      authorId: data.authorId,
+      categoryId: data.categoryId,
+      title: data.title,
+      content: data.content,
+      images: data.images ?? [],
     });
   }
 
   // --------------------------------------------------
-  // Business Rule:
+  // Get one post
+  //
+  // Business rule:
   // Post must exist.
   // --------------------------------------------------
   async getPost(id: string) {
@@ -31,64 +47,96 @@ export class PostService {
   }
 
   // --------------------------------------------------
-  // Feed
+  // Get all posts
+  //
+  // Public feed.
+  // Latest posts first.
   // --------------------------------------------------
   async getPosts() {
     return this.postRepository.findAll();
   }
 
   // --------------------------------------------------
-  // Logged in user's posts.
+  // Get logged-in user's posts
   // --------------------------------------------------
   async getMyPosts(authorId: string) {
     return this.postRepository.findByAuthorId(authorId);
   }
 
   // --------------------------------------------------
-  // Business Rule:
-  // Only author can edit.
+  // Update post
+  //
+  // Business rule:
+  // Only the author can edit.
+  // Only editable fields are accepted by UpdatePostDto.
   // --------------------------------------------------
-  async updatePost(id: string, authorId: string, data: UpdatePostDto) {
+  async updatePost(
+    id: string,
+    authorId: string,
+    data: UpdatePostDto,
+  ) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error("You can only update your own post");
+      throw new Error(
+        "You can only update your own post",
+      );
     }
 
     return this.postRepository.update(id, data);
   }
 
   // --------------------------------------------------
-  // Business Rule:
-  // Only author can delete.
+  // Delete post
+  //
+  // Business rule:
+  // Only the author can delete.
   // --------------------------------------------------
-  async deletePost(id: string, authorId: string) {
+  async deletePost(
+    id: string,
+    authorId: string,
+  ) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error("You can only delete your own post");
+      throw new Error(
+        "You can only delete your own post",
+      );
     }
 
     return this.postRepository.delete(id);
   }
 
   // --------------------------------------------------
-  // Business Rule:
-  // Only author changes status.
+  // Update status
+  //
+  // Business rule:
+  // Only the author can change post status.
   // --------------------------------------------------
-  async updateStatus(id: string, authorId: string, status: PostStatus) {
+  async updateStatus(
+    id: string,
+    authorId: string,
+    status: PostStatus,
+  ) {
     const post = await this.getPost(id);
 
     if (post.authorId !== authorId) {
-      throw new Error("You can only update your own post");
+      throw new Error(
+        "You can only update your own post",
+      );
     }
 
-    return this.postRepository.updateStatus(id, status);
+    return this.postRepository.updateStatus(
+      id,
+      status,
+    );
   }
 
   // --------------------------------------------------
-  // Every time someone opens a post,
-  // increase its view count.
+  // Increase view count
+  //
+  // Business rule:
+  // Post must exist.
   // --------------------------------------------------
   async increaseView(id: string) {
     await this.getPost(id);

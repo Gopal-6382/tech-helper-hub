@@ -5,9 +5,6 @@ export interface CreatePostDto {
   title: string;
   content: string;
   images?: string[];
-  city?: string;
-  latitude?: number;
-  longitude?: number;
 }
 
 export interface CreatePostData extends CreatePostDto {
@@ -15,12 +12,12 @@ export interface CreatePostData extends CreatePostDto {
 }
 
 export interface UpdatePostDto {
-  categoryId?: string;
+  categoryId?: string | null;
   title?: string;
   content?: string;
   images?: string[];
-  city?: string;
-  latitude?: number;
-  longitude?: number;
-  status?: PostStatus;
+}
+
+export interface UpdatePostStatusData {
+  status: PostStatus;
 }
