@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { LogoutButton } from "@/features/auth/components/logout";
+import { UserMenu } from "../common/user-menu";
 
 type Props = {
   onMenuClick: () => void;
@@ -20,7 +20,7 @@ export function Header({ onMenuClick }: Props) {
       </button>
 
       <div className="ml-auto">
-        <LogoutButton />
+        <UserMenu />
       </div>
     </header>
   );

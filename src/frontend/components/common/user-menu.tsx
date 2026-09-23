@@ -1,4 +1,3 @@
-// user-menu.tsx — wrap Label + its items in DropdownMenuGroup
 "use client";
 
 import {
@@ -12,10 +11,25 @@ import {
 } from "@/frontend/components/ui/dropdown-menu";
 import { Button } from "@/frontend/components/ui/button";
 import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { authService } from "@/features/auth/api/api";
 
 export function UserMenu() {
-  function handleLogout() {
-    console.log("logout clicked");
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  async function handleLogout() {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+
+    try {
+      await authService.logout();
+      router.push("/web/login");
+    } finally {
+      setIsLoggingOut(false);
+    }
   }
 
   return (
@@ -35,12 +49,12 @@ export function UserMenu() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/web/profile")}>
             <User className="mr-2 h-4 w-4" />
             Profile
           </DropdownMenuItem>
 
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/web/settings")}>
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </DropdownMenuItem>
@@ -48,9 +62,13 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={handleLogout} className="text-danger">
+        <DropdownMenuItem
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="text-danger"
+        >
           <LogOut className="mr-2 h-4 w-4" />
-          Log out
+          {isLoggingOut ? "Logging out..." : "Log out"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

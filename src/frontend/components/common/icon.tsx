@@ -33,7 +33,6 @@ export type IconName =
   | "messages"
   | "notifications"
   | "profile"
-  | "settings"
   | "posts"
   | "reports"
   | "dashboard"
@@ -55,7 +54,6 @@ const iconMap: Record<IconName, React.ComponentType<LucideProps>> = {
   messages: MessageSquare,
   notifications: Bell,
   profile: User,
-  settings: Settings,
   posts: FileText,
   reports: AlertCircle,
   dashboard: LayoutDashboard,

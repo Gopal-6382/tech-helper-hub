@@ -42,16 +42,6 @@ export const userNavigation: NavItem[] = [
     icon: "notifications",
   },
   {
-    title: "Profile",
-    href: "/web/profile",
-    icon: "profile",
-  },
-  {
-    title: "Settings",
-    href: "/web/settings",
-    icon: "settings",
-  },
-  {
     title: "Posts",
     href: "/web/posts",
     icon: "posts",
