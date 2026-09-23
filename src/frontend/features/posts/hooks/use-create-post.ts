@@ -6,7 +6,7 @@ import { postService } from "@/frontend/features/posts/api/posts-api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 
-import type { CreatePostInput } from "@/frontend/features/posts/schema/post.validation";
+import type { CreatePostInput } from "@/modules/posts/validations/post.validation";
 
 export function useCreatePost() {
   const queryClient = useQueryClient();

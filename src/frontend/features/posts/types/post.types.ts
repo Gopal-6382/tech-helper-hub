@@ -1,41 +1,39 @@
-type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
+// types/post.types.ts
 
-type PostAuthor = {
+export type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
+
+export type PostAuthor = {
   id: string;
-  name: string;
-  avatar: string | null;
+  name?: string | null;
+  avatar?: string | null;
 };
 
-type PostCategory = {
+export type PostCategory = {
   id: string;
   name: string;
+};
+
+export type PostCounts = {
+  likes: number;
+  comments: number;
 };
 
 export type Post = {
   id: string;
   authorId: string;
-  categoryId: string | null;
-
   title: string;
   content: string;
   images: string[];
-
+  city?: string | null;
   status: PostStatus;
   viewCount: number;
-
-  city: string | null;
-  latitude: number | null;
-  longitude: number | null;
-
   createdAt: string;
-  updatedAt: string;
 
-  author: PostAuthor;
-  category: PostCategory | null;
+  author?: PostAuthor | null;
+  category?: PostCategory | null;
 
-  likeCount: number;
-  commentCount: number;
+  _count?: PostCounts;
 
-  isLiked: boolean;
-  isSaved: boolean;
+  isLiked?: boolean;
+  isSaved?: boolean;
 };

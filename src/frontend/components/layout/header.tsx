@@ -1,5 +1,3 @@
-// src/frontend/components/layout/header.tsx
-
 "use client";
 
 import { Menu } from "lucide-react";
