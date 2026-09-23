@@ -40,6 +40,7 @@ export function PostImages({
             src={image}
             alt={`${title} image ${index + 1}`}
             fill
+            loading={index === 0 ? "eager" : "lazy"}
             className="object-cover"
             sizes="(max-width: 768px) 50vw, 350px"
           />
