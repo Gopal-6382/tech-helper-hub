@@ -16,6 +16,7 @@ import { PostMenu } from "./post-menu";
 import { PostStatusBadge } from "./post-status-badge";
 import { PostViewTrigger } from "./post-view-trigger";
 import { DeletePostDialog } from "./delete-post-dialog";
+// import { is } from "date-fns/locale";
 
 type PostCardProps = {
   post: Post;
@@ -89,8 +90,8 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             </div>
 
             <PostMenu
-              canEdit={true}
-              canDelete={true}
+              canEdit={isOwner}
+              canDelete={isOwner}
               onEdit={() => {
                 window.location.href = `/web/posts/${post.id}/edit`;
               }}

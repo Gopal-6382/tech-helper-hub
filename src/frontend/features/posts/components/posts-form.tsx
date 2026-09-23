@@ -5,6 +5,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { createPostSchema } from "@/modules/posts/validations/post.validation";
 
@@ -16,11 +17,11 @@ export function PostForm() {
   const router = useRouter();
   const createMutation = useCreatePost();
 
-  type CreatePostFormData = Omit<CreatePostData, "authorId"> & {
-    images: string[];
-  };
-
-  const form = useForm<CreatePostFormData>({
+  const form = useForm<
+    z.input<typeof createPostSchema>,
+    unknown,
+    z.output<typeof createPostSchema>
+  >({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       title: "",
@@ -29,7 +30,7 @@ export function PostForm() {
     },
   });
 
-  async function onSubmit(data: CreatePostFormData) {
+  async function onSubmit(data: z.output<typeof createPostSchema>) {
     try {
       const post = await createMutation.mutateAsync(data as CreatePostData);
 
@@ -102,12 +103,12 @@ export function PostForm() {
 
       <div>
         <label htmlFor="city" className="mb-2 block text-sm font-medium">
-          City
+          img
         </label>
 
         <input
           id="city"
-          {...form.register("city")}
+          {...form.register("images")}
           className="w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2"
         />
       </div>

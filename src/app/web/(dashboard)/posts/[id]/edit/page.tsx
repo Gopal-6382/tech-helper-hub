@@ -71,7 +71,7 @@ export default function EditPostPage({ params }: EditPostPageProps) {
         </p>
       </div>
 
-      <PostForm post={post} />
+      <PostForm />
     </div>
   );
 }

@@ -1,9 +1,7 @@
 import { PostStatus } from "@prisma/client";
 import { z } from "zod";
 
-// --------------------------------------------------
 // Create post
-// --------------------------------------------------
 
 export const createPostSchema = z.object({
   categoryId: z.uuid("Invalid category ID").nullable().optional(),
@@ -23,23 +21,17 @@ export const createPostSchema = z.object({
   images: z.array(z.string()).default([]),
 });
 
-// --------------------------------------------------
 // Update post
-// --------------------------------------------------
 
 export const updatePostSchema = createPostSchema.partial();
 
-// --------------------------------------------------
 // Update only post status
-// --------------------------------------------------
 
 export const updatePostStatusSchema = z.object({
   status: z.enum(PostStatus),
 });
 
-// --------------------------------------------------
 // Types
-// --------------------------------------------------
 
 export type CreatePostInput = z.infer<typeof createPostSchema>;
 
