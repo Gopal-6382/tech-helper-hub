@@ -36,15 +36,18 @@ export function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="secondary" className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="icon"
+            aria-label="Account"
+            className="rounded-full"
+          >
             <User className="h-4 w-4" />
-            Account
-            <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </Button>
         }
       />
 
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" className="md:w-50">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
