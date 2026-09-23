@@ -3,34 +3,45 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { apiRequest } from "@/frontend/lib/api";
+import { Button } from "@/frontend/components/ui/button";
+import { Input } from "@/frontend/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/frontend/components/ui/field";
+
+import { authService } from "@/features/auth/api/api";
+import { forgotPasswordSchema } from "@/backend/modules/auth/validations/auth.schema";
+
+type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export function ForgotPasswordForm() {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
-    setError("");
+  async function onSubmit(values: ForgotPasswordFormValues) {
     setMessage("");
-    setLoading(true);
+    setServerError("");
 
     try {
-      await apiRequest("/api/auth/forgot-password", {
-        method: "POST",
-        body: JSON.stringify({ email }),
-      });
+      await authService.forgotPassword(values);
 
       setMessage("If the account exists, a password reset link has been sent.");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Request failed");
-    } finally {
-      setLoading(false);
+      setServerError(error instanceof Error ? error.message : "Request failed");
     }
   }
 
@@ -42,27 +53,27 @@ export function ForgotPasswordForm() {
         Enter your email to reset your password.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Field data-invalid={!!errors.email}>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            aria-invalid={!!errors.email}
+            {...register("email")}
+          />
+
+          {errors.email && <FieldError>{errors.email.message}</FieldError>}
+        </Field>
 
         {message && <p className="text-sm text-green-600">{message}</p>}
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
-        >
-          {loading ? "Sending..." : "Send reset link"}
-        </button>
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? "Sending..." : "Send reset link"}
+        </Button>
       </form>
 
       <Link

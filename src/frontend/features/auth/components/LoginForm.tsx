@@ -1,58 +1,56 @@
+// src/frontend/components/auth/login-form.tsx
+
 "use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { apiRequest } from "@/frontend/lib/api";
+import { Button } from "@/frontend/components/ui/button";
+import { Input } from "@/frontend/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/frontend/components/ui/field";
 
-type LoginResponse = {
-  accessToken: string;
-  refreshToken?: string;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  };
-};
+import { authService } from "@/features/auth/api/api";
+import { loginSchema } from "@/backend/modules/auth/validations/auth.schema";
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
+  const [serverError, setServerError] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setError("");
-    setLoading(true);
+  async function onSubmit(values: LoginFormValues) {
+    setServerError("");
 
     try {
-      const result = await apiRequest<LoginResponse>("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const result = await authService.login(values);
 
-      if (result.data?.accessToken) {
-        localStorage.setItem("accessToken", result.data.accessToken);
+      if (result?.accessToken) {
+        localStorage.setItem("accessToken", result.accessToken);
       }
 
-      if (result.data?.refreshToken) {
-        localStorage.setItem("refreshToken", result.data.refreshToken);
+      if (result?.refreshToken) {
+        localStorage.setItem("refreshToken", result.refreshToken);
       }
 
       router.push("/web");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Login failed");
-    } finally {
-      setLoading(false);
+      setServerError(error instanceof Error ? error.message : "Login failed");
     }
   }
 
@@ -66,42 +64,42 @@ export function LoginForm() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Email</label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Field data-invalid={!!errors.email}>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
 
-          <input
+          <Input
+            id="email"
             type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2"
             placeholder="you@example.com"
+            aria-invalid={!!errors.email}
+            {...register("email")}
           />
-        </div>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium">Password</label>
+          {errors.email && <FieldError>{errors.email.message}</FieldError>}
+        </Field>
 
-          <input
+        <Field data-invalid={!!errors.password}>
+          <FieldLabel htmlFor="password">Password</FieldLabel>
+
+          <Input
+            id="password"
             type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-            className="w-full rounded-md border px-3 py-2 outline-none focus:ring-2"
             placeholder="••••••••"
+            aria-invalid={!!errors.password}
+            {...register("password")}
           />
-        </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+          {errors.password && (
+            <FieldError>{errors.password.message}</FieldError>
+          )}
+        </Field>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? "Logging in..." : "Login"}
+        </Button>
       </form>
 
       <div className="mt-4 flex justify-between text-sm">

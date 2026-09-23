@@ -4,43 +4,48 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { apiRequest } from "@/frontend/lib/api";
+import { Button } from "@/frontend/components/ui/button";
+import { Input } from "@/frontend/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/frontend/components/ui/field";
+
+import { authService } from "@/features/auth/api/api";
+import { registerSchema } from "@/backend/modules/auth/validations/auth.schema";
+
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
   const router = useRouter();
+  const [serverError, setServerError] = useState("");
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setError("");
-    setLoading(true);
+  async function onSubmit(values: RegisterFormValues) {
+    setServerError("");
 
     try {
-      await apiRequest("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          password,
-        }),
-      });
-
+      await authService.register(values);
       router.push("/web/login");
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Registration failed");
-    } finally {
-      setLoading(false);
+      setServerError(
+        error instanceof Error ? error.message : "Registration failed",
+      );
     }
   }
 
@@ -52,51 +57,69 @@ export function RegisterForm() {
         Join Tech Helper Hub
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full name"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Field data-invalid={!!errors.name}>
+          <FieldLabel htmlFor="name">Full name</FieldLabel>
 
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+          <Input
+            id="name"
+            placeholder="Full name"
+            aria-invalid={!!errors.name}
+            {...register("name")}
+          />
 
-        <input
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+          {errors.name && <FieldError>{errors.name.message}</FieldError>}
+        </Field>
 
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+        <Field data-invalid={!!errors.email}>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+          <Input
+            id="email"
+            type="email"
+            placeholder="Email"
+            aria-invalid={!!errors.email}
+            {...register("email")}
+          />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
-        >
-          {loading ? "Creating..." : "Create account"}
-        </button>
+          {errors.email && <FieldError>{errors.email.message}</FieldError>}
+        </Field>
+
+        <Field data-invalid={!!errors.phone}>
+          <FieldLabel htmlFor="phone">Phone</FieldLabel>
+
+          <Input
+            id="phone"
+            type="tel"
+            placeholder="Phone"
+            aria-invalid={!!errors.phone}
+            {...register("phone")}
+          />
+
+          {errors.phone && <FieldError>{errors.phone.message}</FieldError>}
+        </Field>
+
+        <Field data-invalid={!!errors.password}>
+          <FieldLabel htmlFor="password">Password</FieldLabel>
+
+          <Input
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            aria-invalid={!!errors.password}
+            {...register("password")}
+          />
+
+          {errors.password && (
+            <FieldError>{errors.password.message}</FieldError>
+          )}
+        </Field>
+
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? "Creating..." : "Create account"}
+        </Button>
       </form>
 
       <p className="mt-4 text-center text-sm text-muted-foreground">

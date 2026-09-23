@@ -10,14 +10,39 @@ import {
   DropdownMenuTrigger,
 } from "@/frontend/components/ui/dropdown-menu";
 import { Button } from "@/frontend/components/ui/button";
-import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { User, Settings, LogOut, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authService } from "@/features/auth/api/api";
 
 export function UserMenu() {
   const router = useRouter();
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  async function handleRefreshToken() {
+    if (isRefreshing) return;
+
+    setIsRefreshing(true);
+
+    try {
+      const data = await authService.refreshToken();
+
+      if (data?.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+      }
+
+      router.refresh();
+    } catch {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      router.push("/web/login");
+    } finally {
+      setIsRefreshing(false);
+    }
+  }
 
   async function handleLogout() {
     if (isLoggingOut) return;
@@ -64,6 +89,11 @@ export function UserMenu() {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
+
+        <DropdownMenuItem onClick={handleRefreshToken} disabled={isRefreshing}>
+          <RefreshCw className="mr-2 h-4 w-4" />
+          {isRefreshing ? "Refreshing..." : "Refresh session"}
+        </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={handleLogout}

@@ -10,6 +10,7 @@ type LoginData = {
 type RegisterData = {
   name: string;
   email: string;
+  phone: string;
   password: string;
 };
 
@@ -22,9 +23,20 @@ type ResetPasswordData = {
   password: string;
 };
 
+type LoginResponseData = {
+  accessToken: string;
+  refreshToken?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+};
+
 export const authService = {
   async login(data: LoginData) {
-    const response = await apiRequest<AuthResponse<{ accessToken: string }>>(
+    const response = await apiRequest<AuthResponse<LoginResponseData>>(
       "/api/auth/login",
       {
         method: "POST",
@@ -36,7 +48,7 @@ export const authService = {
   },
 
   async register(data: RegisterData) {
-    const response = await apiRequest<AuthResponse<{ user?: unknown }>>(
+    const response = await apiRequest<AuthResponse<{ message?: string }>>(
       "/api/auth/register",
       {
         method: "POST",
@@ -71,30 +83,31 @@ export const authService = {
     return response.data;
   },
 
+  async refreshToken() {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    const response = await apiRequest<AuthResponse<{ accessToken: string }>>(
+      "/api/auth/refresh",
+      {
+        method: "POST",
+        body: JSON.stringify({ refreshToken }),
+      },
+    );
+
+    return response.data;
+  },
+
   async logout() {
     const refreshToken = localStorage.getItem("refreshToken");
 
     try {
       await apiRequest("/api/auth/logout", {
         method: "POST",
-        body: JSON.stringify({
-          refreshToken,
-        }),
+        body: JSON.stringify({ refreshToken }),
       });
     } finally {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
     }
-  },
-
-  async refreshToken() {
-    const response = await apiRequest<AuthResponse<{ accessToken: string }>>(
-      "/api/auth/refresh",
-      {
-        method: "POST",
-      },
-    );
-
-    return response.data;
   },
 };

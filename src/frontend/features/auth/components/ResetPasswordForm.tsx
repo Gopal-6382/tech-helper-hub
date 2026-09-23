@@ -4,55 +4,68 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { apiRequest } from "@/frontend/lib/api";
+import { Button } from "@/frontend/components/ui/button";
+import { Input } from "@/frontend/components/ui/input";
+import { Field, FieldError, FieldLabel } from "@/frontend/components/ui/field";
+
+import { authService } from "@/features/auth/api/api";
+
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 export function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-    setError("");
+  async function onSubmit(values: ResetPasswordFormValues) {
     setMessage("");
+    setServerError("");
 
     if (!token) {
-      setError("Reset token is missing.");
+      setServerError("Reset token is missing.");
       return;
     }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    setLoading(true);
 
     try {
-      await apiRequest("/api/auth/reset-password", {
-        method: "POST",
-        body: JSON.stringify({
-          token,
-          password,
-        }),
+      await authService.resetPassword({
+        token,
+        password: values.password,
       });
 
       setMessage("Password reset successfully. You can now login.");
     } catch (error) {
-      setError(
+      setServerError(
         error instanceof Error ? error.message : "Password reset failed",
       );
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -64,36 +77,45 @@ export function ResetPasswordForm() {
         Create a new password.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="New password"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Field data-invalid={!!errors.password}>
+          <FieldLabel htmlFor="password">New password</FieldLabel>
 
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm password"
-          required
-          className="w-full rounded-md border px-3 py-2"
-        />
+          <Input
+            id="password"
+            type="password"
+            placeholder="New password"
+            aria-invalid={!!errors.password}
+            {...register("password")}
+          />
+
+          {errors.password && (
+            <FieldError>{errors.password.message}</FieldError>
+          )}
+        </Field>
+
+        <Field data-invalid={!!errors.confirmPassword}>
+          <FieldLabel htmlFor="confirmPassword">Confirm password</FieldLabel>
+
+          <Input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm password"
+            aria-invalid={!!errors.confirmPassword}
+            {...register("confirmPassword")}
+          />
+
+          {errors.confirmPassword && (
+            <FieldError>{errors.confirmPassword.message}</FieldError>
+          )}
+        </Field>
 
         {message && <p className="text-sm text-green-600">{message}</p>}
+        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-primary px-4 py-2 text-primary-foreground disabled:opacity-50"
-        >
-          {loading ? "Resetting..." : "Reset password"}
-        </button>
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? "Resetting..." : "Reset password"}
+        </Button>
       </form>
 
       <Link
