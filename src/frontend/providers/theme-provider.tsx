@@ -1,4 +1,3 @@
-// src/frontend/providers/theme-provider.tsx
 "use client";
 
 import {
@@ -52,8 +51,8 @@ function readStoredTheme(): ColorTheme {
     if (isColorTheme(stored)) {
       return stored;
     }
-  } catch {
-    // localStorage is unavailable or blocked
+  } catch (err) {
+    console.error(err);
   }
 
   return "default";
@@ -116,9 +115,8 @@ export function ColorThemeProvider({
       } else {
         window.localStorage.setItem(STORAGE_KEY, safeTheme);
       }
-    } catch {
-      // Storage write is unavailable.
-      // The custom event still updates the current tab if possible.
+    } catch (err) {
+      console.error(err);
     }
 
     window.dispatchEvent(new Event(CHANGE_EVENT));
