@@ -26,12 +26,13 @@ export class UserRepository {
     });
   }
 
-  async update(userId: string, data: UpdateMeDto) {
+  async update(userId: string, dto: UpdateMeDto) {
     return prisma.user.update({
-      where: {
-        id: userId,
+      where: { id: userId },
+      data: {
+        ...dto,
+        phone: dto.phone ?? undefined,
       },
-      data,
     });
   }
 

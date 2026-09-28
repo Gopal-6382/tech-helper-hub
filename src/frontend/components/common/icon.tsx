@@ -9,7 +9,6 @@ import {
   Users,
   Star,
   User,
-  Settings,
   AlertCircle,
   ChevronDown,
   ChevronRight,

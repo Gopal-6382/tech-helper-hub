@@ -47,7 +47,6 @@ export function Sidebar({ open, onClose }: Props) {
           open
             ? "translate-x-0 animate-in fade-in slide-in-from-left duration-300"
             : "-translate-x-full animate-out fade-out slide-out-to-left duration-300",
-          !open && "pointer-events-none",
         )}
       >
         <div className="flex h-16 items-center justify-between border-b px-4">

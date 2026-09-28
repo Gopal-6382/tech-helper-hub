@@ -12,7 +12,10 @@ import { CategorySelect } from "@/frontend/components/common/category-select";
 import { useState, useMemo } from "react";
 
 import { useCategories } from "@/features/categories/hooks/use-categories";
-
+type Category = {
+  id: string;
+  name: string;
+};
 export default function BookingsPage() {
   const [categoryId, setCategoryId] = useState<string | null>(null);
 
@@ -21,7 +24,7 @@ export default function BookingsPage() {
 
   const selectedCategory = useMemo(() => {
     if (!categoryId) return null;
-    const found = categories.find((c: any) => c.id === categoryId);
+    const found = categories.find((c: Category) => c.id === categoryId);
     console.log("selectedCategory debug:", {
       categoryId,
       categoriesCount: categories.length,
@@ -68,10 +71,10 @@ export default function BookingsPage() {
         <div className="text-sm text-muted-foreground">
           Selected:{" "}
           <span className="font-medium text-foreground">
-            {(selectedCategory as any).name}
+            {(selectedCategory as Category).name}
           </span>{" "}
           <span className="font-mono text-xs">
-            ({(selectedCategory as any).id})
+            ({(selectedCategory as Category).id})
           </span>
         </div>
       ) : (
