@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { ColorThemeProvider } from "@/frontend/providers/theme-provider";
 import QueryProvider from "@/frontend/providers/query-provider";
+import { Toaster } from "@/frontend/components/ui/toast";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableSystem
         storageKey="theme-mode"
       >
-        <ColorThemeProvider>{children}</ColorThemeProvider>
+        <ColorThemeProvider>
+          {children}
+          <Toaster />
+        </ColorThemeProvider>
       </ThemeProvider>
 
       <ReactQueryDevtools initialIsOpen={true} />
