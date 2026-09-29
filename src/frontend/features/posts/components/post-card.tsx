@@ -16,6 +16,7 @@ import { PostMenu } from "./post-menu";
 import { PostStatusBadge } from "./post-status-badge";
 import { PostViewTrigger } from "./post-view-trigger";
 import { DeletePostDialog } from "./delete-post-dialog";
+import router from "next/router";
 // import { is } from "date-fns/locale";
 
 type PostCardProps = {
@@ -110,7 +111,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             )}
           </div>
 
-          <Link href={`/posts/${post.id}`}>
+          <Link href={`/web/posts/${post.id}`}>
             <h3 className="text-xl font-semibold tracking-tight hover:underline">
               {post.title}
             </h3>
@@ -141,9 +142,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             commentCount={commentCount}
             isLiked={postWithExtras.isLiked}
             isSaved={postWithExtras.isSaved}
-            onComment={() => {
-              window.location.href = `/posts/${post.id}`;
-            }}
+           onComment={() => router.push(`/web/posts/${post.id}`)}
           />
 
           <PostViewTrigger postId={post.id} />

@@ -24,7 +24,7 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
       return "";
     }
 
-    return `${window.location.origin}/posts/${postId}`;
+    return `${window.location.origin}/web/posts/${postId}`;
   };
 
   const handleShare = async () => {
@@ -42,8 +42,8 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
           url,
         });
         return;
-      } catch {
-        // User cancelled sharing.
+      } catch(err) {
+        throw new Error("Failed to share post");
       }
     }
 
