@@ -14,7 +14,7 @@ export default function PostsPage() {
   const posts = data ?? [];
 
   return (
-    <div className="container mx-auto max-w-3xl space-y-6 py-6">
+    <div className="container mx-auto px-[3%] space-y-6 py-6">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Problem Posts</h1>
