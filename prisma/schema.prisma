@@ -294,7 +294,7 @@ model Booking {
 
   serviceRequest ServiceRequest      @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
   user           User                @relation("BookingUser", fields: [userId], references: [id])
-  professional   ProfessionalProfile @relation("BookingProfessional", fields: [professionalId], references: [id], onDelete: Cascade)
+  professional   ProfessionalProfile @relation("BookingProfessional", fields: [professionalId], references: [id])
   review         Review?
 
   @@unique([serviceRequestId, professionalId])
