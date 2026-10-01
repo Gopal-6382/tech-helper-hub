@@ -89,7 +89,7 @@ model User {
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
-  phone        String  @unique
+  phone        String   @unique
   password     String
   avatar       String?
   roles        Role[]   @default([USER])
@@ -111,6 +111,7 @@ model User {
   commentReplies CommentReply[]
   postLikes      PostLike[]
   savedPosts     SavedPost[]
+  postViews      PostView[]
   reportsFiled   Report[]       @relation("Reporter")
 
   directParticipants DirectParticipant[]
@@ -263,7 +264,7 @@ model ServiceRequest {
   updatedAt DateTime @updatedAt
 
   requester User     @relation(fields: [requesterId], references: [id])
-  category  Category @relation(fields: [categoryId], references: [id])
+  category  Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
   targetProfessional ProfessionalProfile? @relation("TargetProfessional", fields: [targetProfessionalId], references: [id])
 
@@ -291,9 +292,9 @@ model Booking {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
-  serviceRequest ServiceRequest      @relation(fields: [serviceRequestId], references: [id])
+  serviceRequest ServiceRequest      @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
   user           User                @relation("BookingUser", fields: [userId], references: [id])
-  professional   ProfessionalProfile @relation("BookingProfessional", fields: [professionalId], references: [id])
+  professional   ProfessionalProfile @relation("BookingProfessional", fields: [professionalId], references: [id], onDelete: Cascade)
   review         Review?
 
   @@unique([serviceRequestId, professionalId])
@@ -335,12 +336,13 @@ model ProblemPost {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 
-  author   User        @relation(fields: [authorId], references: [id])
-  category Category?   @relation(fields: [categoryId], references: [id])
+  author   User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   comments Comment[]
   likes    PostLike[]
   savedBy  SavedPost[]
   reports  Report[]
+  views    PostView[]
 
   @@index([authorId])
   @@index([categoryId])
@@ -356,8 +358,8 @@ model Comment {
   content   String   @db.Text
   createdAt DateTime @default(now())
 
-  post    ProblemPost    @relation(fields: [postId], references: [id])
-  author  User           @relation(fields: [authorId], references: [id])
+  post    ProblemPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author  User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
   replies CommentReply[]
   reports Report[]
 
@@ -373,8 +375,8 @@ model CommentReply {
   content   String   @db.Text
   createdAt DateTime @default(now())
 
-  comment Comment @relation(fields: [commentId], references: [id])
-  author  User    @relation(fields: [authorId], references: [id])
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  author  User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@index([commentId])
   @@index([authorId])
@@ -386,8 +388,8 @@ model PostLike {
   postId String
   userId String
 
-  post ProblemPost @relation(fields: [postId], references: [id])
-  user User        @relation(fields: [userId], references: [id])
+  post ProblemPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([postId, userId])
   @@map("post_likes")
@@ -399,11 +401,28 @@ model SavedPost {
   postId    String
   createdAt DateTime @default(now())
 
-  user User        @relation(fields: [userId], references: [id])
-  post ProblemPost @relation(fields: [postId], references: [id])
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post ProblemPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
   @@map("saved_posts")
+}
+
+model PostView {
+  id        String   @id @default(uuid())
+  postId    String
+  userId    String?
+  viewedAt  DateTime @default(now())
+  ipAddress String?
+
+  post ProblemPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+  @@index([viewedAt])
+  @@map("post_views")
 }
 
 //Direct one to one message
@@ -424,8 +443,8 @@ model DirectParticipant {
   conversationId String
   userId         String
 
-  conversation DirectConversation @relation(fields: [conversationId], references: [id])
-  user         User               @relation(fields: [userId], references: [id])
+  conversation DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([conversationId, userId])
   @@map("direct_participants")
@@ -439,8 +458,8 @@ model DirectMessage {
   readAt         DateTime?
   createdAt      DateTime  @default(now())
 
-  conversation DirectConversation @relation(fields: [conversationId], references: [id])
-  sender       User               @relation(fields: [senderId], references: [id])
+  conversation DirectConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User               @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
   @@map("direct_messages")
@@ -453,8 +472,8 @@ model Follow {
   followingId String
   createdAt   DateTime @default(now())
 
-  follower  User @relation("Follower", fields: [followerId], references: [id])
-  following User @relation("Following", fields: [followingId], references: [id])
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@unique([followerId, followingId])
   @@map("follows")
@@ -471,7 +490,7 @@ model Group {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  owner    User           @relation("GroupOwner", fields: [ownerId], references: [id])
+  owner    User           @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   members  GroupMember[]
   messages GroupMessage[]
 
@@ -486,8 +505,8 @@ model GroupMember {
   isAdmin  Boolean  @default(false)
   joinedAt DateTime @default(now())
 
-  group Group @relation(fields: [groupId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, userId])
   @@map("group_members")
@@ -500,8 +519,8 @@ model GroupMessage {
   content   String?  @db.Text
   createdAt DateTime @default(now())
 
-  group  Group @relation(fields: [groupId], references: [id])
-  sender User  @relation(fields: [senderId], references: [id])
+  group  Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender User  @relation(fields: [senderId], references: [id], onDelete: Cascade)
 
   @@index([groupId])
   @@map("group_messages")
@@ -536,8 +555,8 @@ model Report {
   reviewedAt DateTime?
 
   reporter User         @relation("Reporter", fields: [reporterId], references: [id])
-  post     ProblemPost? @relation(fields: [postId], references: [id])
-  comment  Comment?     @relation(fields: [commentId], references: [id])
+  post     ProblemPost? @relation(fields: [postId], references: [id], onDelete: SetNull)
+  comment  Comment?     @relation(fields: [commentId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@map("reports")
