@@ -35,7 +35,7 @@ export function PostList({
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post}  />//currentUserId={currentUserId}
+        <PostCard key={post.id} post={post} /> //currentUserId={currentUserId}
       ))}
     </div>
   );

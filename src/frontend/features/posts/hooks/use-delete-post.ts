@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postService } from "@/frontend/features/posts/api/posts-api";
+import { postApi } from "@/frontend/features/posts/api/posts-api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 
@@ -10,7 +10,7 @@ export function useDeletePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (postId: string) => postService.deletePost(postId),
+    mutationFn: (postId: string) => postApi.deletePost(postId),
 
     onSuccess: (_, postId) => {
       queryClient.removeQueries({

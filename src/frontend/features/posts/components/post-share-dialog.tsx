@@ -42,7 +42,8 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
           url,
         });
         return;
-      } catch(err) {
+      } catch (err) {
+        console.error(err);
         throw new Error("Failed to share post");
       }
     }
@@ -89,7 +90,9 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
         <DialogHeader>
           <DialogTitle>Share post</DialogTitle>
         </DialogHeader>
-
+        <h6 className="text-center text-xs text-primary">
+          <a href={getShareUrl()}>{getShareUrl()}</a>
+        </h6>
         <div className="flex gap-2">
           <Button type="button" className="flex-1" onClick={handleShare}>
             <Share2 className="mr-2 h-4 w-4" />

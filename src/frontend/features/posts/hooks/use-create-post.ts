@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postService } from "@/frontend/features/posts/api/posts-api";
+import { postApi } from "@/frontend/features/posts/api/posts-api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 
@@ -12,7 +12,7 @@ export function useCreatePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreatePostInput) => postService.createPost(data),
+    mutationFn: (data: CreatePostInput) => postApi.createPost(data),
 
     onSuccess: (post) => {
       queryClient.invalidateQueries({

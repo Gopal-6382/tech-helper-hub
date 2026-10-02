@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postService } from "@/frontend/features/posts/api/posts-api";
+import {postLikeApi} from "@/frontend/features/posts/api/post-like.api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 
@@ -16,7 +16,7 @@ export function usePostLike() {
 
   return useMutation({
     mutationFn: ({ postId, liked }: PostLikeVariables) =>
-      liked ? postService.unlikePost(postId) : postService.likePost(postId),
+      liked ? postLikeApi.unlikePost(postId) : postLikeApi.likePost(postId),
 
     onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({

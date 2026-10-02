@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postService } from "@/frontend/features/posts/api/posts-api";
+import { postSaveApi } from "@/frontend/features/posts/api/post-save.api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 
@@ -16,7 +16,7 @@ export function usePostSave() {
 
   return useMutation({
     mutationFn: ({ postId, saved }: PostSaveVariables) =>
-      saved ? postService.unsavePost(postId) : postService.savePost(postId),
+      saved ? postSaveApi.unsavePost(postId) : postSaveApi.savePost(postId),
 
     onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({
