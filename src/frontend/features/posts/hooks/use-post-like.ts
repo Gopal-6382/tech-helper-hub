@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import {postLikeApi} from "@/frontend/features/posts/api/post-like.api";
+import { postLikeApi } from "@/frontend/features/posts/api/post-like.api";
 
 import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
 

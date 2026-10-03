@@ -4,26 +4,23 @@ import type { CommentReply } from "../types/comment-reply.types";
 
 export const commentReplyApi = {
   async getCommentReplies(commentId: string): Promise<CommentReply[]> {
-  const response = await apiRequest<CommentReply[]>(
-    `/api/comment-replies/${commentId}/commentreplies`
-  );
+    const response = await apiRequest<CommentReply[]>(
+      `/api/comment-replies/${commentId}/commentreplies`,
+    );
 
-  return response.data ?? [];
-},
+    return response.data ?? [];
+  },
   async createCommentReply(
     commentId: string,
-    content: string
+    content: string,
   ): Promise<CommentReply> {
-    const response = await apiRequest<CommentReply>(
-      "/api/comment-replies",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          commentId,
-          content,
-        }),
-      }
-    );
+    const response = await apiRequest<CommentReply>("/api/comment-replies", {
+      method: "POST",
+      body: JSON.stringify({
+        commentId,
+        content,
+      }),
+    });
 
     if (!response.data) {
       throw new Error("Failed to create reply");
@@ -34,7 +31,7 @@ export const commentReplyApi = {
 
   async updateCommentReply(
     replyId: string,
-    content: string
+    content: string,
   ): Promise<CommentReply> {
     const response = await apiRequest<CommentReply>(
       `/api/comment-replies/${replyId}`,
@@ -43,7 +40,7 @@ export const commentReplyApi = {
         body: JSON.stringify({
           content,
         }),
-      }
+      },
     );
 
     if (!response.data) {

@@ -6,9 +6,7 @@ import type {
 } from "../types/post-view.types";
 
 export const postViewService = {
-  async recordPostView(
-    payload: CreatePostViewDto
-  ): Promise<PostViewResult> {
+  async recordPostView(payload: CreatePostViewDto): Promise<PostViewResult> {
     const post = await postViewRepository.findPostById(payload.postId);
 
     if (!post) {
@@ -25,11 +23,10 @@ export const postViewService = {
       };
     }
 
-    const existingView =
-      await postViewRepository.findViewByPostAndUser(
-        payload.postId,
-        payload.userId
-      );
+    const existingView = await postViewRepository.findViewByPostAndUser(
+      payload.postId,
+      payload.userId,
+    );
 
     if (existingView) {
       return {

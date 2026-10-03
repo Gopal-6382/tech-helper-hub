@@ -12,8 +12,7 @@ export const POST = routeHandler<PostViewRouteParams>(
   async (req, user, { params }) => {
     const { postId } = await params;
 
-    const ipAddress =
-      req.headers.get("x-forwarded-for")?.split(",")[0] ?? null;
+    const ipAddress = req.headers.get("x-forwarded-for")?.split(",")[0] ?? null;
 
     return recordPostView({
       postId,
@@ -21,5 +20,5 @@ export const POST = routeHandler<PostViewRouteParams>(
       ipAddress,
     });
   },
-  User
+  User,
 );

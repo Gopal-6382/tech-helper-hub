@@ -41,18 +41,18 @@ export const reportApi = {
   },
 
   async updateReportStatus(
-  reportId: string,
-  status: ReportStatus
-): Promise<Report> {
-  const response = await apiRequest<Report>(`/api/reports/${reportId}`, {
-    method: "PATCH",
-    body: JSON.stringify({ status }),
-  });
+    reportId: string,
+    status: ReportStatus,
+  ): Promise<Report> {
+    const response = await apiRequest<Report>(`/api/reports/${reportId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
 
-  if (!response.data) {
-    throw new Error("Failed to update report status");
-  }
+    if (!response.data) {
+      throw new Error("Failed to update report status");
+    }
 
-  return response.data;
-},
+    return response.data;
+  },
 };

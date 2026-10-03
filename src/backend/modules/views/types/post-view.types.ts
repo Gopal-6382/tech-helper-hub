@@ -23,4 +23,3 @@ export type PostViewResult = {
   message: string;
   alreadyViewed?: boolean;
 };
-

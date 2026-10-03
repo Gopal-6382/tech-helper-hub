@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Bookmark, Heart, MessageCircle } from "lucide-react";
+import { Bookmark, Eye, Heart, MessageCircle } from "lucide-react";
 
 import { usePostLike } from "@/frontend/features/posts/hooks/use-post-like";
 import { usePostSave } from "@/frontend/features/posts/hooks/use-post-save";
 
 import { PostShareDialog } from "./post-share-dialog";
- 
+
 type PostActionsProps = {
   postId: string;
   likeCount?: number;
@@ -15,6 +15,7 @@ type PostActionsProps = {
   isLiked?: boolean;
   isSaved?: boolean;
   onComment?: () => void;
+  viewCount?: number;
 };
 
 export function PostActions({
@@ -24,6 +25,7 @@ export function PostActions({
   isLiked = false,
   isSaved = false,
   onComment,
+  viewCount = 0,
 }: PostActionsProps) {
   const likeMutation = usePostLike();
   const saveMutation = usePostSave();
@@ -83,6 +85,12 @@ export function PostActions({
           <MessageCircle className="h-6 w-6 transition-transform group-hover:scale-110" />
           <span>{commentCount}</span>
         </button>
+
+        {/* Views */}
+        <span className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground">
+          <Eye className="h-6 w-6" />
+          <span>{viewCount}</span>
+        </span>
       </div>
 
       <div className="flex items-center gap-1">

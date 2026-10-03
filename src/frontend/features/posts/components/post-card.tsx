@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { Eye, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { Card, CardContent } from "@/frontend/components/ui/card";
 import type { Post } from "@/frontend/features/posts/types/post.types";
@@ -55,7 +55,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
 
   return (
     <>
-      <Card className="animate-in fade-in slide-in-from-bottom-4 zoom-in-95 overflow-hidden border-border/60 duration-500 shadow-sm transition-shadow hover:shadow-lg">
+      <Card className="animate-in fade-in slide-in-from-bottom-4 cursor-pointer bg-background zoom-in-95 overflow-hidden border-border/60 duration-500 shadow-sm transition-shadow hover:shadow-lg">
         <CardContent className="space-y-4 p-4">
           {/* Header */}
           <div className="flex items-start justify-between gap-3">
@@ -123,17 +123,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
           {/* Images: carousel if multiple, single image if one, nothing if none */}
           {hasImages && (
             <div className="relative h-56 w-full overflow-hidden rounded-xl bg-muted">
-              {images.length === 1 ? (
-                <Image
-                  src={images[0]}
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover"
-                />
-              ) : (
-                <PostImages images={images} title={post.title} />
-              )}
+              <PostImages images={images} title={post.title} />
 
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-linear-to-t from-black/70 to-transparent p-3">
                 {post.city ? (
@@ -144,11 +134,6 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
                 ) : (
                   <span />
                 )}
-
-                <span className="flex items-center gap-1 text-xs text-white">
-                  <Eye className="h-3.5 w-3.5" />
-                  {post.viewCount} views
-                </span>
               </div>
             </div>
           )}
@@ -161,6 +146,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             isLiked={postWithExtras.isLiked}
             isSaved={postWithExtras.isSaved}
             onComment={() => router.push(`/web/posts/${post.id}`)}
+            viewCount={post.viewCount}
           />
 
           <PostViewTrigger postId={post.id} />

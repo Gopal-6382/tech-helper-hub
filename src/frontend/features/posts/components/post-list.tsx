@@ -33,9 +33,9 @@ export function PostList({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
+    <div className="py-4 mx-auto max-w-4xl space-y-4">
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} /> //currentUserId={currentUserId}
+        <PostCard key={post.id} post={post} currentUserId={post.authorId} /> 
       ))}
     </div>
   );
