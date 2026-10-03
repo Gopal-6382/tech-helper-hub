@@ -6,15 +6,11 @@ import type {
 } from "../types/post-view.types";
 
 export const postViewService = {
-  async recordPostView(
-    payload: CreatePostViewDto,
-  ): Promise<PostViewResult> {
+  async recordPostView(payload: CreatePostViewDto): Promise<PostViewResult> {
     /**
      * Check that the post exists and get its author.
      */
-    const post = await postViewRepository.findPostForView(
-      payload.postId,
-    );
+    const post = await postViewRepository.findPostForView(payload.postId);
 
     if (!post) {
       return {
@@ -44,9 +40,7 @@ export const postViewService = {
      * - viewCount increment
      */
     const result =
-      await postViewRepository.createViewAndIncrementCount(
-        payload,
-      );
+      await postViewRepository.createViewAndIncrementCount(payload);
 
     /**
      * Existing view.

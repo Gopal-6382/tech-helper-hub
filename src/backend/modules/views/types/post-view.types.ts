@@ -11,9 +11,7 @@ export const createPostViewDtoSchema = z.object({
   userId: z.uuid(),
 });
 
-export type CreatePostViewDto = z.infer<
-  typeof createPostViewDtoSchema
->;
+export type CreatePostViewDto = z.infer<typeof createPostViewDtoSchema>;
 
 export type PostViewResult =
   | {

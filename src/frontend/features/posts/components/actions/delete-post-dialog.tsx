@@ -14,13 +14,6 @@ import {
 
 import { useDeletePost } from "@/frontend/features/posts/hooks/posts/use-delete-post";
 
-type DeletePostDialogProps = {
-  postId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onDeleted?: () => void;
-};
-
 export function DeletePostDialog({
   postId,
   open,

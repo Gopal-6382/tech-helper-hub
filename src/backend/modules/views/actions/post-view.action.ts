@@ -5,11 +5,8 @@ import {
 
 import { postViewService } from "../services/post-view.service";
 
-export async function recordPostView(
-  payload: CreatePostViewDto,
-) {
-  const validatedPayload =
-    createPostViewDtoSchema.safeParse(payload);
+export async function recordPostView(payload: CreatePostViewDto) {
+  const validatedPayload = createPostViewDtoSchema.safeParse(payload);
 
   if (!validatedPayload.success) {
     return {
@@ -21,7 +18,5 @@ export async function recordPostView(
     };
   }
 
-  return postViewService.recordPostView(
-    validatedPayload.data,
-  );
+  return postViewService.recordPostView(validatedPayload.data);
 }

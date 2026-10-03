@@ -18,4 +18,4 @@ export const POST = routeHandler<PostViewRouteParams>(
     });
   },
   User,
-); 
+);

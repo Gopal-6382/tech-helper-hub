@@ -95,5 +95,4 @@ export class PostService {
 
     return this.postRepository.updateStatus(id, status);
   }
-
 }

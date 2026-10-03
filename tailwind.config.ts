@@ -12,7 +12,7 @@ const config: Config = {
         heading: ["var(--font-heading)", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
       },
-       colors: {
+      colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: "hsl(var(--primary))",
