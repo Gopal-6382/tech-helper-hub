@@ -37,6 +37,7 @@ const postRelations = {
     select: {
       comments: true,
       likes: true,
+      savedBy: true,
     },
   },
 } as const;
@@ -150,5 +151,4 @@ export class PostRepository {
       },
     });
   }
-  
 }

@@ -29,69 +29,54 @@ export const postViewRepository = {
    * prevents the same user from creating multiple views
    * for the same post.
    */
-  async createViewAndIncrementCount(
-    payload: CreatePostViewDto,
-  ) {
-    return prisma.$transaction(async (tx) => {
-      const result = await tx.postView.createMany({
-        data: {
-          postId: payload.postId,
-          userId: payload.userId,
-        },
+async createViewAndIncrementCount(
+  payload: CreatePostViewDto,
+) {
+  return prisma.$transaction(async (tx) => {
+    const result = await tx.postView.createMany({
+      data: {
+        postId: payload.postId,
+        userId: payload.userId,
+      },
+      skipDuplicates: true,
+    });
 
-        // PostgreSQL ignores the insert when the
-        // (postId, userId) unique constraint already exists.
-        skipDuplicates: true,
-      });
-
-      /**
-       * User already viewed this post.
-       *
-       * Do not increment viewCount.
-       */
-      if (result.count === 0) {
-        const post = await tx.problemPost.findUnique({
-          where: {
-            id: payload.postId,
-          },
-          select: {
-            viewCount: true,
-          },
-        });
-
-        return {
-          counted: false,
-          alreadyViewed: true,
-          viewCount: post?.viewCount ?? 0,
-        };
-      }
-
-      /**
-       * New unique view.
-       *
-       * Increment the cached count only after the
-       * PostView row has been created.
-       */
-      const post = await tx.problemPost.update({
+    if (result.count === 0) {
+      const post = await tx.problemPost.findUnique({
         where: {
           id: payload.postId,
         },
-        data: {
-          viewCount: {
-            increment: 1,
-          },
-        },
         select: {
-          id: true,
           viewCount: true,
         },
       });
 
       return {
-        counted: true,
-        alreadyViewed: false,
-        viewCount: post.viewCount,
+        counted: false,
+        alreadyViewed: true,
+        viewCount: post?.viewCount ?? 0,
       };
+    }
+
+    const post = await tx.problemPost.update({
+      where: {
+        id: payload.postId,
+      },
+      data: {
+        viewCount: {
+          increment: 1,
+        },
+      },
+      select: {
+        viewCount: true,
+      },
     });
-  },
+
+    return {
+      counted: true,
+      alreadyViewed: false,
+      viewCount: post.viewCount,
+    };
+  });
+}
 };

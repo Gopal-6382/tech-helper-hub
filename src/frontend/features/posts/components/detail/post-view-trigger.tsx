@@ -8,41 +8,27 @@ type PostViewTriggerProps = {
   postId: string;
 };
 
-export function PostViewTrigger({ postId }: PostViewTriggerProps) {
-  const elementRef = useRef<HTMLDivElement | null>(null);
-  const viewedRef = useRef(false);
-
-  const viewMutation = usePostView();
+export function PostViewTrigger({
+  postId,
+}: PostViewTriggerProps) {
+  const viewedPostIdRef = useRef<string | null>(null);
+  const { mutate } = usePostView();
 
   useEffect(() => {
-    const element = elementRef.current;
-
-    if (!element || !postId || viewedRef.current) {
+    if (!postId) {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !viewedRef.current) {
-          viewedRef.current = true;
+    // Prevent the same mounted component from sending
+    // the same post view more than once.
+    if (viewedPostIdRef.current === postId) {
+      return;
+    }
 
-          viewMutation.mutate(postId);
+    viewedPostIdRef.current = postId;
 
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.5,
-        rootMargin: "0px 0px -50px 0px",
-      },
-    );
+    mutate(postId);
+  }, [postId, mutate]);
 
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [postId, viewMutation]);
-
-  return <div ref={elementRef} aria-hidden="true" className="h-px w-full" />;
+  return null;
 }

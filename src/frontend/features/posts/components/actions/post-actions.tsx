@@ -16,6 +16,7 @@ type PostActionsProps = {
   isSaved?: boolean;
   onComment?: () => void;
   viewCount?: number;
+  saveCount?: number;
 };
 
 export function PostActions({
@@ -26,17 +27,20 @@ export function PostActions({
   isSaved = false,
   onComment,
   viewCount = 0,
+  saveCount = 0,
 }: PostActionsProps) {
   const likeMutation = usePostLike();
   const saveMutation = usePostSave();
 
   const [likeTap, setLikeTap] = useState(0);
   const [saveTap, setSaveTap] = useState(0);
-
+const [localSaved, setLocalSaved] = useState(isSaved);
+  const [localSaveCount, setLocalSaveCount] = useState(saveCount);
   const handleLike = () => {
     if (likeMutation.isPending) return;
 
     setLikeTap((value) => value + 1);
+
     likeMutation.mutate({
       postId,
       liked: isLiked,
@@ -46,10 +50,17 @@ export function PostActions({
   const handleSave = () => {
     if (saveMutation.isPending) return;
 
+    const nextSaved = !localSaved;
+
     setSaveTap((value) => value + 1);
+    setLocalSaved(nextSaved);
+    setLocalSaveCount((count) =>
+      nextSaved ? count + 1 : Math.max(count - 1, 0),
+    );
+
     saveMutation.mutate({
       postId,
-      saved: isSaved,
+      saved: nextSaved,
     });
   };
 
@@ -61,6 +72,7 @@ export function PostActions({
           type="button"
           disabled={likeMutation.isPending}
           onClick={handleLike}
+          aria-label={isLiked ? "Unlike post" : "Like post"}
           className={`group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
             isLiked
               ? "bg-primary/10 text-primary"
@@ -73,6 +85,7 @@ export function PostActions({
               isLiked ? "fill-current" : ""
             } ${likeTap > 0 ? "animate-in zoom-in-50 fade-in duration-300" : ""}`}
           />
+
           <span>{likeCount}</span>
         </button>
 
@@ -80,44 +93,51 @@ export function PostActions({
         <button
           type="button"
           onClick={onComment}
+          aria-label="View comments"
           className="group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         >
           <MessageCircle className="h-6 w-6 transition-transform group-hover:scale-110" />
+
           <span>{commentCount}</span>
         </button>
 
         {/* Views */}
         <span className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground">
           <Eye className="h-6 w-6" />
+
           <span>{viewCount}</span>
         </span>
       </div>
 
       <div className="flex items-center gap-1">
         {/* Save */}
-        <button
-          type="button"
-          disabled={saveMutation.isPending}
-          onClick={handleSave}
-          aria-label={isSaved ? "Unsave post" : "Save post"}
-          className={`group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
-            isSaved
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-accent hover:text-foreground"
-          }`}
-        >
-          <Bookmark
-            key={`save-${saveTap}`}
-            className={`h-6 w-6 transition-transform group-active:scale-90 ${
-              isSaved ? "fill-current" : ""
-            } ${
-              saveTap > 0
-                ? "animate-in slide-in-from-bottom-2 zoom-in-75 fade-in duration-300"
-                : ""
-            }`}
-          />
-          <span className="hidden sm:inline">{isSaved ? "Saved" : "Save"}</span>
-        </button>
+       <button
+  type="button"
+  disabled={saveMutation.isPending}
+  onClick={handleSave}
+  aria-label={localSaved ? "Unsave post" : "Save post"}
+  className={`group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
+    localSaved
+      ? "bg-primary/10 text-primary"
+      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+  }`}
+>
+  <Bookmark
+    key={`save-${saveTap}`}
+    className={`h-6 w-6 transition-transform group-active:scale-90 ${
+      localSaved ? "fill-current" : ""
+    } ${
+      saveTap > 0
+        ? "animate-in slide-in-from-bottom-2 zoom-in-75 fade-in duration-300"
+        : ""
+    }`}
+  />
+
+  <span className="hidden sm:inline">
+    {localSaved ? "Saved" : "Save"}
+    {localSaveCount > 0 ? ` ${localSaveCount}` : ""}
+  </span>
+</button>
 
         {/* Share */}
         <PostShareDialog postId={postId} />

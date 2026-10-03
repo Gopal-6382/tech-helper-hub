@@ -42,6 +42,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
     _count?: {
       likes?: number;
       comments?: number;
+      savedBy?: number;
     };
   };
 
@@ -147,6 +148,7 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             isSaved={postWithExtras.isSaved}
             onComment={() => router.push(`/web/posts/${post.id}`)}
             viewCount={post.viewCount}
+            saveCount={postWithExtras._count?.savedBy ?? 0}
           />
 
           <PostViewTrigger postId={post.id} />
