@@ -14,7 +14,6 @@ import { PostActions } from "@/frontend/features/posts/components/actions/post-a
 import { PostImages } from "@/frontend/features/posts/components/media/post-images";
 import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu";
 import { PostStatusBadge } from "@/frontend/features/posts/components/shared/post-status-badge";
-import { PostViewTrigger } from "@/frontend/features/posts/components/detail/post-view-trigger";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 
 type PostCardProps = {
@@ -150,8 +149,6 @@ export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
             viewCount={post.viewCount}
             saveCount={postWithExtras._count?.savedBy ?? 0}
           />
-
-          <PostViewTrigger postId={post.id} />
         </CardContent>
       </Card>
 

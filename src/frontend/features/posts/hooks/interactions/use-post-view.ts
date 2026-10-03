@@ -13,12 +13,13 @@ export function usePostView() {
     mutationFn: (postId: string) => postViewApi.viewPost(postId),
 
     onSuccess: (_, postId) => {
-      queryClient.invalidateQueries({
-        queryKey: postKeys.detail(postId),
-      });
+      queryClient.setQueryData(postKeys.detail(postId), (oldPost: any) => {
+        if (!oldPost) return oldPost;
 
-      queryClient.invalidateQueries({
-        queryKey: postKeys.list(),
+        return {
+          ...oldPost,
+          viewCount: (oldPost.viewCount ?? 0) + 1,
+        };
       });
     },
   });

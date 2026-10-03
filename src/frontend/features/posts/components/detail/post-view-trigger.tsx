@@ -8,9 +8,7 @@ type PostViewTriggerProps = {
   postId: string;
 };
 
-export function PostViewTrigger({
-  postId,
-}: PostViewTriggerProps) {
+export function PostViewTrigger({ postId }: PostViewTriggerProps) {
   const viewedPostIdRef = useRef<string | null>(null);
   const { mutate } = usePostView();
 

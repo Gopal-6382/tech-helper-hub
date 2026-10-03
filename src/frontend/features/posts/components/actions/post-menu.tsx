@@ -10,14 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/frontend/components/ui/dropdown-menu";
 
-type PostMenuProps = {
-  canEdit?: boolean;
-  canDelete?: boolean;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onReport?: () => void;
-};
-
 export function PostMenu({
   canEdit = true,
   canDelete = true,

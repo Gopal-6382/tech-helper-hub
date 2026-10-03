@@ -12,10 +12,6 @@ import {
   DialogTrigger,
 } from "@/frontend/components/ui/dialog";
 
-type PostShareDialogProps = {
-  postId: string;
-};
-
 export function PostShareDialog({ postId }: PostShareDialogProps) {
   const [copied, setCopied] = useState(false);
 

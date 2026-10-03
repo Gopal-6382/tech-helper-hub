@@ -1,23 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Bookmark, Eye, Heart, MessageCircle } from "lucide-react";
-
-import { usePostLike } from "@/frontend/features/posts/hooks/interactions/use-post-like";
-import { usePostSave } from "@/frontend/features/posts/hooks/interactions/use-post-save";
-
-import { PostShareDialog } from "@/frontend/features/posts/components/actions/post-share-dialog";
-
-type PostActionsProps = {
-  postId: string;
-  likeCount?: number;
-  commentCount?: number;
-  isLiked?: boolean;
-  isSaved?: boolean;
-  onComment?: () => void;
-  viewCount?: number;
-  saveCount?: number;
-};
+import { PostCommentButton } from "./post-comment-button";
+import { PostLikeButton } from "./post-like-button";
+import { PostSaveButton } from "./post-save-button";
+import { PostShareDialog } from "./post-share-dialog";
+import { PostViewCount } from "./post-view-count";
 
 export function PostActions({
   postId,
@@ -29,117 +16,27 @@ export function PostActions({
   viewCount = 0,
   saveCount = 0,
 }: PostActionsProps) {
-  const likeMutation = usePostLike();
-  const saveMutation = usePostSave();
-
-  const [likeTap, setLikeTap] = useState(0);
-  const [saveTap, setSaveTap] = useState(0);
-const [localSaved, setLocalSaved] = useState(isSaved);
-  const [localSaveCount, setLocalSaveCount] = useState(saveCount);
-  const handleLike = () => {
-    if (likeMutation.isPending) return;
-
-    setLikeTap((value) => value + 1);
-
-    likeMutation.mutate({
-      postId,
-      liked: isLiked,
-    });
-  };
-
-  const handleSave = () => {
-    if (saveMutation.isPending) return;
-
-    const nextSaved = !localSaved;
-
-    setSaveTap((value) => value + 1);
-    setLocalSaved(nextSaved);
-    setLocalSaveCount((count) =>
-      nextSaved ? count + 1 : Math.max(count - 1, 0),
-    );
-
-    saveMutation.mutate({
-      postId,
-      saved: nextSaved,
-    });
-  };
-
   return (
     <div className="flex items-center justify-between border-t border-border/60 pt-3">
       <div className="flex items-center gap-1">
-        {/* Like */}
-        <button
-          type="button"
-          disabled={likeMutation.isPending}
-          onClick={handleLike}
-          aria-label={isLiked ? "Unlike post" : "Like post"}
-          className={`group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
-            isLiked
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-accent hover:text-foreground"
-          }`}
-        >
-          <Heart
-            key={`like-${likeTap}`}
-            className={`h-6 w-6 transition-transform group-active:scale-90 ${
-              isLiked ? "fill-current" : ""
-            } ${likeTap > 0 ? "animate-in zoom-in-50 fade-in duration-300" : ""}`}
-          />
+        <PostLikeButton
+          postId={postId}
+          initialLiked={isLiked}
+          initialLikeCount={likeCount}
+        />
 
-          <span>{likeCount}</span>
-        </button>
+        <PostCommentButton count={commentCount} onClick={onComment} />
 
-        {/* Comment */}
-        <button
-          type="button"
-          onClick={onComment}
-          aria-label="View comments"
-          className="group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-        >
-          <MessageCircle className="h-6 w-6 transition-transform group-hover:scale-110" />
-
-          <span>{commentCount}</span>
-        </button>
-
-        {/* Views */}
-        <span className="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-muted-foreground">
-          <Eye className="h-6 w-6" />
-
-          <span>{viewCount}</span>
-        </span>
+        <PostViewCount count={viewCount} />
       </div>
 
       <div className="flex items-center gap-1">
-        {/* Save */}
-       <button
-  type="button"
-  disabled={saveMutation.isPending}
-  onClick={handleSave}
-  aria-label={localSaved ? "Unsave post" : "Save post"}
-  className={`group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors disabled:opacity-50 ${
-    localSaved
-      ? "bg-primary/10 text-primary"
-      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-  }`}
->
-  <Bookmark
-    key={`save-${saveTap}`}
-    className={`h-6 w-6 transition-transform group-active:scale-90 ${
-      localSaved ? "fill-current" : ""
-    } ${
-      saveTap > 0
-        ? "animate-in slide-in-from-bottom-2 zoom-in-75 fade-in duration-300"
-        : ""
-    }`}
-  />
+        <PostSaveButton
+          postId={postId}
+          initialSaved={isSaved}
+          initialSaveCount={saveCount}
+        />
 
-  <span className="hidden sm:inline">
-    {localSaved ? "Saved" : "Save"}
-    {localSaveCount > 0 ? ` ${localSaveCount}` : ""}
-  </span>
-</button>
-
-        {/* Share */}
         <PostShareDialog postId={postId} />
       </div>
     </div>
