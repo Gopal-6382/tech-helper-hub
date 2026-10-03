@@ -10,12 +10,12 @@ import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 import type { Post } from "@/frontend/features/posts/types/post.types";
 
-import { PostActions } from "./post-actions";
-import { PostImages } from "./post-images";
-import { PostMenu } from "./post-menu";
-import { PostStatusBadge } from "./post-status-badge";
-import { PostViewTrigger } from "./post-view-trigger";
-import { DeletePostDialog } from "./delete-post-dialog";
+import { PostActions } from "@/frontend/features/posts/components/actions/post-actions";
+import { PostImages } from "@/frontend/features/posts/components/media/post-images";
+import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu";
+import { PostStatusBadge } from "@/frontend/features/posts/components/shared/post-status-badge";
+import { PostViewTrigger } from "@/frontend/features/posts/components/detail/post-view-trigger";
+import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 
 type PostCardProps = {
   post: Post;

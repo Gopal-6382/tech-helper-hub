@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postApi } from "@/frontend/features/posts/api/posts-api";
 
-import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
+import { postKeys } from "@/frontend/features/posts/hooks/posts/use-posts";
 
 import type { CreatePostInput } from "@/modules/posts/validations/post.validation";
 

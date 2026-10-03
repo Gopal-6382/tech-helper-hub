@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postSaveApi } from "@/frontend/features/posts/api/post-save.api";
 
-import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
+import { postKeys } from "@/frontend/features/posts/hooks/posts/use-posts";
 
 type PostSaveVariables = {
   postId: string;

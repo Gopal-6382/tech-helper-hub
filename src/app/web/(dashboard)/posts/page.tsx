@@ -5,8 +5,8 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/frontend/components/ui/button";
 
-import { usePosts } from "@/frontend/features/posts/hooks/use-posts";
-import { PostList } from "@/frontend/features/posts/components/post-list";
+import { usePosts } from "@/frontend/features/posts/hooks/posts/use-posts";
+import { PostList } from "@/frontend/features/posts/components/feed/post-list";
 
 export default function PostsPage() {
   const { data, isLoading, error } = usePosts();

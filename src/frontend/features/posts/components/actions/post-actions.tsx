@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Bookmark, Eye, Heart, MessageCircle } from "lucide-react";
 
-import { usePostLike } from "@/frontend/features/posts/hooks/use-post-like";
-import { usePostSave } from "@/frontend/features/posts/hooks/use-post-save";
+import { usePostLike } from "@/frontend/features/posts/hooks/interactions/use-post-like";
+import { usePostSave } from "@/frontend/features/posts/hooks/interactions/use-post-save";
 
-import { PostShareDialog } from "./post-share-dialog";
+import { PostShareDialog } from "@/frontend/features/posts/components/detail/post-share-dialog";
 
 type PostActionsProps = {
   postId: string;

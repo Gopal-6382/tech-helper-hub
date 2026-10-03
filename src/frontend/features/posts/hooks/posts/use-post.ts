@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { postApi } from "@/frontend/features/posts/api/posts-api";
 
-import { postKeys } from "@/frontend/features/posts/hooks/use-posts";
+import { postKeys } from "@/frontend/features/posts/hooks/posts/use-posts";
 
 export function usePost(postId: string) {
   return useQuery({

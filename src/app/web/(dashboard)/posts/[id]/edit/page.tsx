@@ -7,8 +7,8 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
-import { usePost } from "@/frontend/features/posts/hooks/use-post";
-import { PostForm } from "@/frontend/features/posts/components/posts-form";
+import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
+import { PostForm } from "@/frontend/features/posts/components/form/posts-form";
 
 type EditPostPageProps = {
   params: Promise<{

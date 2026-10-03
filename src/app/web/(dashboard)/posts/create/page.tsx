@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/frontend/components/ui/button";
 
-import { PostForm } from "@/frontend/features/posts/components/posts-form";
+import { PostForm } from "@/frontend/features/posts/components/form/posts-form";
 
 export default function CreatePostPage() {
   return (

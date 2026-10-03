@@ -11,7 +11,7 @@ import { createPostSchema } from "@/modules/posts/validations/post.validation";
 
 import type { CreatePostData } from "@/modules/posts/validations/post.validation";
 
-import { useCreatePost } from "../hooks/use-create-post";
+import { useCreatePost } from "@/frontend/features/posts/hooks/posts/use-create-post";
 
 export function PostForm() {
   const router = useRouter();

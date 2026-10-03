@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/frontend/components/ui/dialog";
 
-import { useDeletePost } from "@/frontend/features/posts/hooks/use-delete-post";
+import { useDeletePost } from "@/frontend/features/posts/hooks/posts/use-delete-post";
 
 type DeletePostDialogProps = {
   postId: string;

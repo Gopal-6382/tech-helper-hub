@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { usePostView } from "@/frontend/features/posts/hooks/use-post-view";
+import { usePostView } from "@/frontend/features/posts/hooks/interactions/use-post-view";
 
 type PostViewTriggerProps = {
   postId: string;

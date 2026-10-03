@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/frontend/components/ui/card";
 
 import type { Post } from "@/frontend/features/posts/types/post.types";
 
-import { PostCard } from "./post-card";
+import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 
 type PostListProps = {
   posts: Post[];
