@@ -7,13 +7,14 @@ type DeletePostDialogProps = {
 
 type PostActionsProps = {
   postId: string;
-  likeCount?: number;
-  commentCount?: number;
-  isLiked?: boolean;
-  isSaved?: boolean;
-  onComment?: () => void;
-  viewCount?: number;
+  likeCount: number;
+  commentCount: number;
+  isLiked: boolean;
+  isSaved: boolean;
+  viewCount: number;
+  viewed: boolean;
   saveCount?: number;
+  onComment: () => void;
 };
 
 type PostCommentButtonProps = {

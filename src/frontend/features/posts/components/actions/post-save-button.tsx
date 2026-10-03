@@ -15,11 +15,11 @@ export function PostSaveButton({
   const [saved, setSaved] = useState(initialSaved);
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [tap, setTap] = useState(0);
-useEffect(() => {
-  if (typeof initialSaved === "boolean") {
-    setSaved(initialSaved);
-  }
-}, [initialSaved]);
+  useEffect(() => {
+    if (typeof initialSaved === "boolean") {
+      setSaved(initialSaved);
+    }
+  }, [initialSaved]);
   const handleSave = () => {
     if (saveMutation.isPending) return;
 

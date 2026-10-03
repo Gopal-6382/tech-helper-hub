@@ -1,16 +1,5 @@
 type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
 
-type PostAuthor = {
-  id: string;
-  name: string;
-  avatar: string | null;
-};
-
-type PostCategory = {
-  id: string;
-  name: string;
-};
-
 export type Post = {
   id: string;
   authorId: string;
@@ -38,4 +27,31 @@ export type Post = {
 
   isLiked: boolean;
   isSaved: boolean;
+};
+
+export type PostAuthor = {
+  id: string;
+  name: string | null;
+  avatar: string | null;
+};
+
+export type PostCategory = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export type PostImage = string;
+
+export type PostCounts = {
+  likes: number;
+  comments: number;
+};
+
+export type PostWithExtras = Post & {
+  author: PostAuthor | null;
+  category: PostCategory | null;
+  isLiked: boolean;
+  isSaved: boolean;
+  _count: PostCounts;
 };
