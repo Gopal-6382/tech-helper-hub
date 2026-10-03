@@ -3,13 +3,13 @@ import { apiRequest } from "@/frontend/lib/api";
 import type { Comment } from "../types/comment.types";
 
 export const commentApi = {
-  async getComments(postId: string): Promise<Comment[]> {
-    const response = await apiRequest<Comment[]>(
-      `/api/comments?postId=${postId}`
-    );
+ async getComments(postId: string): Promise<Comment[]> {
+  const response = await apiRequest<Comment[]>(
+    `/api/comments/${postId}/getcomments`
+  );
 
-    return response.data ?? [];
-  },
+  return response.data ?? [];
+},
 
   async createComment(postId: string, content: string): Promise<Comment> {
     const response = await apiRequest<Comment>("/api/comments", {

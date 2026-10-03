@@ -4,13 +4,12 @@ import type { CommentReply } from "../types/comment-reply.types";
 
 export const commentReplyApi = {
   async getCommentReplies(commentId: string): Promise<CommentReply[]> {
-    const response = await apiRequest<CommentReply[]>(
-      `/api/comment-replies?commentId=${commentId}`
-    );
+  const response = await apiRequest<CommentReply[]>(
+    `/api/comment-replies/${commentId}/commentreplies`
+  );
 
-    return response.data ?? [];
-  },
-
+  return response.data ?? [];
+},
   async createCommentReply(
     commentId: string,
     content: string
