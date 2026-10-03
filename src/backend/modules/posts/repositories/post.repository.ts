@@ -150,24 +150,5 @@ export class PostRepository {
       },
     });
   }
-
-  // --------------------------------------------------
-  // Increase view count
-  // --------------------------------------------------
-
-  async incrementView(id: string) {
-    return prisma.problemPost.update({
-      where: {
-        id,
-      },
-
-      data: {
-        viewCount: {
-          increment: 1,
-        },
-      },
-
-      include: postRelations,
-    });
-  }
+  
 }

@@ -6,8 +6,15 @@ import type {
 } from "../types/post-view.types";
 
 export const postViewService = {
-  async recordPostView(payload: CreatePostViewDto): Promise<PostViewResult> {
-    const post = await postViewRepository.findPostById(payload.postId);
+  async recordPostView(
+    payload: CreatePostViewDto,
+  ): Promise<PostViewResult> {
+    /**
+     * Check that the post exists and get its author.
+     */
+    const post = await postViewRepository.findPostForView(
+      payload.postId,
+    );
 
     if (!post) {
       return {
@@ -16,32 +23,53 @@ export const postViewService = {
       };
     }
 
+    /**
+     * Do not count the post author's own view.
+     */
     if (post.authorId === payload.userId) {
       return {
         success: true,
         message: "Author view is not counted.",
+        counted: false,
+        isAuthor: true,
+        viewCount: post.viewCount,
       };
     }
 
-    const existingView = await postViewRepository.findViewByPostAndUser(
-      payload.postId,
-      payload.userId,
-    );
+    /**
+     * Repository handles:
+     *
+     * - unique view creation
+     * - duplicate detection
+     * - viewCount increment
+     */
+    const result =
+      await postViewRepository.createViewAndIncrementCount(
+        payload,
+      );
 
-    if (existingView) {
+    /**
+     * Existing view.
+     */
+    if (!result.counted) {
       return {
         success: true,
         message: "Post view already recorded.",
+        counted: false,
         alreadyViewed: true,
+        viewCount: result.viewCount,
       };
     }
 
-    await postViewRepository.createViewAndIncrementCount(payload);
-
+    /**
+     * New unique view.
+     */
     return {
       success: true,
       message: "Post view recorded.",
+      counted: true,
       alreadyViewed: false,
+      viewCount: result.viewCount,
     };
   },
 };

@@ -409,19 +409,20 @@ model SavedPost {
 }
 
 model PostView {
-  id        String   @id @default(uuid())
-  postId    String
-  userId    String?
-  viewedAt  DateTime @default(now())
-  ipAddress String?
+  id       String   @id @default(uuid())
+  postId   String
+  userId   String
+  viewedAt DateTime @default(now())
 
   post ProblemPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // One user can count only once for one post.
   @@unique([postId, userId])
-  @@index([postId])
+
   @@index([userId])
   @@index([viewedAt])
+
   @@map("post_views")
 }
 

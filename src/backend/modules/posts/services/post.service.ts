@@ -96,13 +96,4 @@ export class PostService {
     return this.postRepository.updateStatus(id, status);
   }
 
-  // --------------------------------------------------
-  // Increase view count
-  // --------------------------------------------------
-
-  async increaseView(id: string) {
-    await this.getPost(id);
-
-    return this.postRepository.incrementView(id);
-  }
 }
