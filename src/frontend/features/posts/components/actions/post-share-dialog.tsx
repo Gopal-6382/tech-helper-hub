@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/frontend/components/ui/dialog";
+import type { PostShareDialogProps } from "@/frontend/features/posts/types/post-action.types";
 
 export function PostShareDialog({ postId }: PostShareDialogProps) {
   const [copied, setCopied] = useState(false);
@@ -26,9 +27,7 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
   const handleShare = async () => {
     const url = getShareUrl();
 
-    if (!url) {
-      return;
-    }
+    if (!url) return;
 
     if (navigator.share) {
       try {
@@ -38,9 +37,8 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
           url,
         });
         return;
-      } catch (err) {
-        console.error(err);
-        throw new Error("Failed to share post");
+      } catch (error) {
+        console.error(error);
       }
     }
 
@@ -55,9 +53,7 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
   const handleCopy = async () => {
     const url = getShareUrl();
 
-    if (!url) {
-      return;
-    }
+    if (!url) return;
 
     await navigator.clipboard.writeText(url);
     setCopied(true);
@@ -76,19 +72,21 @@ export function PostShareDialog({ postId }: PostShareDialogProps) {
             variant="ghost"
             size="icon"
             aria-label="Share post"
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
+          />
         }
-      />
+      >
+        <Share2 className="h-4 w-4" />
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share post</DialogTitle>
         </DialogHeader>
+
         <h6 className="text-center text-xs text-primary">
           <a href={getShareUrl()}>{getShareUrl()}</a>
         </h6>
+
         <div className="flex gap-2">
           <Button type="button" className="flex-1" onClick={handleShare}>
             <Share2 className="mr-2 h-4 w-4" />

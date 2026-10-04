@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bookmark } from "lucide-react";
 
 import { usePostSave } from "@/frontend/features/posts/hooks/interactions/use-post-save";
+import type { PostSaveButtonProps } from "@/frontend/features/posts/types/post-action.types";
 
 export function PostSaveButton({
   postId,
@@ -15,20 +16,15 @@ export function PostSaveButton({
   const [saved, setSaved] = useState(initialSaved);
   const [saveCount, setSaveCount] = useState(initialSaveCount);
   const [tap, setTap] = useState(0);
-  useEffect(() => {
-    if (typeof initialSaved === "boolean") {
-      setSaved(initialSaved);
-    }
-  }, [initialSaved]);
+
   const handleSave = () => {
     if (saveMutation.isPending) return;
 
     const nextSaved = !saved;
 
-    setTap((value) => value + 1);
     setSaved(nextSaved);
-
     setSaveCount((count) => (nextSaved ? count + 1 : Math.max(count - 1, 0)));
+    setTap((value) => value + 1);
 
     saveMutation.mutate(
       {
@@ -36,23 +32,13 @@ export function PostSaveButton({
         saved: nextSaved,
       },
       {
-        onError: (error) => {
-          const message =
-            error instanceof Error ? error.message.toLowerCase() : "";
-
-          // If API confirms it already exists, the correct UI state is saved.
-          if (message.includes("already saved")) {
-            setSaved(true);
-            return;
-          }
-
-          // Restore the previous state for another error.
+        onError: () => {
           setSaved(!nextSaved);
           setSaveCount((count) =>
-            nextSaved ? Math.max(count - 1, 0) : count + 1,
+            nextSaved ? Math.max(count - 1, 0) : count + 1
           );
         },
-      },
+      }
     );
   };
 

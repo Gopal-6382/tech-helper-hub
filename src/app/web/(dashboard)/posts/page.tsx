@@ -24,7 +24,7 @@ export default function PostsPage() {
           </p>
         </div>
 
-        <Button>
+        <Button  variant="secondary">
           <Link href="/web/posts/create">
             <Plus className="mr-2 h-4 w-4" />
             Create Post

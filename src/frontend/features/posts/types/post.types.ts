@@ -1,39 +1,75 @@
-// types/post.types.ts
-
 export type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
 
-export type PostAuthor = {
-  id: string;
-  name?: string | null;
-  avatar?: string | null;
-};
+export interface PostAuthorProfile {
+  city: string | null;
+  state: string | null;
+  latitude: number | null;
+  longitude: number | null;
+}
 
-export type PostCategory = {
+export interface PostAuthor {
+  id: string;
+  name: string | null;
+  avatar: string | null;
+  profile: PostAuthorProfile | null;
+}
+
+export interface PostCategory {
   id: string;
   name: string;
-};
+  slug: string;
+}
 
-export type PostCounts = {
+export interface PostCounts {
   likes: number;
   comments: number;
-};
+  savedBy: number;
+}
 
-export type Post = {
+export interface Post {
   id: string;
   authorId: string;
+  categoryId: string | null;
+
   title: string;
   content: string;
   images: string[];
-  city?: string | null;
+
   status: PostStatus;
   viewCount: number;
+
   createdAt: string;
+  updatedAt: string;
 
-  author?: PostAuthor | null;
-  category?: PostCategory | null;
-
-  _count?: PostCounts;
+  author: PostAuthor;
+  category: PostCategory | null;
 
   isLiked?: boolean;
   isSaved?: boolean;
+
+  _count: PostCounts;
+}
+
+export interface PostCardProps {
+  post: Post;
+  currentUserId?: string;
+  onReport?: (postId: string) => void;
+  viewed?: boolean;
+}
+
+export interface PostHeaderProps {
+  post: Post;
+  isOwner: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
+  onReport?: () => void;
+}
+
+export type PostListProps = {
+  posts: Post[];
+  currentUserId?: string;
+  isLoading?: boolean;
+  error?: Error | null;
+  onReport?: (postId: string) => void;
+  viewedPostIds?: Set<string>;
 };

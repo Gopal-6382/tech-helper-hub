@@ -9,6 +9,7 @@ import type {
 export const postApi = {
   async getPosts(): Promise<Post[]> {
     const response = await apiRequest<Post[]>("/api/posts");
+
     return response.data ?? [];
   },
 

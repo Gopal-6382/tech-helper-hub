@@ -42,8 +42,8 @@ export default function PostPage({ params }: PostPageProps) {
               {error?.message ?? "The requested post could not be loaded."}
             </p>
 
-            <Button>
-              <Link href="/posts">
+            <Button variant="ghost">
+              <Link href="/web/posts">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to posts
               </Link>

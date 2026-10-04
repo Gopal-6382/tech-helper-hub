@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/frontend/components/ui/dropdown-menu";
+import { PostMenuProps } from "@/features/posts/types/post-action.types";
 
 export function PostMenu({
   canEdit = true,

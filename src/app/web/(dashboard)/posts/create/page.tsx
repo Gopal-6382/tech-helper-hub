@@ -11,7 +11,7 @@ export default function CreatePostPage() {
   return (
     <div className="container mx-auto max-w-3xl space-y-6 py-6">
       <Button variant="ghost">
-        <Link href="/web  /posts">
+        <Link href="/web/posts">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to posts
         </Link>

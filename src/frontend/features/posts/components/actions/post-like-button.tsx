@@ -4,12 +4,7 @@ import { useState } from "react";
 import { Heart } from "lucide-react";
 
 import { usePostLike } from "@/frontend/features/posts/hooks/interactions/use-post-like";
-
-type PostLikeButtonProps = {
-  postId: string;
-  initialLiked?: boolean;
-  initialLikeCount?: number;
-};
+import type { PostLikeButtonProps } from "@/frontend/features/posts/types/post-action.types";
 
 export function PostLikeButton({
   postId,
@@ -23,42 +18,27 @@ export function PostLikeButton({
   const [tap, setTap] = useState(0);
 
   const handleLike = () => {
-    if (likeMutation.isPending) {
-      return;
-    }
+    if (likeMutation.isPending) return;
 
     const nextLiked = !liked;
 
-    // Immediate UI change.
     setLiked(nextLiked);
-    setTap((value) => value + 1);
-
     setLikeCount((count) => (nextLiked ? count + 1 : Math.max(count - 1, 0)));
+    setTap((value) => value + 1);
 
     likeMutation.mutate(
       {
         postId,
-        liked,
+        liked: nextLiked,
       },
       {
-        onError: (error) => {
-          const message =
-            error instanceof Error ? error.message.toLowerCase() : "";
-
-          // the like already exists on the server.
-          if (message.includes("already liked")) {
-            setLiked(true);
-            return;
-          }
-
-          // Normal failure → rollback UI.
-          setLiked(liked);
-
+        onError: () => {
+          setLiked(!nextLiked);
           setLikeCount((count) =>
-            nextLiked ? Math.max(count - 1, 0) : count + 1,
+            nextLiked ? Math.max(count - 1, 0) : count + 1
           );
         },
-      },
+      }
     );
   };
 

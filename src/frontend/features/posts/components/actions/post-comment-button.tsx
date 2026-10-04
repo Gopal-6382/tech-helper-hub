@@ -1,6 +1,7 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
+import { PostCommentButtonProps } from "@/features/posts/types/post-action.types";
 
 export function PostCommentButton({
   count = 0,

@@ -6,15 +6,18 @@ import { PostSaveButton } from "./post-save-button";
 import { PostShareDialog } from "./post-share-dialog";
 import { PostViewCount } from "./post-view-count";
 
+import type { PostActionsProps } from "@/frontend/features/posts/types/post-action.types";
+
 export function PostActions({
   postId,
-  likeCount = 0,
-  commentCount = 0,
-  isLiked = false,
-  isSaved = false,
+  likeCount,
+  commentCount,
+  saveCount,
+  isLiked,
+  isSaved,
+  viewCount,
+  viewed,
   onComment,
-  viewCount = 0,
-  saveCount = 0,
 }: PostActionsProps) {
   return (
     <div className="flex items-center justify-between border-t border-border/60 pt-3">
@@ -27,7 +30,7 @@ export function PostActions({
 
         <PostCommentButton count={commentCount} onClick={onComment} />
 
-        <PostViewCount count={viewCount} />
+        <PostViewCount count={viewCount} viewed={viewed} />
       </div>
 
       <div className="flex items-center gap-1">

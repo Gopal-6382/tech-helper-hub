@@ -3,18 +3,8 @@
 import { Loader2 } from "lucide-react";
 
 import { Card, CardContent } from "@/frontend/components/ui/card";
-
-import type { Post } from "@/frontend/features/posts/types/post.types";
-
 import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
-
-type PostListProps = {
-  posts: Post[];
-  currentUserId?: string;
-  isLoading?: boolean;
-  error?: Error | null;
-  onReport?: (postId: string) => void;
-};
+import { PostListProps } from "../../types/post.types";
 
 export function PostList({
   posts,
@@ -22,6 +12,7 @@ export function PostList({
   isLoading = false,
   error = null,
   onReport,
+  viewedPostIds,
 }: PostListProps) {
   if (isLoading) {
     return (
@@ -65,6 +56,7 @@ export function PostList({
           post={post}
           currentUserId={currentUserId}
           onReport={onReport}
+          viewed={viewedPostIds?.has(post.id) ?? false}
         />
       ))}
     </div>

@@ -1,8 +1,10 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postLikeApi } from "@/frontend/features/posts/api/post-like.api";
+
+import { postKeys } from "@/frontend/features/posts/hooks/posts/use-posts";
 
 type PostLikeVariables = {
   postId: string;
@@ -10,11 +12,20 @@ type PostLikeVariables = {
 };
 
 export function usePostLike() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: ({ postId, liked }: PostLikeVariables) => {
-      return liked
-        ? postLikeApi.unlikePost(postId)
-        : postLikeApi.likePost(postId);
+    mutationFn: ({ postId, liked }: PostLikeVariables) =>
+      liked ? postLikeApi.likePost(postId) : postLikeApi.unlikePost(postId),
+
+    onSuccess: (_, { postId }) => {
+      queryClient.invalidateQueries({
+        queryKey: postKeys.list(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: postKeys.detail(postId),
+      });
     },
   });
 }

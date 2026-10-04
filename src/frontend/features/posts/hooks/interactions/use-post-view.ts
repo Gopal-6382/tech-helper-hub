@@ -1,26 +1,29 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { postViewApi } from "@/frontend/features/posts/api/post-view.api";
 
-import { postKeys } from "@/frontend/features/posts/hooks/posts/use-posts";
+export type PostViewResponse = {
+  success: boolean;
+  message: string;
+  counted?: boolean;
+  alreadyViewed?: boolean;
+  isAuthor?: boolean;
+  viewCount: number;
+};
+
+type ApiResponse = {
+  success: boolean;
+  data: PostViewResponse;
+};
 
 export function usePostView() {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (postId: string) => postViewApi.viewPost(postId),
+    mutationFn: async (postId: string): Promise<PostViewResponse> => {
+      const response = (await postViewApi.viewPost(postId)) as ApiResponse;
 
-    onSuccess: (_, postId) => {
-      queryClient.setQueryData(postKeys.detail(postId), (oldPost: any) => {
-        if (!oldPost) return oldPost;
-
-        return {
-          ...oldPost,
-          viewCount: (oldPost.viewCount ?? 0) + 1,
-        };
-      });
+      return response.data;
     },
   });
 }
