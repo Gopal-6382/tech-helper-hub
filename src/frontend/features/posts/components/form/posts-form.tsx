@@ -1,15 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { createPostSchema } from "@/modules/posts/validations/post.validation";
+
 import { useCreatePost } from "@/frontend/features/posts/hooks/posts/use-create-post";
 import { useUpdatePost } from "@/frontend/features/posts/hooks/posts/use-update-post";
-import { uploadImages } from "../media/upload";
+import { uploadPostImages } from "@/frontend/features/posts/api/post-upload-api";
+
 import type { Post } from "@/frontend/features/posts/types/post.types";
 
 import {
@@ -20,6 +22,9 @@ import {
   TextareaField,
 } from "@/frontend/components/form";
 
+const MAX_IMAGES = 5;
+const MAX_FILE_SIZE_MB = 5;
+
 type CreatePostFormValues = z.input<typeof createPostSchema>;
 type CreatePostFormOutput = z.output<typeof createPostSchema>;
 
@@ -29,20 +34,27 @@ type PostFormProps = {
 
 export function PostForm({ post }: PostFormProps) {
   const router = useRouter();
+
   const createMutation = useCreatePost();
   const updateMutation = useUpdatePost();
+
   const isEditing = Boolean(post);
   const isPending = createMutation.isPending || updateMutation.isPending;
+
   const mutationError = createMutation.error ?? updateMutation.error;
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
   const [existingImageUrls, setExistingImageUrls] = useState<string[]>(
     post?.images ?? [],
   );
+
+  // These are already uploaded to Cloudinary.
   const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
+
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
@@ -56,59 +68,6 @@ export function PostForm({ post }: PostFormProps) {
     },
   });
 
-  const handleSelectImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files ?? []);
-
-    if (files.length === 0) return;
-
-    setSelectedFiles(files);
-    setPreviewUrls(files.map((file) => URL.createObjectURL(file)));
-    setNewImageUrls([]);
-    setUploadError(null);
-  };
-
-  const handleUploadImages = async () => {
-    if (selectedFiles.length === 0) return;
-
-    setIsUploading(true);
-    setUploadError(null);
-
-    try {
-      const urls = await uploadImages(selectedFiles);
-
-      setNewImageUrls(urls);
-      form.setValue("images", [...existingImageUrls, ...urls], {
-        shouldValidate: true,
-      });
-    } catch {
-      setUploadError("Failed to upload images. Please try again.");
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const removeExistingImage = (index: number) => {
-    const nextExistingImages = existingImageUrls.filter(
-      (_, imageIndex) => imageIndex !== index,
-    );
-
-    setExistingImageUrls(nextExistingImages);
-    form.setValue("images", [...nextExistingImages, ...newImageUrls], {
-      shouldValidate: true,
-    });
-  };
-
-  const removeNewImage = (index: number) => {
-    const nextNewImages = newImageUrls.filter(
-      (_, imageIndex) => imageIndex !== index,
-    );
-
-    setNewImageUrls(nextNewImages);
-    form.setValue("images", [...existingImageUrls, ...nextNewImages], {
-      shouldValidate: true,
-    });
-  };
-
   const clearSelectedFiles = () => {
     previewUrls.forEach((url) => URL.revokeObjectURL(url));
 
@@ -120,9 +79,133 @@ export function PostForm({ post }: PostFormProps) {
     }
   };
 
+  const handleSelectImages = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+
+    if (!files.length) {
+      return;
+    }
+
+    setUploadError(null);
+
+    const totalImages =
+      existingImageUrls.length + newImageUrls.length + files.length;
+
+    if (totalImages > MAX_IMAGES) {
+      setUploadError(
+        `You can upload a maximum of ${MAX_IMAGES} images per post.`,
+      );
+      return;
+    }
+
+    const invalidType = files.some((file) => !file.type.startsWith("image/"));
+
+    if (invalidType) {
+      setUploadError("Only image files are allowed.");
+      return;
+    }
+
+    const tooLarge = files.some(
+      (file) => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
+    );
+
+    if (tooLarge) {
+      setUploadError(`Each image must be ${MAX_FILE_SIZE_MB}MB or smaller.`);
+      return;
+    }
+
+    // Revoke previews from a previous pending selection.
+    previewUrls.forEach((url) => URL.revokeObjectURL(url));
+
+    setSelectedFiles(files);
+    setPreviewUrls(files.map((file) => URL.createObjectURL(file)));
+  };
+
+  const handleUploadImages = async () => {
+    if (isUploading || selectedFiles.length === 0) {
+      return;
+    }
+
+    const totalImages =
+      existingImageUrls.length + newImageUrls.length + selectedFiles.length;
+
+    if (totalImages > MAX_IMAGES) {
+      setUploadError(
+        `You can have a maximum of ${MAX_IMAGES} images per post.`,
+      );
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      const uploadedUrls = await uploadPostImages(selectedFiles);
+
+      if (!uploadedUrls.length) {
+        throw new Error("Image upload returned no URLs.");
+      }
+
+      setNewImageUrls((currentUrls) => {
+        const nextUrls = [...currentUrls, ...uploadedUrls];
+
+        const allImages = [...existingImageUrls, ...nextUrls];
+
+        form.setValue("images", allImages, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+
+        return nextUrls;
+      });
+
+      clearSelectedFiles();
+    } catch (error) {
+      console.error("Image upload failed:", error);
+
+      setUploadError(
+        error instanceof Error
+          ? error.message
+          : "Failed to upload images. Please try again.",
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const removeExistingImage = (index: number) => {
+    const nextExistingImages = existingImageUrls.filter(
+      (_, imageIndex) => imageIndex !== index,
+    );
+
+    setExistingImageUrls(nextExistingImages);
+
+    form.setValue("images", [...nextExistingImages, ...newImageUrls], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const removeNewImage = (index: number) => {
+    const nextNewImages = newImageUrls.filter(
+      (_, imageIndex) => imageIndex !== index,
+    );
+
+    setNewImageUrls(nextNewImages);
+
+    form.setValue("images", [...existingImageUrls, ...nextNewImages], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   const onSubmit = async (data: CreatePostFormOutput) => {
-    if (selectedFiles.length > 0 && newImageUrls.length === 0) {
-      setUploadError("Please upload selected images before saving the post.");
+    // Selected files that haven't been uploaded yet
+    // must never be silently ignored.
+    if (selectedFiles.length > 0) {
+      setUploadError(
+        "Please upload the selected images before saving the post.",
+      );
       return;
     }
 
@@ -139,14 +222,15 @@ export function PostForm({ post }: PostFormProps) {
         });
 
         router.push(`/web/posts/${post.id}`);
-      } else {
-        const createdPost = await createMutation.mutateAsync({
-          ...data,
-          images,
-        });
-
-        router.push(`/web/posts/${createdPost.id}`);
+        return;
       }
+
+      const createdPost = await createMutation.mutateAsync({
+        ...data,
+        images,
+      });
+
+      router.push(`/web/posts/${createdPost.id}`);
     } catch (error) {
       console.error("Error creating/updating post:", error);
     }

@@ -34,13 +34,13 @@ export default function DashboardLayout({ children }: Props) {
     {
       type: "link",
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/web",
       icon: LayoutDashboard,
     },
     {
       type: "link",
       label: "Settings",
-      href: "/settings",
+      href: "/web/settings",
       icon: Settings,
     },
   ];

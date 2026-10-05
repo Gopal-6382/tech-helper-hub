@@ -1,13 +1,13 @@
 import { apiRequest } from "@/frontend/lib/api";
 
 import type {
+  CreateReportData,
   Report,
   ReportStatus,
-  CreateReportInput,
-} from "../types/report.types";
+} from "@/features/posts/types/report.types";
 
 export const reportApi = {
-  async createReport(data: CreateReportInput): Promise<Report> {
+  async createReport(data: CreateReportData): Promise<Report> {
     const response = await apiRequest<Report>("/api/reports", {
       method: "POST",
       body: JSON.stringify(data),
@@ -22,6 +22,7 @@ export const reportApi = {
 
   async getMyReports(): Promise<Report[]> {
     const response = await apiRequest<Report[]>("/api/reports/my");
+
     return response.data ?? [];
   },
 
@@ -37,6 +38,7 @@ export const reportApi = {
 
   async getReports(): Promise<Report[]> {
     const response = await apiRequest<Report[]>("/api/reports");
+
     return response.data ?? [];
   },
 
@@ -50,7 +52,7 @@ export const reportApi = {
     });
 
     if (!response.data) {
-      throw new Error("Failed to update report status");
+      throw new Error("Failed to update report");
     }
 
     return response.data;

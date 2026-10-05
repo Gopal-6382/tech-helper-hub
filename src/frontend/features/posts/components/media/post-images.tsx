@@ -28,13 +28,13 @@ export function PostImages({
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={`${image}-${index}`}>
-            <div className="relative h-96 w-full overflow-hidden rounded-xl bg-muted">
+            <div className="relative h-96 w-full bg-muted">
               <Image
                 src={image}
                 alt={`${title} image ${index + 1}`}
                 fill
-                loading={index === 0 ? "eager" : "lazy"}
                 sizes="(max-width: 768px) 100vw, 700px"
+                priority={index === 0}
                 className="object-contain"
               />
 

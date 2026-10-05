@@ -7,7 +7,7 @@ import { PostShareDialog } from "./post-share-dialog";
 import { PostViewCount } from "./post-view-count";
 
 import type { PostActionsProps } from "@/frontend/features/posts/types/post-action.types";
-import { PostViewTrigger } from "./post-view-trigger";
+// import { PostViewTrigger } from "./post-view-trigger";
 
 export function PostActions({
   postId,

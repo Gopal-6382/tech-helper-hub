@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { Button } from "@/frontend/components/ui/button";
+import { buttonVariants } from "@/frontend/components/ui/button";
 import { PostForm } from "@/frontend/features/posts/components/form/posts-form";
+import { cn } from "@/frontend/lib/utils";
 
 export default function CreatePostPage() {
   return (
@@ -20,10 +21,13 @@ export default function CreatePostPage() {
         </header>
 
         {/* Back Navigation */}
-        <Button variant="outline" render={<Link href="/web/posts" />}>
+        <Link
+          href="/web/posts"
+          className={cn(buttonVariants({ variant: "outline" }))}
+        >
           <ArrowLeft className="h-4 w-4" />
           Back to posts
-        </Button>
+        </Link>
 
         {/* Form */}
         <PostForm />

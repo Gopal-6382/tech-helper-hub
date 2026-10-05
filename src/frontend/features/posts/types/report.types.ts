@@ -1,19 +1,22 @@
-export type ReportStatus =
-  "PENDING" | "REVIEWED" | "DISMISSED" | "ACTION_TAKEN";
+export type ReportStatus = "PENDING" | "REVIEWED" | "RESOLVED" | "REJECTED";
 
-export interface CreateReportInput {
+export type CreateReportData = {
   postId?: string;
   commentId?: string;
   reason: string;
-}
+};
 
-export interface Report {
+export type UpdateReportStatusData = {
+  status: ReportStatus;
+};
+
+export type Report = {
   id: string;
-  reporterId: string;
   postId: string | null;
   commentId: string | null;
+  reporterId: string;
   reason: string;
   status: ReportStatus;
   createdAt: string;
-  reviewedAt: string | null;
-}
+  updatedAt: string;
+};

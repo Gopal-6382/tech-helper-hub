@@ -13,17 +13,25 @@ export async function apiRequest<T = unknown>(
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
+  const headers = new Headers(options.headers);
+
+  const isFormData = options.body instanceof FormData;
+
+  if (isFormData) {
+    // Let the browser set:
+    // Content-Type: multipart/form-data; boundary=...
+    headers.delete("Content-Type");
+  } else if (options.body !== undefined) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  if (accessToken) {
+    headers.set("Authorization", `Bearer ${accessToken}`);
+  }
+
   const response = await fetch(url, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(accessToken
-        ? {
-            Authorization: `Bearer ${accessToken}`,
-          }
-        : {}),
-      ...(options.headers || {}),
-    },
+    headers,
   });
 
   const result = await response.json().catch(() => null);
