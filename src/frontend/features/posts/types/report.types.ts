@@ -6,10 +6,6 @@ export type CreateReportData = {
   reason: string;
 };
 
-export type UpdateReportStatusData = {
-  status: ReportStatus;
-};
-
 export type Report = {
   id: string;
   postId: string | null;

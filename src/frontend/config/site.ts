@@ -8,5 +8,3 @@ export const siteConfig = {
     github: "https://github.com/techhelperhub",
   },
 };
-
-export type SiteConfig = typeof siteConfig;

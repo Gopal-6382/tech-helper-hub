@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 import { PostListProps } from "../../types/post.types";
+import { PostViewTrigger } from "../actions/post-view-trigger";
 
 export function PostList({
   posts,
@@ -50,6 +51,13 @@ export function PostList({
     <div className="space-y-4">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} currentUserId={currentUserId} />
+      ))}
+      {posts.map((post) => (
+        <PostViewTrigger
+          key={post.id}
+          postId={post.id}
+          onViewed={post.isViewed}
+        />
       ))}
     </div>
   );
