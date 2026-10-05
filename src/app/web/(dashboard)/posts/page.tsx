@@ -26,9 +26,7 @@ export default function PostsPage() {
       <div className="space-y-6">
         <header className="flex items-start justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight">
-              Problem Posts
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight">Problem Posts</h1>
 
             <p className="text-sm text-muted-foreground">
               Ask questions, share problems, and help others.
