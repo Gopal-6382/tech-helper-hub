@@ -7,6 +7,7 @@ import { PostShareDialog } from "./post-share-dialog";
 import { PostViewCount } from "./post-view-count";
 
 import type { PostActionsProps } from "@/frontend/features/posts/types/post-action.types";
+import { PostViewTrigger } from "./post-view-trigger";
 
 export function PostActions({
   postId,
@@ -38,8 +39,14 @@ export function PostActions({
           postId={postId}
           initialSaved={isSaved}
           initialSaveCount={saveCount}
-        />
-
+        />{" "}
+        {/* <PostViewTrigger
+          postId={postId}
+          onViewed={(newViewCount) => {
+            setViewCount(newViewCount);
+            setViewed(true);
+          }}
+        /> */}
         <PostShareDialog postId={postId} />
       </div>
     </div>

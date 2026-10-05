@@ -32,13 +32,25 @@ export function PostLikeButton({
         liked: nextLiked,
       },
       {
-        onError: () => {
+        onError: (error) => {
+          const message =
+            error instanceof Error ? error.message.toLowerCase() : "";
+
+          if (message.includes("already liked")) {
+            // The like already exists on the server.
+            // Keep heart filled, but remove the extra +1.
+            setLiked(true);
+            setLikeCount((count) => Math.max(count - 1, 0));
+            return;
+          }
+
+          // Real failure: roll back both state and count.
           setLiked(!nextLiked);
           setLikeCount((count) =>
-            nextLiked ? Math.max(count - 1, 0) : count + 1
+            nextLiked ? Math.max(count - 1, 0) : count + 1,
           );
         },
-      }
+      },
     );
   };
 

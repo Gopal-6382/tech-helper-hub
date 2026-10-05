@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 import { PostListProps } from "../../types/post.types";
+import { PostDetail } from "../detail/post-details";
 
 export function PostList({
   posts,
@@ -12,7 +13,6 @@ export function PostList({
   isLoading = false,
   error = null,
   onReport,
-  viewedPostIds,
 }: PostListProps) {
   if (isLoading) {
     return (
@@ -49,16 +49,19 @@ export function PostList({
   }
 
   return (
-    <div className="space-y-4">
-      {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          post={post}
-          currentUserId={currentUserId}
-          onReport={onReport}
-          viewed={viewedPostIds?.has(post.id) ?? false}
-        />
-      ))}
-    </div>
+    <>
+      <div className="space-y-4">
+        {posts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            currentUserId={currentUserId}
+            onReport={onReport}
+            viewed={post.isViewed}
+          />
+        ))}
+      </div>
+      <PostDetail post={posts[0]} />
+    </>
   );
 }

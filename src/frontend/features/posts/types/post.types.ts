@@ -1,26 +1,26 @@
-export type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
+type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
 
-export interface PostAuthorProfile {
+interface PostAuthorProfile {
   city: string | null;
   state: string | null;
   latitude: number | null;
   longitude: number | null;
 }
 
-export interface PostAuthor {
+interface PostAuthor {
   id: string;
   name: string | null;
   avatar: string | null;
   profile: PostAuthorProfile | null;
 }
 
-export interface PostCategory {
+interface PostCategory {
   id: string;
   name: string;
   slug: string;
 }
 
-export interface PostCounts {
+interface PostCounts {
   likes: number;
   comments: number;
   savedBy: number;
@@ -44,8 +44,9 @@ export interface Post {
   author: PostAuthor;
   category: PostCategory | null;
 
-  isLiked?: boolean;
-  isSaved?: boolean;
+  isLiked: boolean;
+  isSaved: boolean;
+  isViewed: boolean;
 
   _count: PostCounts;
 }
@@ -71,5 +72,4 @@ export type PostListProps = {
   isLoading?: boolean;
   error?: Error | null;
   onReport?: (postId: string) => void;
-  viewedPostIds?: Set<string>;
 };

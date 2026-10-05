@@ -1,8 +1,5 @@
 export type ReportStatus =
-  | "PENDING"
-  | "REVIEWED"
-  | "DISMISSED"
-  | "ACTION_TAKEN";
+  "PENDING" | "REVIEWED" | "DISMISSED" | "ACTION_TAKEN";
 
 export interface CreateReportInput {
   postId?: string;

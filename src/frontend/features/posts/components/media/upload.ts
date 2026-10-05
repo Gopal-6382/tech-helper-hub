@@ -16,7 +16,7 @@ export async function uploadImage(file: File): Promise<string> {
     {
       method: "POST",
       body: formData,
-    }
+    },
   );
 
   if (!response.ok) {

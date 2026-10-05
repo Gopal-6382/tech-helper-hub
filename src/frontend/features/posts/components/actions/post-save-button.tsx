@@ -32,13 +32,25 @@ export function PostSaveButton({
         saved: nextSaved,
       },
       {
-        onError: () => {
+        onError: (error) => {
+          const message =
+            error instanceof Error ? error.message.toLowerCase() : "";
+
+          if (message.includes("already saved")) {
+            // The save already exists on the server.
+            // Keep saved state, but remove the extra +1.
+            setSaved(true);
+            setSaveCount((count) => Math.max(count - 1, 0));
+            return;
+          }
+
+          // Real failure: roll back both state and count.
           setSaved(!nextSaved);
           setSaveCount((count) =>
-            nextSaved ? Math.max(count - 1, 0) : count + 1
+            nextSaved ? Math.max(count - 1, 0) : count + 1,
           );
         },
-      }
+      },
     );
   };
 

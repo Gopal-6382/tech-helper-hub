@@ -16,9 +16,7 @@ export function usePostSave() {
 
   return useMutation({
     mutationFn: ({ postId, saved }: PostSaveVariables) =>
-      saved
-        ? postSaveApi.savePost(postId)
-        : postSaveApi.unsavePost(postId),
+      saved ? postSaveApi.savePost(postId) : postSaveApi.unsavePost(postId),
 
     onSuccess: (_, { postId }) => {
       queryClient.invalidateQueries({

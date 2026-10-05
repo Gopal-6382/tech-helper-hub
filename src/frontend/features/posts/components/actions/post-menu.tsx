@@ -12,8 +12,8 @@ import {
 import { PostMenuProps } from "@/features/posts/types/post-action.types";
 
 export function PostMenu({
-  canEdit = true,
-  canDelete = true,
+  canEdit = false,
+  canDelete = false,
   onEdit,
   onDelete,
   onReport,

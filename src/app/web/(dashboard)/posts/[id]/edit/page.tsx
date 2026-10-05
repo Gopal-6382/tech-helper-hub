@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
+import { useCategories } from "@/frontend/features/categories/hooks/use-categories";
 import { PostForm } from "@/frontend/features/posts/components/form/posts-form";
 
 type EditPostPageProps = {
@@ -18,20 +19,32 @@ type EditPostPageProps = {
 export default function EditPostPage({ params }: EditPostPageProps) {
   const { id } = use(params);
 
-  const { data: post, isLoading, error } = usePost(id);
+  const {
+    data: post,
+    isLoading: isPostLoading,
+    error: postError,
+  } = usePost(id);
 
-if (isLoading) {
-  return (
-    <div className="container mx-auto max-w-3xl py-10">
-      <div className="flex justify-center">
-        <Loader2 className="h-6 w-6 animate-spin" />
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useCategories();
+
+  const isLoading = isPostLoading || isCategoriesLoading;
+  const error = postError ?? categoriesError;
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto max-w-3xl py-10">
+        <div className="flex justify-center">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-
-  if (error || !post) {
+  if (error || !post || !categories) {
     return (
       <div className="container mx-auto max-w-3xl py-10">
         <Card>
@@ -53,28 +66,25 @@ if (isLoading) {
       </div>
     );
   }
-return (
-  <div className="container mx-auto max-w-3xl space-y-6 py-6">
-    <Button variant="ghost" >
-      <Link href={`/web/posts/${post.id}`}>
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Back to post
-      </Link>
-    </Button>
 
-    <div>
-      <h1 className="text-3xl font-bold tracking-tight">Edit Post</h1>
+  return (
+    <div className="container mx-auto max-w-3xl space-y-6 py-6">
+      <Button variant="ghost">
+        <Link href={`/web/posts/${post.id}`}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to post
+        </Link>
+      </Button>
 
-      <p className="mt-1 text-sm text-muted-foreground">
-        Update your problem post.
-      </p>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Edit Post</h1>
+
+        <p className="mt-1 text-sm text-muted-foreground">
+          Update your problem post.
+        </p>
+      </div>
+
+      <PostForm key={post.id} post={post} />
     </div>
-
-    <PostForm key={post.id} post={post} />
-  </div>
-);
+  );
 }
-
-
-
-

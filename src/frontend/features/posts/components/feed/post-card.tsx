@@ -20,12 +20,7 @@ import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu
 import { PostStatusBadge } from "@/frontend/features/posts/components/shared/post-status-badge";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 
-export function PostCard({
-  post,
-  currentUserId,
-  onReport,
-  viewed = false,
-}: PostCardProps) {
+export function PostCard({ post, currentUserId, onReport }: PostCardProps) {
   const router = useRouter();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -77,10 +72,10 @@ export function PostCard({
             likeCount={post._count?.likes ?? 0}
             commentCount={post._count?.comments ?? 0}
             saveCount={post._count?.savedBy ?? 0}
-            isLiked={post.isLiked ?? false}
-            isSaved={post.isSaved ?? false}
+            isLiked={post.isLiked}
+            isSaved={post.isSaved}
             viewCount={post.viewCount}
-            viewed={viewed}
+            viewed={post.isViewed}
             onComment={() => router.push(postUrl)}
           />
         </CardContent>

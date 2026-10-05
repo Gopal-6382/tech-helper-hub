@@ -8,7 +8,7 @@ import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
 import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
-import { PostDetail } from "@/frontend/features/posts/components/detail/post-details";
+import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 
 type PostPageProps = {
   params: Promise<{
@@ -56,7 +56,7 @@ export default function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="container mx-auto max-w-3xl py-6">
-      <PostDetail post={post} />
+      <PostCard post={post} />
     </div>
   );
 }

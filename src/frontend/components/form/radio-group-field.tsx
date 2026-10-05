@@ -4,72 +4,63 @@ import { Controller } from "react-hook-form";
 
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Field } from "./field";
 import { FieldDescription } from "./field-description";
 import { FieldLabel } from "./field-label";
 import { FormError } from "./form-error";
+import { type SelectOption } from "./select-field";
 
-export type SelectOption = {
-  label: string;
-  value: string;
-};
-
-type SelectFieldProps<TFieldValues extends FieldValues> = {
+type RadioGroupFieldProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   name: FieldPath<TFieldValues>;
   label?: string;
   description?: string;
-  required?: boolean;
-  placeholder?: string;
   options: SelectOption[];
   disabled?: boolean;
   className?: string;
 };
 
-export function SelectField<TFieldValues extends FieldValues>({
+export function RadioGroupField<TFieldValues extends FieldValues>({
   control,
   name,
   label,
   description,
-  required,
-  placeholder = "Select an option",
   options,
   disabled,
   className,
-}: SelectFieldProps<TFieldValues>) {
+}: RadioGroupFieldProps<TFieldValues>) {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => (
         <Field invalid={fieldState.invalid} className={className}>
-          {label ? <FieldLabel required={required}>{label}</FieldLabel> : null}
+          {label ? <FieldLabel>{label}</FieldLabel> : null}
 
-          <Select
+          <RadioGroup
             value={field.value ?? ""}
             onValueChange={field.onChange}
             disabled={disabled}
+            className="gap-3"
           >
-            <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
-              <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
+            {options.map((option) => (
+              <div key={option.value} className="flex items-center gap-3">
+                <RadioGroupItem
+                  id={`${field.name}-${option.value}`}
+                  value={option.value}
+                />
 
-            <SelectContent>
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <FieldLabel
+                  htmlFor={`${field.name}-${option.value}`}
+                  className="font-normal"
+                >
                   {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                </FieldLabel>
+              </div>
+            ))}
+          </RadioGroup>
 
           {description ? (
             <FieldDescription>{description}</FieldDescription>

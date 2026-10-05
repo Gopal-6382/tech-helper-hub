@@ -1,33 +1,21 @@
 "use client";
 
-import { useState } from "react";
-
 import type { Post } from "@/frontend/features/posts/types/post.types";
-
-import { PostViewTrigger } from "@/frontend/features/posts/components/actions/post-view-trigger";
-import { PostViewCount } from "@/frontend/features/posts/components/actions/post-view-count";
+import { PostCard } from "../feed/post-card";
 
 type PostDetailProps = {
   post: Post;
 };
 
 export function PostDetail({ post }: PostDetailProps) {
-  const [viewCount, setViewCount] = useState(post.viewCount);
-  const [viewed, setViewed] = useState(false);
-
   return (
     <div>
-      <PostViewTrigger
-        postId={post.id}
-        onViewed={(newViewCount) => {
-          setViewCount(newViewCount);
-          setViewed(true);
-        }}
+      <PostCard
+        key={post.id}
+        post={post}
+        currentUserId={post.authorId}
+        viewed={post.isViewed}
       />
-
-      {/* Your actual detail UI */}
-
-      <PostViewCount count={viewCount} viewed={viewed} />
     </div>
   );
 }

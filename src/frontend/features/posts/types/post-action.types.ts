@@ -49,7 +49,7 @@ export interface PostViewCountProps {
 
 export interface PostViewTriggerProps {
   postId: string;
-  onViewed?: (viewCount: number) => void;
+  onViewed?: boolean;
 }
 
 export interface PostShareDialogProps {
