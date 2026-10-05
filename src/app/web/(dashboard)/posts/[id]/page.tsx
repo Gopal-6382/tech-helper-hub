@@ -4,12 +4,13 @@ import { use } from "react";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
-import { Button } from "@/frontend/components/ui/button";
+import { buttonVariants } from "@/frontend/components/ui/button";
+import { cn } from "@/frontend/lib/utils";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
 import { useAuth } from "@/frontend/context/auth-context";
 import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
-import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
+import { PostDetail } from "@/frontend/features/posts/components/detail/post-details";
 
 type PostPageProps = {
   params: Promise<{
@@ -44,10 +45,13 @@ export default function PostPage({ params }: PostPageProps) {
               {error?.message ?? "The requested post could not be loaded."}
             </p>
 
-            <Button variant="outline" render={<Link href="/web/posts" />}>
+            <Link
+              href="/web/posts"
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
               <ArrowLeft />
               Back to posts
-            </Button>
+            </Link>
           </CardContent>
         </Card>
       </main>
@@ -56,7 +60,10 @@ export default function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-6">
-      <PostCard post={post} currentUserId={user?.id} onReport={() => {}} />
+      <PostDetail
+        post={post}
+        currentUserId={user?.id}
+      />
     </main>
   );
 }
