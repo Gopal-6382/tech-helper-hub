@@ -28,14 +28,16 @@ export interface PostSaveButtonProps {
   initialSaveCount: number;
 }
 
-export interface PostMenuProps {
-  canEdit: boolean;
-  canDelete: boolean;
-  onEdit: () => void;
-  onDelete: () => void;
-  onReport?: () => void;
-}
+export type PostMenuProps = {
+  canEdit?: boolean;
+  canDelete?: boolean;
+  canUpdateStatus?: boolean;
 
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onUpdateStatus?: () => void;
+  onReport?: () => void;
+};
 export interface PostLikeButtonProps {
   postId: string;
   initialLiked: boolean;

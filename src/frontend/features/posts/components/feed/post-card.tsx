@@ -21,13 +21,14 @@ import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu
 import { PostStatusBadge } from "@/frontend/features/posts/components/shared/post-status-badge";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 import { ReportPostDialog } from "@/frontend/features/posts/components/report/report-post-dialog";
+import { UpdatePostStatusDialog } from "../actions/UpdatePostStatusDialog";
 
 export function PostCard({ post, currentUserId }: PostCardProps) {
   const router = useRouter();
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
-
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
   const postUrl = `/web/posts/${post.id}`;
   const images = post.images ?? [];
 
@@ -43,6 +44,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
             isOwner={isOwner}
             onEdit={() => router.push(`${postUrl}/edit`)}
             onDelete={() => setIsDeleteOpen(true)}
+            onUpdateStatus={() => setIsStatusOpen(true)}
             onReport={!isOwner ? () => setIsReportOpen(true) : undefined}
           />
 
@@ -92,6 +94,12 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
       />
+      <UpdatePostStatusDialog
+        postId={post.id}
+        currentStatus={post.status}
+        open={isStatusOpen}
+        onOpenChange={setIsStatusOpen}
+      />
 
       <ReportPostDialog
         postId={post.id}
@@ -107,6 +115,7 @@ function PostHeader({
   isOwner,
   onEdit,
   onDelete,
+  onUpdateStatus,
   onReport,
 }: PostHeaderProps) {
   const { author } = post;
@@ -145,8 +154,10 @@ function PostHeader({
       <PostMenu
         canEdit={isOwner}
         canDelete={isOwner}
+        canUpdateStatus={isOwner}
         onEdit={onEdit}
         onDelete={onDelete}
+        onUpdateStatus={onUpdateStatus}
         onReport={onReport}
       />
     </div>

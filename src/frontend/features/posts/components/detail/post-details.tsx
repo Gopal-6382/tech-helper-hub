@@ -8,16 +8,10 @@ type PostDetailProps = {
   currentUserId?: string;
 };
 
-export function PostDetail({
-  post,
-  currentUserId,
-}: PostDetailProps) {
+export function PostDetail({ post, currentUserId }: PostDetailProps) {
   return (
     <div>
-      <PostCard
-        post={post}
-        currentUserId={currentUserId}
-      />
+      <PostCard post={post} currentUserId={currentUserId} />
     </div>
   );
 }

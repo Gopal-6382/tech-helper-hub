@@ -1,6 +1,12 @@
 "use client";
 
-import { Flag, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import {
+  Flag,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  CircleCheck,
+} from "lucide-react";
 
 import {
   DropdownMenu,
@@ -15,15 +21,19 @@ import type { PostMenuProps } from "@/features/posts/types/post-action.types";
 export function PostMenu({
   canEdit = false,
   canDelete = false,
+  canUpdateStatus = false,
   onEdit,
   onDelete,
+  onUpdateStatus,
   onReport,
 }: PostMenuProps) {
   const hasEditAction = canEdit && Boolean(onEdit);
   const hasDeleteAction = canDelete && Boolean(onDelete);
+  const hasStatusAction = canUpdateStatus && Boolean(onUpdateStatus);
   const hasReportAction = Boolean(onReport);
 
-  const hasAnyAction = hasEditAction || hasDeleteAction || hasReportAction;
+  const hasAnyAction =
+    hasEditAction || hasDeleteAction || hasStatusAction || hasReportAction;
 
   return (
     <DropdownMenu>
@@ -34,11 +44,18 @@ export function PostMenu({
         <MoreHorizontal className="size-4" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-40">
+      <DropdownMenuContent align="end" className="w-44">
         {hasEditAction && (
           <DropdownMenuItem onClick={onEdit}>
             <Pencil />
             Edit
+          </DropdownMenuItem>
+        )}
+
+        {hasStatusAction && (
+          <DropdownMenuItem onClick={onUpdateStatus}>
+            <CircleCheck />
+            Update status
           </DropdownMenuItem>
         )}
 
@@ -49,9 +66,8 @@ export function PostMenu({
           </DropdownMenuItem>
         )}
 
-        {(hasEditAction || hasDeleteAction) && hasReportAction && (
-          <DropdownMenuSeparator />
-        )}
+        {(hasEditAction || hasStatusAction || hasDeleteAction) &&
+          hasReportAction && <DropdownMenuSeparator />}
 
         {hasReportAction && (
           <DropdownMenuItem onClick={onReport}>

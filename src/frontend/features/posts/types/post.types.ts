@@ -1,4 +1,4 @@
-type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
+export type PostStatus = "OPEN" | "SOLVED" | "CLOSED";
 
 interface PostAuthorProfile {
   city: string | null;
@@ -63,6 +63,7 @@ export interface PostHeaderProps {
   isOwner: boolean;
   onEdit: () => void;
   onDelete: () => void;
+  onUpdateStatus: () => void;
   onReport?: () => void;
 }
 
