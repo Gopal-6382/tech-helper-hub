@@ -9,24 +9,22 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/frontend/components/ui/button";
-import { Input } from "@/frontend/components/ui/input";
-import { Field, FieldError, FieldLabel } from "@/frontend/components/ui/field";
-
 import { authService } from "@/features/auth/api/api";
 import { loginSchema } from "@/backend/modules/auth/validations/auth.schema";
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { useAuth } from "@/frontend/context/auth-context";
+import { SubmitButton, TextField } from "@/frontend/components/form";
+
+type LoginFormValues = z.input<typeof loginSchema>;
+type LoginFormOutput = z.output<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
-  const [serverError, setServerError] = useState("");
+  const { login } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>({
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const form = useForm<LoginFormValues, unknown, LoginFormOutput>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -34,72 +32,73 @@ export function LoginForm() {
     },
   });
 
-  async function onSubmit(values: LoginFormValues) {
-    setServerError("");
+  const onSubmit = async (data: LoginFormOutput) => {
+    setServerError(null);
 
     try {
-      const result = await authService.login(values);
+      const result = await authService.login(data);
 
-      if (result?.accessToken) {
-        localStorage.setItem("accessToken", result.accessToken);
+      if (!result?.accessToken || !result?.refreshToken || !result?.user) {
+        throw new Error("Invalid login response.");
       }
 
-      if (result?.refreshToken) {
-        localStorage.setItem("refreshToken", result.refreshToken);
-      }
+      localStorage.setItem("accessToken", result.accessToken);
+      localStorage.setItem("refreshToken", result.refreshToken);
+
+      login(result.user);
 
       router.push("/web");
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : "Login failed");
+      setServerError(error instanceof Error ? error.message : "Login failed.");
     }
-  }
+  };
 
   return (
     <div className="w-full max-w-md rounded-xl border bg-background p-6 shadow-sm">
-      <div className="mb-6">
+      <div className="mb-6 space-y-1">
         <h1 className="text-2xl font-semibold">Login</h1>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           Sign in to Tech Helper Hub
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Field data-invalid={!!errors.email}>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4"
+        noValidate
+      >
+        <TextField
+          control={form.control}
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
+          required
+        />
 
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            aria-invalid={!!errors.email}
-            {...register("email")}
-          />
+        <TextField
+          control={form.control}
+          name="password"
+          label="Password"
+          type="password"
+          placeholder="••••••••"
+          required
+        />
 
-          {errors.email && <FieldError>{errors.email.message}</FieldError>}
-        </Field>
+        {serverError && (
+          <p role="alert" className="text-sm text-destructive">
+            {serverError}
+          </p>
+        )}
 
-        <Field data-invalid={!!errors.password}>
-          <FieldLabel htmlFor="password">Password</FieldLabel>
-
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            aria-invalid={!!errors.password}
-            {...register("password")}
-          />
-
-          {errors.password && (
-            <FieldError>{errors.password.message}</FieldError>
-          )}
-        </Field>
-
-        {serverError && <p className="text-sm text-red-600">{serverError}</p>}
-
-        <Button type="submit" disabled={isSubmitting} className="w-full">
-          {isSubmitting ? "Logging in..." : "Login"}
-        </Button>
+        <SubmitButton
+          isSubmitting={form.formState.isSubmitting}
+          loadingText="Logging in..."
+          className="w-full"
+        >
+          Login
+        </SubmitButton>
       </form>
 
       <div className="mt-4 flex justify-between text-sm">

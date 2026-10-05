@@ -27,7 +27,7 @@ export const updatePostSchema = createPostSchema.partial();
 
 // Update only post status
 
-export const updatePostStatusSchema = z.object({
+const updatePostStatusSchema = z.object({
   status: z.enum(PostStatus),
 });
 

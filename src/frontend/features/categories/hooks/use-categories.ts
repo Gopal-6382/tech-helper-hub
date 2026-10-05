@@ -14,7 +14,7 @@ import type {
   UpdateCategoryInput,
 } from "@/admin/categories/validations/categories.validation";
 
-export const CATEGORIES_QUERY_KEY = ["categories"];
+const CATEGORIES_QUERY_KEY = ["categories"];
 
 export function useCategories(includeInactive: boolean = true) {
   return useQuery({

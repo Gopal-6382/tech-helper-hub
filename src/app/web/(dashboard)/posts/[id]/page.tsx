@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/frontend/components/ui/button";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
+import { useAuth } from "@/frontend/context/auth-context";
 import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
 import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 
@@ -19,21 +20,22 @@ type PostPageProps = {
 export default function PostPage({ params }: PostPageProps) {
   const { id } = use(params);
 
+  const { user, isInitialized } = useAuth();
   const { data: post, isLoading, error } = usePost(id);
 
-  if (isLoading) {
+  if (isLoading || !isInitialized) {
     return (
-      <div className="container mx-auto max-w-3xl py-10">
+      <main className="container mx-auto max-w-3xl px-4 py-10">
         <div className="flex justify-center">
-          <Loader2 className="h-6 w-6 animate-spin" />
+          <Loader2 className="size-6 animate-spin" />
         </div>
-      </div>
+      </main>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="container mx-auto max-w-3xl py-10">
+      <main className="container mx-auto max-w-3xl px-4 py-10">
         <Card>
           <CardContent className="space-y-4 p-6 text-center">
             <h1 className="text-xl font-semibold">Post not found</h1>
@@ -41,23 +43,20 @@ export default function PostPage({ params }: PostPageProps) {
             <p className="text-sm text-muted-foreground">
               {error?.message ?? "The requested post could not be loaded."}
             </p>
-            <Button variant="secondary">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              <Link href="/web/posts">Back to posts</Link>
+
+            <Button variant="outline" render={<Link href="/web/posts" />}>
+              <ArrowLeft />
+              Back to posts
             </Button>
           </CardContent>
         </Card>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="container mx-auto max-w-3xl py-6">
-      <PostCard
-        currentUserId="ba1598d6-d817-4357-a01c-90b46d9d0103"
-        onReport={() => {}}
-        post={post}
-      />
-    </div>
+    <main className="container mx-auto max-w-3xl px-4 py-6">
+      <PostCard post={post} currentUserId={user?.id} onReport={() => {}} />
+    </main>
   );
 }
