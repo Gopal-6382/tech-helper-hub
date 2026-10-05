@@ -5,13 +5,11 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/frontend/components/ui/button";
 
-import { useAuth } from "@/frontend//context/auth-context";
 import { usePosts } from "@/frontend/features/posts/hooks/posts/use-posts";
 import { PostList } from "@/frontend/features/posts/components/feed/post-list";
 import { PostViewTrigger } from "@/frontend/features/posts/components/actions/post-view-trigger";
 
 export default function PostsPage() {
-  const { user } = useAuth();
   const { data, isLoading, error } = usePosts();
 
   const posts = data ?? [];
@@ -28,12 +26,12 @@ export default function PostsPage() {
           </p>
         </div>
 
-        <Button variant="secondary">
-          <Link href="/web/posts/create">
-            <Plus className="mr-2 h-4 w-4" />
+        <Link href="/web/posts/create">
+          <Button>
+            <Plus className="h-4 w-4" />
             Create Post
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       <PostList

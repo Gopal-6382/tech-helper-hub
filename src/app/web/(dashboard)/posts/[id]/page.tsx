@@ -41,12 +41,9 @@ export default function PostPage({ params }: PostPageProps) {
             <p className="text-sm text-muted-foreground">
               {error?.message ?? "The requested post could not be loaded."}
             </p>
-
-            <Button variant="ghost">
-              <Link href="/web/posts">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to posts
-              </Link>
+            <Button variant="secondary">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              <Link href="/web/posts">Back to posts</Link>
             </Button>
           </CardContent>
         </Card>
@@ -56,7 +53,11 @@ export default function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="container mx-auto max-w-3xl py-6">
-      <PostCard post={post} />
+      <PostCard
+        currentUserId="ba1598d6-d817-4357-a01c-90b46d9d0103"
+        onReport={() => {}}
+        post={post}
+      />
     </div>
   );
 }

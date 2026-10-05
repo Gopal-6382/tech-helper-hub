@@ -10,7 +10,7 @@ import { PostForm } from "@/frontend/features/posts/components/form/posts-form";
 export default function CreatePostPage() {
   return (
     <div className="container mx-auto max-w-3xl space-y-6 py-6">
-      <Button variant="ghost">
+      <Button variant="secondary">
         <Link href="/web/posts">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to posts
