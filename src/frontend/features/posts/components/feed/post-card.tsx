@@ -1,26 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
 import { MapPin } from "lucide-react";
 
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
-import type {
-  PostCardProps,
-  PostHeaderProps,
-} from "@/frontend/features/posts/types/post.types";
+import type { PostCardProps } from "@/frontend/features/posts/types/post.types";
 
 import { PostActions } from "@/frontend/features/posts/components/actions/post-actions";
 import { PostImages } from "@/frontend/features/posts/components/media/post-images";
-import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 import { ReportPostDialog } from "@/frontend/features/posts/components/report/report-post-dialog";
 import { UpdatePostStatusDialog } from "../actions/UpdatePostStatusDialog";
 import { PostMeta } from "../shared/post-meta";
+import { PostHeader } from "../detail/post-header";
 
 export function PostCard({ post, currentUserId }: PostCardProps) {
   const router = useRouter();
@@ -62,15 +57,6 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
           {images.length > 0 && (
             <div className="relative w-full overflow-hidden rounded-xl bg-muted">
               <PostImages images={images} title={post.title} />
-
-              {post.author.profile?.city && (
-                <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-3">
-                  <span className="flex items-center gap-1 text-xs text-white">
-                    <MapPin className="size-3.5" />
-                    {post.author.profile.city}
-                  </span>
-                </div>
-              )}
             </div>
           )}
 
@@ -84,6 +70,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
             viewCount={post.viewCount}
             viewed={post.isViewed}
             onComment={() => router.push(postUrl)}
+            city={post.author.profile?.city as string}
           />
         </CardContent>
       </Card>
@@ -106,60 +93,5 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
         onOpenChange={setIsReportOpen}
       />
     </>
-  );
-}
-
-function PostHeader({
-  post,
-  isOwner,
-  onEdit,
-  onDelete,
-  onUpdateStatus,
-  onReport,
-}: PostHeaderProps) {
-  const { author } = post;
-
-  const avatarFallback = (author.name ?? "U").charAt(0).toUpperCase();
-
-  return (
-    <div className="flex items-start justify-between gap-3">
-      <div className="flex min-w-0 items-center gap-3">
-        <div className="relative size-10 shrink-0 overflow-hidden rounded-full bg-muted">
-          {author.avatar ? (
-            <Image
-              src={author.avatar}
-              alt={author.name ?? "User"}
-              fill
-              sizes="40px"
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex size-full items-center justify-center text-sm font-semibold">
-              {avatarFallback}
-            </div>
-          )}
-        </div>
-
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold">
-            {author.name ?? "Unknown user"}
-          </p>
-
-          <p className="text-xs text-muted-foreground">
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-          </p>
-        </div>
-      </div>
-
-      <PostMenu
-        canEdit={isOwner}
-        canDelete={isOwner}
-        canUpdateStatus={isOwner}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        onUpdateStatus={onUpdateStatus}
-        onReport={onReport}
-      />
-    </div>
   );
 }

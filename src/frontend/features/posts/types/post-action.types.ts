@@ -15,6 +15,7 @@ export interface PostActionsProps {
   viewCount: number;
   viewed: boolean;
   onComment: () => void;
+  city: string;
 }
 
 export interface PostCommentButtonProps {

@@ -1,5 +1,7 @@
 "use client";
 
+import { MapPin } from "lucide-react";
+
 import { PostCommentButton } from "./post-comment-button";
 import { PostLikeButton } from "./post-like-button";
 import { PostSaveButton } from "./post-save-button";
@@ -7,7 +9,6 @@ import { PostShareDialog } from "./post-share-dialog";
 import { PostViewCount } from "./post-view-count";
 
 import type { PostActionsProps } from "@/frontend/features/posts/types/post-action.types";
-// import { PostViewTrigger } from "./post-view-trigger";
 
 export function PostActions({
   postId,
@@ -19,10 +20,11 @@ export function PostActions({
   viewCount,
   viewed,
   onComment,
+  city,
 }: PostActionsProps) {
   return (
     <div className="flex items-center justify-between border-t border-border/60 pt-3">
-      <div className="flex items-center gap-1">
+      <div className="flex min-w-0 items-center gap-2">
         <PostLikeButton
           postId={postId}
           initialLiked={isLiked}
@@ -32,6 +34,13 @@ export function PostActions({
         <PostCommentButton count={commentCount} onClick={onComment} />
 
         <PostViewCount count={viewCount} viewed={viewed} />
+
+        {city && (
+          <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+            <MapPin className="size-3.5 shrink-0" />
+            <span className="truncate">{city}</span>
+          </span>
+        )}
       </div>
 
       <div className="flex items-center gap-1">
@@ -39,14 +48,8 @@ export function PostActions({
           postId={postId}
           initialSaved={isSaved}
           initialSaveCount={saveCount}
-        />{" "}
-        {/* <PostViewTrigger
-          postId={postId}
-          onViewed={(newViewCount) => {
-            setViewCount(newViewCount);
-            setViewed(true);
-          }}
-        /> */}
+        />
+
         <PostShareDialog postId={postId} />
       </div>
     </div>
