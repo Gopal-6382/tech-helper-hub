@@ -46,11 +46,6 @@ export const userNavigation: NavItem[] = [
     href: "/web/posts",
     icon: "posts",
   },
-  {
-    title: "Reports",
-    href: "/web/reports",
-    icon: "reports",
-  },
 ];
 
 export const professionalNavigation: NavItem[] = [
