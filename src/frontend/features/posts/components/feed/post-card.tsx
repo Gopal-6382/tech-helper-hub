@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MapPin } from "lucide-react";
 
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
@@ -23,6 +22,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+
   const postUrl = `/web/posts/${post.id}`;
   const images = post.images ?? [];
 
@@ -31,8 +31,8 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
 
   return (
     <>
-      <Card className="overflow-hidden border-border/60 bg-background shadow-sm transition-shadow hover:shadow-lg">
-        <CardContent className="space-y-4 p-4">
+      <Card className="w-full overflow-hidden border-border/60 bg-background shadow-sm transition-shadow hover:shadow-lg">
+        <CardContent className="space-y-4 p-3 sm:p-4">
           <PostHeader
             post={post}
             isOwner={isOwner}
@@ -44,13 +44,13 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
 
           <PostMeta post={post} />
 
-          <Link href={postUrl}>
-            <h3 className="text-xl font-semibold tracking-tight hover:underline">
+          <Link href={postUrl} className="block min-w-0">
+            <h3 className="wrap-break-word text-lg font-semibold tracking-tight hover:underline sm:text-xl">
               {post.title}
             </h3>
           </Link>
 
-          <p className="line-clamp-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
+          <p className="wrap-break-word line-clamp-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
             {post.content}
           </p>
 
@@ -80,6 +80,7 @@ export function PostCard({ post, currentUserId }: PostCardProps) {
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
       />
+
       <UpdatePostStatusDialog
         postId={post.id}
         currentStatus={post.status}

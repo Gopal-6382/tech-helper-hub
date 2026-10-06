@@ -23,8 +23,8 @@ export function PostActions({
   city,
 }: PostActionsProps) {
   return (
-    <div className="flex items-center justify-between border-t border-border/60 pt-3">
-      <div className="flex min-w-0 items-center gap-2">
+    <div className="flex min-w-0 flex-col gap-2 border-t border-border/60 pt-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 flex-wrap items-center gap-1">
         <PostLikeButton
           postId={postId}
           initialLiked={isLiked}
@@ -36,14 +36,15 @@ export function PostActions({
         <PostViewCount count={viewCount} viewed={viewed} />
 
         {city && (
-          <span className="flex min-w-0 items-center gap-1 text-xs text-muted-foreground">
+          <span className="flex min-w-0 max-w-full items-center gap-1 px-1 text-xs font-medium text-muted-foreground sm:text-sm">
             <MapPin className="size-3.5 shrink-0" />
+
             <span className="truncate">{city}</span>
           </span>
         )}
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex shrink-0 items-center justify-start gap-1 sm:ml-auto">
         <PostSaveButton
           postId={postId}
           initialSaved={isSaved}
