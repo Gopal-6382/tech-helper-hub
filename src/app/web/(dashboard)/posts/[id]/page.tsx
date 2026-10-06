@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/frontend/components/ui/card";
 import { useAuth } from "@/frontend/context/auth-context";
 import { usePost } from "@/frontend/features/posts/hooks/posts/use-post";
 import { PostDetail } from "@/frontend/features/posts/components/detail/post-details";
+import { PostComments } from "@/frontend/features/posts/components/comments/post-comments";
 
 type PostPageProps = {
   params: Promise<{
@@ -60,7 +61,14 @@ export default function PostPage({ params }: PostPageProps) {
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-6">
-      <PostDetail post={post} currentUserId={user?.id} />
+      <div className="space-y-6">
+        <PostDetail
+          post={post}
+          currentUserId={user?.id}
+        />
+
+        <PostComments postId={post.id} />
+      </div>
     </main>
   );
 }

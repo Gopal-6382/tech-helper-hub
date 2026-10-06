@@ -2,14 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { commentReplyApi } from "@/features/posts/api/comment-reply.api";
 import { commentReplyKeys } from "./use-comment-replies";
-import { CreateCommentReplyData } from "@/backend/modules/commentsreply/types/comment-reply.types";
 
-export function useCreateCommentReply() {
+type UpdateCommentReplyVariables = {
+  replyId: string;
+  commentId: string;
+  content: string;
+};
+
+export function useUpdateCommentReply() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ commentId, content }: CreateCommentReplyData) =>
-      commentReplyApi.createCommentReply(commentId, content),
+    mutationFn: ({ replyId, content }: UpdateCommentReplyVariables) =>
+      commentReplyApi.updateCommentReply(replyId, content),
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

@@ -130,6 +130,7 @@ function PostHeader({
               src={author.avatar}
               alt={author.name ?? "User"}
               fill
+              sizes="40px"
               className="object-cover"
             />
           ) : (

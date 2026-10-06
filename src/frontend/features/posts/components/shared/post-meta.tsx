@@ -1,7 +1,6 @@
 import { Post } from "../../types/post.types";
 import { PostStatusBadge } from "../detail/post-status-badge";
 
-
 export function PostMeta({ post }: { post: Post }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
