@@ -10,7 +10,6 @@ import { MapPin } from "lucide-react";
 import { Card, CardContent } from "@/frontend/components/ui/card";
 
 import type {
-  Post,
   PostCardProps,
   PostHeaderProps,
 } from "@/frontend/features/posts/types/post.types";
@@ -18,10 +17,10 @@ import type {
 import { PostActions } from "@/frontend/features/posts/components/actions/post-actions";
 import { PostImages } from "@/frontend/features/posts/components/media/post-images";
 import { PostMenu } from "@/frontend/features/posts/components/actions/post-menu";
-import { PostStatusBadge } from "@/frontend/features/posts/components/shared/post-status-badge";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 import { ReportPostDialog } from "@/frontend/features/posts/components/report/report-post-dialog";
 import { UpdatePostStatusDialog } from "../actions/UpdatePostStatusDialog";
+import { PostMeta } from "../shared/post-meta";
 
 export function PostCard({ post, currentUserId }: PostCardProps) {
   const router = useRouter();
@@ -160,20 +159,6 @@ function PostHeader({
         onUpdateStatus={onUpdateStatus}
         onReport={onReport}
       />
-    </div>
-  );
-}
-
-function PostMeta({ post }: { post: Post }) {
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <PostStatusBadge status={post.status} />
-
-      {post.category?.name && (
-        <span className="rounded-full bg-muted px-2.5 py-1 text-xs">
-          {post.category.name}
-        </span>
-      )}
     </div>
   );
 }

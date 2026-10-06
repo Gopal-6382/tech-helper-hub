@@ -21,21 +21,7 @@ import { CategoryFormDialog } from "./category-form-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-
-interface Category {
-  id: string;
-  name: string;
-  slug?: string;
-  isActive: boolean;
-  icon?: string | null;
-}
-
-interface SelectedCategory {
-  id: string;
-  name: string;
-  slug: string;
-  icon?: string | null;
-}
+import { Category, SelectedCategory } from "../types/categories.types";
 
 export function CategoryManager() {
   const [includeInactive, setIncludeInactive] = useState(true);

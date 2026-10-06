@@ -7,23 +7,7 @@ import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-interface CategoryFormDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  initialData?: {
-    id: string;
-    name: string;
-    slug: string;
-    icon?: string | null;
-  } | null;
-}
-
-interface FormValues {
-  name: string;
-  slug: string;
-  icon?: string;
-}
+import { CategoryFormDialogProps, FormValues } from "../types/categories.types";
 
 export function CategoryFormDialog({
   isOpen,

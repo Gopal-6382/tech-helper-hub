@@ -3,15 +3,7 @@ import type {
   CreateCategoryInput,
   UpdateCategoryInput,
 } from "@/admin/categories/validations/categories.validation";
-
-export interface Category {
-  id: string;
-  name: string;
-  slug?: string;
-  isActive: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { Category } from "../types/categories.types";
 
 export async function getCategories(
   includeInactive: boolean = true,
