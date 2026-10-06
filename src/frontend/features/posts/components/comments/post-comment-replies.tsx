@@ -1,18 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { Loader2 } from "lucide-react";
 
+import { useAuth } from "@/frontend/context/auth-context";
+
+import type { CommentReply } from "@/frontend/features/posts/types/comment-reply.types";
+
 import { useCommentReplies } from "@/frontend/features/posts/hooks/comments/comments-replies/use-comment-replies";
+
+import { CommentMenu } from "./comment-menu";
+import { EditCommentReplyDialog } from "./EditCommentReplyDialog";
+import { DeleteCommentReplyDialog } from "./DeleteCommentReplyDialog";
 
 type PostCommentRepliesProps = {
   commentId: string;
-  postId: string;
 };
 
 export function PostCommentReplies({ commentId }: PostCommentRepliesProps) {
+  const { user } = useAuth();
+
   const { data: replies = [], isLoading, error } = useCommentReplies(commentId);
+
+  const [editingReply, setEditingReply] = useState<CommentReply | null>(null);
+
+  const [deletingReply, setDeletingReply] = useState<CommentReply | null>(null);
 
   if (isLoading) {
     return (
@@ -34,47 +48,89 @@ export function PostCommentReplies({ commentId }: PostCommentRepliesProps) {
   }
 
   return (
-    <div className="mt-3 space-y-3 border-l-2 pl-4">
-      {replies.map((reply) => {
-        const authorName = reply.author?.name ?? "Unknown user";
-        const avatarFallback = authorName.charAt(0).toUpperCase();
+    <>
+      <div className="mt-3 space-y-3 border-l-2 pl-4">
+        {replies.map((reply) => {
+          const authorName = reply.author?.name ?? "Unknown user";
+          const avatarFallback = authorName.charAt(0).toUpperCase();
 
-        return (
-          <div key={reply.id} className="flex gap-2.5">
-            <div className="relative size-7 shrink-0 overflow-hidden rounded-full bg-muted">
-              {reply.author?.avatar ? (
-                <Image
-                  src={reply.author.avatar}
-                  alt={authorName}
-                  fill
-                  sizes="28px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex size-full items-center justify-center text-[10px] font-semibold">
-                  {avatarFallback}
-                </div>
-              )}
-            </div>
+          const isOwner = user?.id === reply.authorId;
 
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <p className="text-xs font-semibold">{authorName}</p>
-
-                <span className="text-[11px] text-muted-foreground">
-                  {formatDistanceToNow(new Date(reply.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
+          return (
+            <div key={reply.id} className="flex gap-2.5">
+              <div className="relative size-7 shrink-0 overflow-hidden rounded-full bg-muted">
+                {reply.author?.avatar ? (
+                  <Image
+                    src={reply.author.avatar}
+                    alt={authorName}
+                    fill
+                    sizes="28px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex size-full items-center justify-center text-[10px] font-semibold">
+                    {avatarFallback}
+                  </div>
+                )}
               </div>
 
-              <p className="mt-0.5 whitespace-pre-wrap text-sm">
-                {reply.content}
-              </p>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <p className="truncate text-xs font-semibold">
+                      {authorName}
+                    </p>
+
+                    <span className="shrink-0 text-[11px] text-muted-foreground">
+                      {formatDistanceToNow(new Date(reply.createdAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </div>
+
+                  {isOwner && (
+                    <CommentMenu
+                      onEdit={() => setEditingReply(reply)}
+                      onDelete={() => setDeletingReply(reply)}
+                    />
+                  )}
+                </div>
+
+                <p className="mt-0.5 whitespace-pre-wrap text-sm">
+                  {reply.content}
+                </p>
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+
+      {editingReply && (
+        <EditCommentReplyDialog
+          replyId={editingReply.id}
+          commentId={editingReply.commentId}
+          content={editingReply.content}
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setEditingReply(null);
+            }
+          }}
+        />
+      )}
+
+      {deletingReply && (
+        <DeleteCommentReplyDialog
+          replyId={deletingReply.id}
+          commentId={deletingReply.commentId}
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setDeletingReply(null);
+            }
+          }}
+        />
+      )}
+    </>
   );
 }
