@@ -11,10 +11,7 @@ type PostCommentItemProps = {
   postId: string;
 };
 
-export function PostCommentItem({
-  comment,
-  postId,
-}: PostCommentItemProps) {
+export function PostCommentItem({ comment, postId }: PostCommentItemProps) {
   const authorName = comment.author?.name ?? "Unknown user";
   const avatarFallback = authorName.charAt(0).toUpperCase();
 
@@ -39,9 +36,7 @@ export function PostCommentItem({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="text-sm font-semibold">
-              {authorName}
-            </p>
+            <p className="text-sm font-semibold">{authorName}</p>
 
             <span className="text-xs text-muted-foreground">
               {formatDistanceToNow(new Date(comment.createdAt), {
@@ -54,10 +49,7 @@ export function PostCommentItem({
             {comment.content}
           </p>
 
-          <PostCommentReplies
-            commentId={comment.id}
-            postId={postId}
-          />
+          <PostCommentReplies commentId={comment.id} postId={postId} />
         </div>
       </div>
     </div>

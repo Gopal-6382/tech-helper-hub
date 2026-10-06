@@ -18,11 +18,7 @@ type PostCommentsProps = {
 };
 
 export function PostComments({ postId }: PostCommentsProps) {
-  const {
-    data: comments = [],
-    isLoading,
-    error,
-  } = useComments(postId);
+  const { data: comments = [], isLoading, error } = useComments(postId);
 
   return (
     <Card className=" overflow-hidden">
