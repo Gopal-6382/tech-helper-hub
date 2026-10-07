@@ -2,7 +2,6 @@ export { Field } from "./field";
 export { FieldLabel } from "./field-label";
 export { FieldDescription } from "./field-description";
 export { FormError } from "./form-error";
-export { ImageUploadField } from "./image-upload-field";
 export { TextField } from "./text-field";
 export { TextareaField } from "./textarea-field";
 export { SelectField, type SelectOption } from "./select-field";

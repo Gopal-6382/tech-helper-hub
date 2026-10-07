@@ -28,12 +28,6 @@ export default function DashboardLayout({ children }: Props) {
       onClick: () => setIsCategoryDialogOpen(true),
     },
     {
-      type: "action",
-      label: "Create Post",
-      icon: FilePlus,
-      onClick: () => {},
-    },
-    {
       type: "link",
       label: "Dashboard",
       href: "/web",
@@ -55,7 +49,6 @@ export default function DashboardLayout({ children }: Props) {
         {/* <PageHeader title="Dashboard" /> */}
         <HorizontalQuickBar items={headerActions} />
         <Container className="py-6">
-          {children}
           <main className="p-4 sm:p-6">{children}</main>
         </Container>
       </div>

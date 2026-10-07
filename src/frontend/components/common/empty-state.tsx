@@ -1,3 +1,24 @@
-export function EmptyState({ message }: { message: string }) {
-  return <p className="text-muted-foreground text-center py-10">{message}</p>;
+import { ReactNode } from "react";
+
+type EmptyStateProps = {
+  title: string;
+  description?: string;
+  action?: ReactNode;
+  className?: string;
+};
+export function EmptyState({
+  title,
+  description,
+  action,
+  className,
+}: EmptyStateProps) {
+  return (
+    <div
+      className={`flex min-h-75 flex-col items-center justify-center gap-4 ${className}`}
+    >
+      <h2 className="text-lg font-semibold">{title}</h2>
+      {description && <p className="text-muted-foreground">{description}</p>}
+      {action}
+    </div>
+  );
 }
