@@ -16,11 +16,11 @@ import type { Post } from "@/frontend/features/posts/types/post.types";
 
 import {
   CategorySelectField,
-  ImageUploadField,
   SubmitButton,
   TextField,
   TextareaField,
 } from "@/frontend/components/form";
+import { ImageUploadField } from "./image-upload-field";
 
 const MAX_IMAGES = 5;
 const MAX_FILE_SIZE_MB = 5;

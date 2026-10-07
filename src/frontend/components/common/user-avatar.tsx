@@ -1,1 +1,3 @@
-<UserAvatar name={author.name} src={author.avatar} size="sm" />;
+{
+  /* <UserAvatar name={author.name} src={author.avatar} size="sm" />; */
+}

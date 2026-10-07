@@ -7,24 +7,14 @@ export const userNavigation: NavItem[] = [
     icon: "home",
   },
   {
+    title: "Posts",
+    href: "/web/posts",
+    icon: "posts",
+  },
+  {
     title: "Community",
     href: "/web/group-chat",
     icon: "community",
-  },
-  {
-    title: "Saved",
-    href: "/web/saved",
-    icon: "saved",
-  },
-  {
-    title: "My Requests",
-    href: "/web/servicerequests",
-    icon: "servicerequests",
-  },
-  {
-    title: "Bookings",
-    href: "/web/bookings",
-    icon: "bookings",
   },
   {
     title: "Find Professionals",
@@ -32,19 +22,19 @@ export const userNavigation: NavItem[] = [
     icon: "professionals",
   },
   {
+    title: "My Requests",
+    href: "/web/servicerequests",
+    icon: "servicerequests",
+  },
+  {
     title: "Messages",
     href: "/web/direct-chat",
     icon: "messages",
   },
   {
-    title: "Notifications",
-    href: "/web/notifications",
-    icon: "notifications",
-  },
-  {
-    title: "Posts",
-    href: "/web/posts",
-    icon: "posts",
+    title: "Bookings",
+    href: "/web/bookings",
+    icon: "bookings",
   },
 ];
 

@@ -5,7 +5,7 @@ import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 import { HorizontalQuickBar, QuickBarItem } from "./quick-actions";
 import { CategoryFormDialog } from "@/features/categories/components/category-form-dialog";
-import { FolderPlus, FilePlus, LayoutDashboard, Settings } from "lucide-react";
+import { FolderPlus, LayoutDashboard, Settings } from "lucide-react";
 import { IssueReportFab } from "@/frontend/features/reports/components/issue-report-fab";
 import { Container } from "./container";
 // import { PageHeader } from "./page-header";
