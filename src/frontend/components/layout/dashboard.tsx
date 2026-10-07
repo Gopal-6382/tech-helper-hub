@@ -7,6 +7,7 @@ import { HorizontalQuickBar, QuickBarItem } from "./quick-actions";
 import { CategoryFormDialog } from "@/features/categories/components/category-form-dialog";
 import { FolderPlus, FilePlus, LayoutDashboard, Settings } from "lucide-react";
 import { IssueReportFab } from "@/frontend/features/reports/components/issue-report-fab";
+import { Container } from "./container";
 // import { PageHeader } from "./page-header";
 
 type Props = {
@@ -53,7 +54,10 @@ export default function DashboardLayout({ children }: Props) {
         <Header onMenuClick={() => setSidebarOpen(true)} />
         {/* <PageHeader title="Dashboard" /> */}
         <HorizontalQuickBar items={headerActions} />
-        <main className="p-4 sm:p-6">{children}</main>
+        <Container className="py-6">
+          {children}
+          <main className="p-4 sm:p-6">{children}</main>
+        </Container>
       </div>
       <CategoryFormDialog
         isOpen={isCategoryDialogOpen}

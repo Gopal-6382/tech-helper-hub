@@ -12,6 +12,7 @@ import { CategorySelect } from "@/frontend/components/common/category-select";
 import { useState, useMemo } from "react";
 
 import { useCategories } from "@/features/categories/hooks/use-categories";
+import { Temprory } from "@/frontend/features/servicerequests/components/create-request-form";
 type Category = {
   id: string;
   name: string;
@@ -65,7 +66,7 @@ export default function BookingsPage() {
           placeholder="Choose a category"
         />
       </div>
-
+      <Temprory />
       {/* Show selected category name + ID */}
       {selectedCategory ? (
         <div className="text-sm text-muted-foreground">

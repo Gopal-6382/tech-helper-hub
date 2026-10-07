@@ -15,7 +15,7 @@ import {
 
 import { RadioGroupField } from "@/frontend/components/form";
 
-import { useUpdatePost } from "@/frontend/features/posts/hooks/posts/use-update-status";
+import { useUpdatePost } from "@/frontend/features/posts/hooks/interactions/use-post-status";
 
 import type { PostStatus } from "@/frontend/features/posts/types/post.types";
 import {

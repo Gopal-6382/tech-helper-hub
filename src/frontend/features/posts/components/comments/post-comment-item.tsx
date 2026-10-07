@@ -12,6 +12,7 @@ import { PostCommentReplies } from "./post-comment-replies";
 import { CommentMenu } from "./comment-menu";
 import { EditCommentDialog } from "./edit-comment-dialog";
 import { DeleteCommentDialog } from "./delete-comment-dialog";
+import { PostCommentReplyForm } from "../form/post-replies.form";
 
 type PostCommentItemProps = {
   comment: Comment;
@@ -74,6 +75,9 @@ export function PostCommentItem({ comment, postId }: PostCommentItemProps) {
             </p>
 
             <PostCommentReplies commentId={comment.id} />
+            {user?.id && (
+              <PostCommentReplyForm commentId={comment.id} authorId={user.id} />
+            )}
           </div>
         </div>
       </div>
