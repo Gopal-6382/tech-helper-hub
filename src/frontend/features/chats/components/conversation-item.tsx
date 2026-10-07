@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
-
 import { useParticipants } from "../hooks/use-participants";
 import type { DirectConversation } from "../types/direct-chat.types";
+import { UserAvatar } from "@/frontend/components/common/user-avatar";
 
 type ConversationItemProps = {
   conversation: DirectConversation;
@@ -26,8 +25,6 @@ export function ConversationItem({
 
   const participantName = otherParticipant?.user?.name?.trim() || "User";
 
-  const participantAvatar = otherParticipant?.user?.avatar || null;
-
   const latestMessage =
     conversation.messages.length > 0
       ? [...conversation.messages].sort(
@@ -48,21 +45,12 @@ export function ConversationItem({
         active ? "bg-muted" : "hover:bg-muted/60"
       }`}
     >
-      <div className="relative size-11 shrink-0 overflow-hidden rounded-full bg-muted">
-        {participantAvatar ? (
-          <Image
-            src={participantAvatar}
-            alt={participantName}
-            fill
-            sizes="44px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex size-full items-center justify-center bg-primary/10 text-sm font-semibold text-primary">
-            {participantName.charAt(0).toUpperCase()}
-          </div>
-        )}
-      </div>
+      <UserAvatar
+        name={participantName}
+        src={otherParticipant?.user?.avatar}
+        size="default"
+        className="size-9 sm:size-10"
+      />
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">

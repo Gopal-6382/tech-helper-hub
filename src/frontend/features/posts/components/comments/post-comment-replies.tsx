@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { Loader2 } from "lucide-react";
 
@@ -14,6 +13,7 @@ import { useCommentReplies } from "@/frontend/features/posts/hooks/comments/comm
 import { CommentMenu } from "./comment-menu";
 import { EditCommentReplyDialog } from "./EditCommentReplyDialog";
 import { DeleteCommentReplyDialog } from "./DeleteCommentReplyDialog";
+import { UserAvatar } from "@/frontend/components/common/user-avatar";
 
 type PostCommentRepliesProps = {
   commentId: string;
@@ -52,27 +52,17 @@ export function PostCommentReplies({ commentId }: PostCommentRepliesProps) {
       <div className="mt-3 space-y-3 border-l-2 pl-4">
         {replies.map((reply) => {
           const authorName = reply.author?.name ?? "Unknown user";
-          const avatarFallback = authorName.charAt(0).toUpperCase();
 
           const isOwner = user?.id === reply.authorId;
 
           return (
             <div key={reply.id} className="flex gap-2.5">
-              <div className="relative size-7 shrink-0 overflow-hidden rounded-full bg-muted">
-                {reply.author?.avatar ? (
-                  <Image
-                    src={reply.author.avatar}
-                    alt={authorName}
-                    fill
-                    sizes="28px"
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center text-[10px] font-semibold">
-                    {avatarFallback}
-                  </div>
-                )}
-              </div>
+              <UserAvatar
+                name={authorName}
+                src={reply.author?.avatar}
+                size="default"
+                className="size-9 sm:size-10"
+              />
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">

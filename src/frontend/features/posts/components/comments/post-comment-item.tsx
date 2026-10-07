@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 
 import type { Comment } from "@/frontend/features/posts/types/comment.types";
@@ -13,6 +12,7 @@ import { CommentMenu } from "./comment-menu";
 import { EditCommentDialog } from "./edit-comment-dialog";
 import { DeleteCommentDialog } from "./delete-comment-dialog";
 import { PostCommentReplyForm } from "../form/post-replies.form";
+import { UserAvatar } from "@/frontend/components/common/user-avatar";
 
 type PostCommentItemProps = {
   comment: Comment;
@@ -26,7 +26,6 @@ export function PostCommentItem({ comment, postId }: PostCommentItemProps) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const authorName = comment.author?.name ?? "Unknown user";
-  const avatarFallback = authorName.charAt(0).toUpperCase();
 
   const isOwner = user?.id === comment.authorId;
 
@@ -34,21 +33,12 @@ export function PostCommentItem({ comment, postId }: PostCommentItemProps) {
     <>
       <div className="px-4 py-4">
         <div className="flex gap-3">
-          <div className="relative size-9 shrink-0 overflow-hidden rounded-full bg-muted">
-            {comment.author?.avatar ? (
-              <Image
-                src={comment.author.avatar}
-                alt={authorName}
-                fill
-                sizes="36px"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex size-full items-center justify-center text-xs font-semibold">
-                {avatarFallback}
-              </div>
-            )}
-          </div>
+          <UserAvatar
+            name={authorName}
+            src={comment.author?.avatar}
+            size="default"
+            className="size-9 sm:size-10"
+          />
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-2">

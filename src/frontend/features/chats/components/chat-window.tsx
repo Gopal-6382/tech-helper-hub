@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 import { useParticipants } from "../hooks/use-participants";
 import type {
   DirectConversationDetails,
@@ -9,6 +7,7 @@ import type {
 } from "../types/direct-chat.types";
 import { MessageForm } from "./message-form";
 import { MessageList } from "./message-list";
+import { UserAvatar } from "@/frontend/components/common/user-avatar";
 
 type ChatWindowProps = {
   conversation?: DirectConversationDetails | null;
@@ -49,33 +48,22 @@ export function ChatWindow({
     participants?.find((participant) => participant.userId !== currentUserId) ??
     null;
 
-  const participantName = otherParticipant?.user?.name?.trim() || "User";
-
-  const participantAvatar = otherParticipant?.user?.avatar || null;
+  const otherparticipantName = otherParticipant?.user?.name?.trim() || "User";
 
   return (
     <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-muted/10">
       {/* Header - fixed */}
       <header className="flex min-h-16 shrink-0 items-center gap-3 border-b bg-background px-4 sm:px-6">
-        <div className="relative size-10 shrink-0 overflow-hidden rounded-full bg-primary/10">
-          {participantAvatar ? (
-            <Image
-              src={participantAvatar}
-              alt={participantName}
-              fill
-              sizes="40px"
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex size-full items-center justify-center text-sm font-semibold text-primary">
-              {participantName.charAt(0).toUpperCase()}
-            </div>
-          )}
-        </div>
+        <UserAvatar
+          name={otherparticipantName}
+          src={otherParticipant?.user?.avatar}
+          size="default"
+          className="size-9 sm:size-10"
+        />
 
         <div className="min-w-0">
           <h2 className="truncate text-base font-semibold">
-            {participantName}
+            {otherparticipantName}
           </h2>
 
           <p className="text-xs text-muted-foreground">Direct message</p>
