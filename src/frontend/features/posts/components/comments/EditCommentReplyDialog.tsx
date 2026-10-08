@@ -100,17 +100,21 @@ export function EditCommentReplyDialog({
                 value.trim() === content
               }
             >
-              {updateMutation.isPending ? (
-                <>
-                  <Loader2 className="mr-2 size-4 animate-spin" />
-                  Editing...
-                </>
-              ) : (
-                <>
-                  <Pencil className="mr-2 size-4" />
-                  Edit reply
-                </>
-              )}
+              <FormMessage
+                icon={
+                  updateMutation.isPending ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Pencil className="size-4" />
+                  )
+                }
+                message={
+                  updateMutation.isPending
+                    ? "Updating post..."
+                    : "Creating post..."
+                }
+                variant="info"
+              />
             </Button>
           </DialogFooter>
         </form>

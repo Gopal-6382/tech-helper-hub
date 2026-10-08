@@ -305,9 +305,7 @@ export function PostForm({ post }: PostFormProps) {
         disabled={isUploading}
         loadingText={isEditing ? "Updating..." : "Creating..."}
         className="w-full"
-      >
-        {isEditing ? "Update post" : "Create post"}
-      </SubmitButton>
+      ></SubmitButton>
     </form>
   );
 }

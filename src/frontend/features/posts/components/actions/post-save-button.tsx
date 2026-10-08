@@ -37,8 +37,6 @@ export function PostSaveButton({
             error instanceof Error ? error.message.toLowerCase() : "";
 
           if (message.includes("already saved")) {
-            // The save already exists on the server.
-            // Keep saved state, but remove the extra +1.
             setSaved(true);
             setSaveCount((count) => Math.max(count - 1, 0));
             return;

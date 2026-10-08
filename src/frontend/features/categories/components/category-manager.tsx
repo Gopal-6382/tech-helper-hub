@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Category, SelectedCategory } from "../types/categories.types";
+import { EmptyState } from "@/frontend/components/common/empty-state";
 
 export function CategoryManager() {
   const [includeInactive, setIncludeInactive] = useState(true);
@@ -141,10 +142,11 @@ export function CategoryManager() {
             Failed to load categories: {error?.message}
           </div>
         ) : filteredCategories.length === 0 ? (
-          <div className="p-12 text-center text-muted-foreground">
-            <Folder className="h-8 w-8 mx-auto mb-2 opacity-50" />
-            <p>No categories found.</p>
-          </div>
+          <EmptyState
+            title="No categories found"
+            description="Create your first category."
+            link="/web/admin"
+          />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
