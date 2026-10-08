@@ -2,6 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { UserMenu } from "../common/user-menu";
+import { PageHeader } from "./page-header";
 
 type Props = {
   onMenuClick: () => void;
@@ -18,6 +19,7 @@ export function Header({ onMenuClick }: Props) {
       >
         <Menu size={22} />
       </button>
+      <PageHeader title="Dashboard" />
 
       <div className="ml-auto">
         <UserMenu />

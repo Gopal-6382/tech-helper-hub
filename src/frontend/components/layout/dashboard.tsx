@@ -8,7 +8,6 @@ import { CategoryFormDialog } from "@/features/categories/components/category-fo
 import { FolderPlus, LayoutDashboard, Settings } from "lucide-react";
 import { IssueReportFab } from "@/frontend/features/reports/components/issue-report-fab";
 import { Container } from "./container";
-// import { PageHeader } from "./page-header";
 
 type Props = {
   children: React.ReactNode;
@@ -46,7 +45,6 @@ export default function DashboardLayout({ children }: Props) {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="md:ml-64">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        {/* <PageHeader title="Dashboard" /> */}
         <HorizontalQuickBar items={headerActions} />
         <Container className="py-6">
           <main className="p-4 sm:p-6">{children}</main>
