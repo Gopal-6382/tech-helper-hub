@@ -79,12 +79,28 @@ export function Sidebar({ open, onClose }: Props) {
                   "flex items-center gap-3 rounded-md px-3 py-2",
                   "text-sm font-medium transition-colors",
                   active
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                 )}
               >
-                <DynamicIcon name={item.icon} size={18} />
-                <span>{item.title}</span>
+                <DynamicIcon
+                  name={item.icon}
+                  size={18}
+                  className={
+                    active
+                      ? "text-sidebar-primary-foreground"
+                      : "text-sidebar-foreground"
+                  }
+                />
+                <span
+                  className={
+                    active
+                      ? "text-sidebar-primary-foreground"
+                      : "text-sidebar-foreground"
+                  }
+                >
+                  {item.title}
+                </span>
               </Link>
             );
           })}

@@ -22,7 +22,7 @@ import {
 } from "@/frontend/components/form";
 import { ImageUploadField } from "./image-upload-field";
 import { FormMessage } from "@/frontend/components/feedback/form-message";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
 const MAX_IMAGES = 5;
 const MAX_FILE_SIZE_MB = 5;
@@ -283,29 +283,27 @@ export function PostForm({ post }: PostFormProps) {
         onRemoveExistingImage={removeExistingImage}
         onRemoveNewImage={removeNewImage}
       />
+      {isUploading && (
+        <FormMessage
+          icon={<Loader2 className="size-4 animate-spin" />}
+          message="Uploading images..."
+          variant="info"
+        />
+      )}
 
-      <FormMessage
-        icon={
-          isPending ? <Loader2 className="size-4 animate-spin" /> : undefined
-        }
-        message={
-          isPending
-            ? isEditing
-              ? "Updating post..."
-              : "Creating post..."
-            : undefined
-        }
-        variant="info"
-      />
+      {uploadError && <FormMessage message={uploadError} variant="error" />}
 
-      <FormMessage message={mutationError?.message} variant="error" />
-
+      {mutationError && (
+        <FormMessage message={mutationError.message} variant="error" />
+      )}
       <SubmitButton
         isSubmitting={isPending}
-        disabled={isUploading}
+        disabled={isPending || isUploading}
         loadingText={isEditing ? "Updating..." : "Creating..."}
         className="w-full"
-      ></SubmitButton>
+      >
+        {isEditing ? "Update post" : "Create post"}
+      </SubmitButton>
     </form>
   );
 }

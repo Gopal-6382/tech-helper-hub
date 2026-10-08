@@ -100,22 +100,26 @@ export function EditCommentReplyDialog({
                 value.trim() === content
               }
             >
-              <FormMessage
-                icon={
-                  updateMutation.isPending ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Pencil className="size-4" />
-                  )
-                }
-                message={
-                  updateMutation.isPending
-                    ? "Updating post..."
-                    : "Creating post..."
-                }
-                variant="info"
-              />
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Updating post...
+                </>
+              ) : (
+                <>
+                  <Pencil className="size-4" />
+                  Update post
+                </>
+              )}
             </Button>
+            {updateMutation.error && (
+              <p
+                role="alert"
+                className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive"
+              >
+                {updateMutation.error.message}
+              </p>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>

@@ -124,12 +124,7 @@ export function UpdatePostStatusDialog({
                 type="submit"
                 disabled={updateMutation.isPending || !form.formState.isDirty}
               >
-                <FormMessage
-                  message={
-                    updateMutation.isPending ? "Updating..." : "Update status"
-                  }
-                  variant={updateMutation.isPending ? "info" : "success"}
-                />
+                {updateMutation.isPending ? "Updating..." : "Update status"}
               </Button>
             </DialogFooter>
           </div>

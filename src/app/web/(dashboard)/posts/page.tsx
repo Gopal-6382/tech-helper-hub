@@ -35,10 +35,13 @@ export default function PostsPage() {
 
           <Link
             href="/web/posts/create"
-            className={cn(buttonVariants({ variant: "default" }))}
+            className={buttonVariants({
+              variant: "default",
+              size: "default",
+            })}
           >
-            <Plus />
-            Create Post
+            <Plus className="size-4 text-primary-foreground" />
+            <span className=" text-primary-foreground"> Create Post</span>
           </Link>
         </header>
 
