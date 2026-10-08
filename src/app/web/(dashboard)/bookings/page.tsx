@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/frontend/components/ui/dropdown-menu";
 
-import { ThemeSelect } from "@/frontend/components/common/ThemeSelect";
+import { ThemeSelect } from "@/frontend/components/common/theme-select";
 import { CategorySelect } from "@/frontend/components/common/category-select";
 import { useState } from "react";
 

@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/frontend/components/ui/dropdown-menu";
 
-import { ThemeSelect } from "@/frontend/components/common/ThemeSelect";
+import { ThemeSelect } from "@/frontend/components/common/theme-select";
 
 export default function BookingsPage() {
   return (

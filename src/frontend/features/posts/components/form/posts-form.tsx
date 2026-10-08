@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 import { createPostSchema } from "@/modules/posts/validations/post.validation";
 
@@ -20,9 +21,8 @@ import {
   TextField,
   TextareaField,
 } from "@/frontend/components/form";
+
 import { ImageUploadField } from "./image-upload-field";
-import { FormMessage } from "@/frontend/components/feedback/form-message";
-import { Check, Loader2 } from "lucide-react";
 
 const MAX_IMAGES = 5;
 const MAX_FILE_SIZE_MB = 5;
@@ -54,7 +54,7 @@ export function PostForm({ post }: PostFormProps) {
     post?.images ?? [],
   );
 
-  // These are already uploaded to Cloudinary.
+  // Images that have already been uploaded to Cloudinary.
   const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -69,6 +69,13 @@ export function PostForm({ post }: PostFormProps) {
       images: post?.images ?? [],
     },
   });
+
+  const syncImages = (existingImages: string[], uploadedImages: string[]) => {
+    form.setValue("images", [...existingImages, ...uploadedImages], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
 
   const clearSelectedFiles = () => {
     previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -116,7 +123,7 @@ export function PostForm({ post }: PostFormProps) {
       return;
     }
 
-    // Revoke previews from a previous pending selection.
+    // Revoke previews from the previous selection.
     previewUrls.forEach((url) => URL.revokeObjectURL(url));
 
     setSelectedFiles(files);
@@ -151,12 +158,7 @@ export function PostForm({ post }: PostFormProps) {
       setNewImageUrls((currentUrls) => {
         const nextUrls = [...currentUrls, ...uploadedUrls];
 
-        const allImages = [...existingImageUrls, ...nextUrls];
-
-        form.setValue("images", allImages, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
+        syncImages(existingImageUrls, nextUrls);
 
         return nextUrls;
       });
@@ -181,11 +183,7 @@ export function PostForm({ post }: PostFormProps) {
     );
 
     setExistingImageUrls(nextExistingImages);
-
-    form.setValue("images", [...nextExistingImages, ...newImageUrls], {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
+    syncImages(nextExistingImages, newImageUrls);
   };
 
   const removeNewImage = (index: number) => {
@@ -194,16 +192,11 @@ export function PostForm({ post }: PostFormProps) {
     );
 
     setNewImageUrls(nextNewImages);
-
-    form.setValue("images", [...existingImageUrls, ...nextNewImages], {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
+    syncImages(existingImageUrls, nextNewImages);
   };
 
   const onSubmit = async (data: CreatePostFormOutput) => {
-    // Selected files that haven't been uploaded yet
-    // must never be silently ignored.
+    // Do not silently ignore files that have not been uploaded.
     if (selectedFiles.length > 0) {
       setUploadError(
         "Please upload the selected images before saving the post.",
@@ -283,19 +276,26 @@ export function PostForm({ post }: PostFormProps) {
         onRemoveExistingImage={removeExistingImage}
         onRemoveNewImage={removeNewImage}
       />
+
       {isUploading && (
-        <FormMessage
-          icon={<Loader2 className="size-4 animate-spin" />}
-          message="Uploading images..."
-          variant="info"
-        />
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          <span>Uploading images...</span>
+        </div>
       )}
 
-      {uploadError && <FormMessage message={uploadError} variant="error" />}
+      {uploadError && (
+        <p role="alert" className="text-sm text-destructive">
+          {uploadError}
+        </p>
+      )}
 
       {mutationError && (
-        <FormMessage message={mutationError.message} variant="error" />
+        <p role="alert" className="text-sm text-destructive">
+          {mutationError.message}
+        </p>
       )}
+
       <SubmitButton
         isSubmitting={isPending}
         disabled={isPending || isUploading}

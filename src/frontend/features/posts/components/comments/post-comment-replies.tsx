@@ -11,8 +11,8 @@ import type { CommentReply } from "@/frontend/features/posts/types/comment-reply
 import { useCommentReplies } from "@/frontend/features/posts/hooks/comments/comments-replies/use-comment-replies";
 
 import { CommentMenu } from "./comment-menu";
-import { EditCommentReplyDialog } from "./editCommentReplyDialog";
-import { DeleteCommentReplyDialog } from "./deleteCommentReplyDialog";
+import { EditCommentReplyDialog } from "./edit-comment-reply-dialog";
+import { DeleteCommentReplyDialog } from "./delete-comment-reply-dialog";
 import { UserAvatar } from "@/frontend/components/common/user-avatar";
 import { ErrorState } from "@/frontend/components/feedback/error-state";
 

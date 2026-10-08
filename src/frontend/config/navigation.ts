@@ -40,11 +40,6 @@ export const userNavigation: NavItem[] = [
 
 export const professionalNavigation: NavItem[] = [
   {
-    title: "Professional Dashboard",
-    href: "/web/professional",
-    icon: "dashboard",
-  },
-  {
     title: "My Jobs",
     href: "/web/professional/jobs",
     icon: "servicerequests",
@@ -53,10 +48,5 @@ export const professionalNavigation: NavItem[] = [
     title: "Availability",
     href: "/web/professional/availability",
     icon: "bookings",
-  },
-  {
-    title: "Professional Profile",
-    href: "/web/professional/profile",
-    icon: "profile",
   },
 ];

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { buttonVariants } from "@/frontend/components/ui/button";
-import { cn } from "@/frontend/lib/utils";
 
 import { useAuth } from "@/frontend/context/auth-context";
 import { usePosts } from "@/frontend/features/posts/hooks/posts/use-posts";

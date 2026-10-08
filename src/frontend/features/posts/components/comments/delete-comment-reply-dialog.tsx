@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmDeleteDialog } from "@/frontend/components/common/confirmDeleteDialog";
+import { ConfirmDeleteDialog } from "@/frontend/components/common/confirm-delete-dialog";
 import { useDeleteCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-delete-comment-reply";
 
 type DeleteCommentReplyDialogProps = {

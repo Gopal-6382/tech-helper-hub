@@ -22,7 +22,6 @@ import {
   UpdatePostStatusInput,
   updatePostStatusSchema,
 } from "@/backend/modules/posts/validations/post.validation";
-import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type UpdatePostStatusDialogProps = {
   postId: string;
