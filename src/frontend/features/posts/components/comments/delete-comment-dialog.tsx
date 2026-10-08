@@ -1,18 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
-
-import { Button } from "@/frontend/components/ui/button";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/frontend/components/ui/dialog";
-
+import { ConfirmDeleteDialog } from "@/frontend/components/common/confirmDeleteDialog";
 import { useDeleteComment } from "@/frontend/features/posts/hooks/comments/use-delete-comment";
 
 type DeleteCommentDialogProps = {
@@ -45,44 +33,13 @@ export function DeleteCommentDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Delete comment?</DialogTitle>
-
-          <DialogDescription>
-            This action cannot be undone. The comment will be permanently
-            removed.
-          </DialogDescription>
-        </DialogHeader>
-
-        {deleteMutation.isError && (
-          <p className="text-sm text-destructive">
-            {deleteMutation.error.message || "Failed to delete comment."}
-          </p>
-        )}
-
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={deleteMutation.isPending}
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            type="button"
-            variant="destructive"
-            disabled={deleteMutation.isPending}
-            onClick={handleDelete}
-          >
-            <Trash2 className="mr-2 size-4" />
-            {deleteMutation.isPending ? "Deleting..." : "Delete"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ConfirmDeleteDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      onConfirm={handleDelete}
+      isPending={deleteMutation.isPending}
+      title="Delete comment?"
+      description="This action cannot be undone. The comment will be permanently removed."
+    />
   );
 }

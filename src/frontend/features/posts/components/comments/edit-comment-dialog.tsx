@@ -15,8 +15,8 @@ import {
   DialogTitle,
 } from "@/frontend/components/ui/dialog";
 
-import { useUpdateComment } from "@/frontend/features/posts/hooks/comments/use-update-comment";
 import { FormMessage } from "@/frontend/components/feedback/form-message";
+import { useUpdateComment } from "@/frontend/features/posts/hooks/comments/use-update-comment";
 
 type EditCommentDialogProps = {
   commentId: string;
@@ -80,11 +80,7 @@ export function EditCommentDialog({
             disabled={updateMutation.isPending}
           />
 
-          {updateMutation.isError && (
-            <p className="text-sm text-destructive">
-              {updateMutation.error.message || "Failed to update comment."}
-            </p>
-          )}
+          <FormMessage message={updateMutation.error?.message} />
 
           <DialogFooter>
             <Button
@@ -104,19 +100,17 @@ export function EditCommentDialog({
                 value.trim() === content
               }
             >
-              <FormMessage
-                icon={
-                  updateMutation.isPending ? (
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                  ) : (
-                    <Pencil className="mr-2 size-4" />
-                  )
-                }
-                message={
-                  updateMutation.isPending ? "Editing..." : "Edit Comment"
-                }
-                variant={updateMutation.isPending ? "info" : "success"}
-              />
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  Editing...
+                </>
+              ) : (
+                <>
+                  <Pencil className="mr-2 size-4" />
+                  Edit Comment
+                </>
+              )}
             </Button>
           </DialogFooter>
         </form>

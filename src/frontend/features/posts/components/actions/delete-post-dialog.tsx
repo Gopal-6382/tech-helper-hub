@@ -1,17 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
-
-import { Button } from "@/frontend/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/frontend/components/ui/dialog";
-
+import { ConfirmDeleteDialog } from "@/frontend/components/common/confirmDeleteDialog";
 import { useDeletePost } from "@/frontend/features/posts/hooks/posts/use-delete-post";
 import { DeletePostDialogProps } from "@/features/posts/types/post-action.types";
 
@@ -33,37 +22,13 @@ export function DeletePostDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Delete post?</DialogTitle>
-
-          <DialogDescription>
-            This action cannot be undone. The post will be permanently removed.
-          </DialogDescription>
-        </DialogHeader>
-
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            disabled={deleteMutation.isPending}
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
-
-          <Button
-            type="button"
-            variant="destructive"
-            disabled={deleteMutation.isPending}
-            onClick={handleDelete}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            {deleteMutation.isPending ? "Deleting..." : "Delete"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ConfirmDeleteDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      onConfirm={handleDelete}
+      isPending={deleteMutation.isPending}
+      title="Delete post?"
+      description="This action cannot be undone. The post will be permanently removed."
+    />
   );
 }

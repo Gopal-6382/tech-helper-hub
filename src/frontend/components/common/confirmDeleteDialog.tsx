@@ -2,6 +2,7 @@
 
 import { Loader2, Trash2 } from "lucide-react";
 
+import { Button } from "@/frontend/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/frontend/components/ui/dialog";
-import { Button } from "@/frontend/components/ui/button";
 
 type ConfirmDeleteDialogProps = {
   open: boolean;
@@ -29,7 +29,7 @@ export function ConfirmDeleteDialog({
   onConfirm,
   isPending = false,
   title = "Delete item?",
-  description = "This action cannot be undone. This will permanently delete the item.",
+  description = "This action cannot be undone. The item will be permanently removed.",
   confirmText = "Delete",
   loadingText = "Deleting...",
 }: ConfirmDeleteDialogProps) {
@@ -47,7 +47,7 @@ export function ConfirmDeleteDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
 

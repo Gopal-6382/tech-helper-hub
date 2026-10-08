@@ -1,13 +1,10 @@
-"use client";
-
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
 
-import { Button } from "@/frontend/components/ui/button";
+import { SubmitButton } from "@/frontend/components/form";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 import { Textarea } from "@/frontend/components/ui/textarea";
 
 import { useCreateComment } from "@/frontend/features/posts/hooks/comments/use-create-comment";
-import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type PostCommentFormProps = {
   postId: string;
@@ -18,7 +15,7 @@ export function PostCommentForm({ postId }: PostCommentFormProps) {
 
   const createCommentMutation = useCreateComment();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const trimmedContent = content.trim();
@@ -51,16 +48,13 @@ export function PostCommentForm({ postId }: PostCommentFormProps) {
       />
 
       <div className="flex justify-end">
-        <Button
-          type="submit"
-          disabled={createCommentMutation.isPending || !content.trim()}
+        <SubmitButton
+          isSubmitting={createCommentMutation.isPending}
+          loadingText="Commenting..."
+          disabled={!content.trim()}
         >
-          {createCommentMutation.isPending && (
-            <Loader2 className="size-4 animate-spin" />
-          )}
-
-          {createCommentMutation.isPending ? "Commenting..." : "Comment"}
-        </Button>
+          Comment
+        </SubmitButton>
       </div>
 
       <FormMessage message={createCommentMutation.error?.message} />

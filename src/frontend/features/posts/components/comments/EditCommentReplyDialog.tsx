@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Loader2, Pencil } from "lucide-react";
+
 import { Button } from "@/frontend/components/ui/button";
 import { Textarea } from "@/frontend/components/ui/textarea";
 
@@ -13,9 +15,8 @@ import {
   DialogTitle,
 } from "@/frontend/components/ui/dialog";
 
-import { useUpdateCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-update-comment-reply";
 import { FormMessage } from "@/frontend/components/feedback/form-message";
-import { Loader2, Pencil } from "lucide-react";
+import { useUpdateCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-update-comment-reply";
 
 type EditCommentReplyDialogProps = {
   replyId: string;
@@ -79,11 +80,7 @@ export function EditCommentReplyDialog({
             disabled={updateMutation.isPending}
           />
 
-          {updateMutation.isError && (
-            <p className="text-sm text-destructive">
-              {updateMutation.error.message || "Failed to update reply."}
-            </p>
-          )}
+          <FormMessage message={updateMutation.error?.message} />
 
           <DialogFooter>
             <Button
@@ -103,17 +100,17 @@ export function EditCommentReplyDialog({
                 value.trim() === content
               }
             >
-              <FormMessage
-                icon={
-                  updateMutation.isPending ? (
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                  ) : (
-                    <Pencil className="mr-2 size-4" />
-                  )
-                }
-                message={updateMutation.isPending ? "Editing..." : "Edit reply"}
-                variant={updateMutation.isPending ? "info" : "success"}
-              />
+              {updateMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  Editing...
+                </>
+              ) : (
+                <>
+                  <Pencil className="mr-2 size-4" />
+                  Edit reply
+                </>
+              )}
             </Button>
           </DialogFooter>
         </form>
