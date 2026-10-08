@@ -14,6 +14,7 @@ import { CommentMenu } from "./comment-menu";
 import { EditCommentReplyDialog } from "./editCommentReplyDialog";
 import { DeleteCommentReplyDialog } from "./deleteCommentReplyDialog";
 import { UserAvatar } from "@/frontend/components/common/user-avatar";
+import { ErrorState } from "@/frontend/components/feedback/error-state";
 
 type PostCommentRepliesProps = {
   commentId: string;
@@ -22,7 +23,12 @@ type PostCommentRepliesProps = {
 export function PostCommentReplies({ commentId }: PostCommentRepliesProps) {
   const { user } = useAuth();
 
-  const { data: replies = [], isLoading, error } = useCommentReplies(commentId);
+  const {
+    data: replies = [],
+    isLoading,
+    error,
+    refetch,
+  } = useCommentReplies(commentId);
 
   const [editingReply, setEditingReply] = useState<CommentReply | null>(null);
 
@@ -39,7 +45,11 @@ export function PostCommentReplies({ commentId }: PostCommentRepliesProps) {
 
   if (error) {
     return (
-      <p className="py-2 text-xs text-destructive">Failed to load replies.</p>
+      <ErrorState
+        title="Failed to load comments replies"
+        message={error.message}
+        onRetry={() => refetch()}
+      />
     );
   }
 

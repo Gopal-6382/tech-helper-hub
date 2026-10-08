@@ -12,13 +12,19 @@ import {
 import { useComments } from "@/frontend/features/posts/hooks/comments/use-comments";
 import { PostCommentItem } from "./post-comment-item";
 import { PostCommentForm } from "../form/post-comment-form";
+import { ErrorState } from "@/frontend/components/feedback/error-state";
 
 type PostCommentsProps = {
   postId: string;
 };
 
 export function PostComments({ postId }: PostCommentsProps) {
-  const { data: comments = [], isLoading, error } = useComments(postId);
+  const {
+    data: comments = [],
+    isLoading,
+    error,
+    refetch,
+  } = useComments(postId);
 
   return (
     <Card className=" overflow-hidden">
@@ -38,9 +44,11 @@ export function PostComments({ postId }: PostCommentsProps) {
           )}
 
           {error && (
-            <div className="px-4 py-10 text-center text-sm text-destructive">
-              {error.message || "Failed to load comments."}
-            </div>
+            <ErrorState
+              title="Failed to load comments"
+              message={error.message}
+              onRetry={() => refetch()}
+            />
           )}
 
           {!isLoading && !error && comments.length === 0 && (

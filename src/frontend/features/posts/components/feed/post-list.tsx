@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/frontend/components/ui/card";
 import { PostCard } from "@/frontend/features/posts/components/feed/post-card";
 import { PostListProps } from "../../types/post.types";
 import { PostViewTrigger } from "../actions/post-view-trigger";
+import { ErrorState } from "@/frontend/components/feedback/error-state";
 
 export function PostList({
   posts,
@@ -25,9 +26,7 @@ export function PostList({
     return (
       <Card>
         <CardContent className="p-6 text-center">
-          <p className="text-sm text-destructive">
-            {error.message || "Failed to load posts."}
-          </p>
+          <ErrorState title="Failed to load posts" message={error.message} />
         </CardContent>
       </Card>
     );
