@@ -12,7 +12,7 @@ import { PostActions } from "@/frontend/features/posts/components/actions/post-a
 import { PostImages } from "@/frontend/features/posts/components/media/post-images";
 import { DeletePostDialog } from "@/frontend/features/posts/components/actions/delete-post-dialog";
 import { ReportPostDialog } from "@/frontend/features/posts/components/report/report-post-dialog";
-import { UpdatePostStatusDialog } from "../actions/UpdatePostStatusDialog";
+import { UpdatePostStatusDialog } from "../actions/updatePostStatusDialog";
 import { PostMeta } from "../shared/post-meta";
 import { PostHeader } from "../detail/post-header";
 

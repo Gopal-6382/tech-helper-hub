@@ -22,6 +22,7 @@ import {
   UpdatePostStatusInput,
   updatePostStatusSchema,
 } from "@/backend/modules/posts/validations/post.validation";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type UpdatePostStatusDialogProps = {
   postId: string;
@@ -123,7 +124,12 @@ export function UpdatePostStatusDialog({
                 type="submit"
                 disabled={updateMutation.isPending || !form.formState.isDirty}
               >
-                {updateMutation.isPending ? "Updating..." : "Update status"}
+                <FormMessage
+                  message={
+                    updateMutation.isPending ? "Updating..." : "Update status"
+                  }
+                  variant={updateMutation.isPending ? "info" : "success"}
+                />
               </Button>
             </DialogFooter>
           </div>

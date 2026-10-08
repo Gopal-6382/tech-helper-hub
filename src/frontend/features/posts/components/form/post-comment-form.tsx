@@ -7,6 +7,7 @@ import { Button } from "@/frontend/components/ui/button";
 import { Textarea } from "@/frontend/components/ui/textarea";
 
 import { useCreateComment } from "@/frontend/features/posts/hooks/comments/use-create-comment";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type PostCommentFormProps = {
   postId: string;
@@ -62,11 +63,7 @@ export function PostCommentForm({ postId }: PostCommentFormProps) {
         </Button>
       </div>
 
-      {createCommentMutation.isError && (
-        <p className="text-sm text-destructive">
-          {createCommentMutation.error.message || "Failed to create comment."}
-        </p>
-      )}
+      <FormMessage message={createCommentMutation.error?.message} />
     </form>
   );
 }

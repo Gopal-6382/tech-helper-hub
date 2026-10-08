@@ -10,6 +10,7 @@ import { useCreateReport } from "@/frontend/features/posts/hooks/moderation/use-
 import { SubmitButton, TextField } from "@/frontend/components/form";
 
 import type { CreateReportData } from "@/modules/postreport/types/postreport.types";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type ReportPostFormProps = {
   postId: string;
@@ -56,13 +57,7 @@ export function ReportPostForm({ postId, onSuccess }: ReportPostFormProps) {
         required
       />
 
-      {createMutation.error && (
-        <p role="alert" className="text-sm text-destructive">
-          {createMutation.error instanceof Error
-            ? createMutation.error.message
-            : "Failed to report this post."}
-        </p>
-      )}
+      <FormMessage message={createMutation.error?.message} />
 
       <SubmitButton
         isSubmitting={createMutation.isPending}

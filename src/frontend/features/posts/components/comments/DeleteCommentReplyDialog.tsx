@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 
 import { Button } from "@/frontend/components/ui/button";
 
@@ -14,6 +14,7 @@ import {
 } from "@/frontend/components/ui/dialog";
 
 import { useDeleteCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-delete-comment-reply";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type DeleteCommentReplyDialogProps = {
   replyId: string;
@@ -55,11 +56,7 @@ export function DeleteCommentReplyDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {deleteMutation.isError && (
-          <p className="text-sm text-destructive">
-            {deleteMutation.error.message || "Failed to delete reply."}
-          </p>
-        )}
+        <FormMessage message={deleteMutation.error?.message} />
 
         <DialogFooter>
           <Button
@@ -77,9 +74,19 @@ export function DeleteCommentReplyDialog({
             disabled={deleteMutation.isPending}
             onClick={handleDelete}
           >
-            <Trash2 className="mr-2 size-4" />
-
-            {deleteMutation.isPending ? "Deleting..." : "Delete"}
+            <FormMessage
+              icon={
+                deleteMutation.isPending ? (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="mr-2 size-4" />
+                )
+              }
+              message={
+                deleteMutation.isPending ? "Deleting..." : "Delete reply"
+              }
+              variant={deleteMutation.isPending ? "info" : "success"}
+            />
           </Button>
         </DialogFooter>
       </DialogContent>

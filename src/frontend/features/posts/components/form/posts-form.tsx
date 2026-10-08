@@ -21,6 +21,8 @@ import {
   TextareaField,
 } from "@/frontend/components/form";
 import { ImageUploadField } from "./image-upload-field";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
+import { Loader2 } from "lucide-react";
 
 const MAX_IMAGES = 5;
 const MAX_FILE_SIZE_MB = 5;
@@ -282,15 +284,21 @@ export function PostForm({ post }: PostFormProps) {
         onRemoveNewImage={removeNewImage}
       />
 
-      {mutationError && (
-        <p role="alert" className="text-sm text-red-600">
-          {mutationError instanceof Error
-            ? mutationError.message
-            : isEditing
-              ? "Unable to update post."
-              : "Unable to create post."}
-        </p>
-      )}
+      <FormMessage
+        icon={
+          isPending ? <Loader2 className="size-4 animate-spin" /> : undefined
+        }
+        message={
+          isPending
+            ? isEditing
+              ? "Updating post..."
+              : "Creating post..."
+            : undefined
+        }
+        variant="info"
+      />
+
+      <FormMessage message={mutationError?.message} variant="error" />
 
       <SubmitButton
         isSubmitting={isPending}

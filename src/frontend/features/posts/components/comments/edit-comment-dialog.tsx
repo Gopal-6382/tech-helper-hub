@@ -16,6 +16,7 @@ import {
 } from "@/frontend/components/ui/dialog";
 
 import { useUpdateComment } from "@/frontend/features/posts/hooks/comments/use-update-comment";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type EditCommentDialogProps = {
   commentId: string;
@@ -103,13 +104,19 @@ export function EditCommentDialog({
                 value.trim() === content
               }
             >
-              {updateMutation.isPending ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : (
-                <Pencil className="mr-2 size-4" />
-              )}
-
-              {updateMutation.isPending ? "Saving..." : "Save changes"}
+              <FormMessage
+                icon={
+                  updateMutation.isPending ? (
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                  ) : (
+                    <Pencil className="mr-2 size-4" />
+                  )
+                }
+                message={
+                  updateMutation.isPending ? "Editing..." : "Edit Comment"
+                }
+                variant={updateMutation.isPending ? "info" : "success"}
+              />
             </Button>
           </DialogFooter>
         </form>

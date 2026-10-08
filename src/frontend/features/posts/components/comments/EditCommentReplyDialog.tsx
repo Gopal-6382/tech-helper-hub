@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Pencil } from "lucide-react";
-
 import { Button } from "@/frontend/components/ui/button";
 import { Textarea } from "@/frontend/components/ui/textarea";
 
@@ -16,6 +14,8 @@ import {
 } from "@/frontend/components/ui/dialog";
 
 import { useUpdateCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-update-comment-reply";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
+import { Loader2, Pencil } from "lucide-react";
 
 type EditCommentReplyDialogProps = {
   replyId: string;
@@ -103,13 +103,17 @@ export function EditCommentReplyDialog({
                 value.trim() === content
               }
             >
-              {updateMutation.isPending ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : (
-                <Pencil className="mr-2 size-4" />
-              )}
-
-              {updateMutation.isPending ? "Saving..." : "Save changes"}
+              <FormMessage
+                icon={
+                  updateMutation.isPending ? (
+                    <Loader2 className="mr-2 size-4 animate-spin" />
+                  ) : (
+                    <Pencil className="mr-2 size-4" />
+                  )
+                }
+                message={updateMutation.isPending ? "Editing..." : "Edit reply"}
+                variant={updateMutation.isPending ? "info" : "success"}
+              />
             </Button>
           </DialogFooter>
         </form>

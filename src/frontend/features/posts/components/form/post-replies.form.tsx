@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import { TextareaField, SubmitButton } from "@/frontend/components/form";
 import { useCreateCommentReply } from "@/frontend/features/posts/hooks/comments/comments-replies/use-create-comment-reply";
+import { FormMessage } from "@/frontend/components/feedback/form-message";
 
 type PostCommentReplyFormProps = {
   commentId: string;
@@ -70,6 +71,7 @@ export function PostCommentReplyForm({
           Reply
         </SubmitButton>
       </div>
+      <FormMessage message={createCommentReply.error?.message} />
     </form>
   );
 }
