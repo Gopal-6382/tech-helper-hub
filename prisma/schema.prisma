@@ -419,10 +419,8 @@ model PostView {
 
   // One user can count only once for one post.
   @@unique([postId, userId])
-
   @@index([userId])
   @@index([viewedAt])
-
   @@map("post_views")
 }
 
