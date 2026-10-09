@@ -21,7 +21,7 @@ export default function PostsPage() {
   }
 
   return (
-    <main className="container mx-auto max-w-5xl px-4 py-6">
+    <main className="mx-auto w-full max-w-[1600px] px-4 py-6">
       <div className="space-y-6">
         <header className="flex items-start justify-between gap-4">
           <div className="space-y-1">

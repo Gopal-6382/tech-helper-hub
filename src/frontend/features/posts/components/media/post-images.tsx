@@ -28,14 +28,14 @@ export function PostImages({
       <CarouselContent>
         {images.map((image, index) => (
           <CarouselItem key={`${image}-${index}`}>
-            <div className="relative h-96 w-full bg-muted">
+            <div className="relative h-70 w-full overflow-hidden rounded-xl bg-muted">
               <Image
                 src={image}
                 alt={`${title} image ${index + 1}`}
                 fill
-                sizes="(max-width: 768px) 100vw, 700px"
                 priority={index === 0}
-                className="object-contain"
+                sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+                className="object-center"
               />
 
               {images.length > 1 && (
